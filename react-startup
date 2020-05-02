@@ -1,0 +1,1 @@
+npm install @babel/core @babel/preset-env @babel/preset-react babel-loader css-loader html-webpack-plugin html-server make-webpack-config react react-dom style-loader svg-inline-loader ttf-loader url-loader webpack webpack-cli webpack-dev-server

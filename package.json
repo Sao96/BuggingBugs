@@ -1,0 +1,51 @@
+{
+  "name": "buggingbugs",
+  "version": "1.0.0",
+  "description": "A bug tracker application, used to monitor and manage bug reports during software development.",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "builddev": "webpack --mode development",
+    "dev": "webpack-dev-server --mode development --open",
+    "serve": "node_modules/.bin/http-server ./build"
+  },
+  "browser": {
+    "child_process": false
+  },
+  "dependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-react": "^7.9.4",
+    "@material-ui/core": "^4.9.12",
+    "@material-ui/icons": "^4.9.1",
+    "babel-loader": "^8.1.0",
+    "bootstrap": "^4.4.1",
+    "css-loader": "^3.5.3",
+    "html-server": "^0.1.1",
+    "html-webpack-plugin": "^4.2.1",
+    "make-webpack-config": "^1.5.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "style-loader": "^1.2.1",
+    "svg-inline-loader": "^0.8.2",
+    "ttf-loader": "^1.0.2",
+    "url-loader": "^4.1.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "devDependencies": {
+    "@svgr/webpack": "^5.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sao96/BuggingBugs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sao96/BuggingBugs/issues"
+  },
+  "homepage": "https://github.com/Sao96/BuggingBugs#readme"
+}
