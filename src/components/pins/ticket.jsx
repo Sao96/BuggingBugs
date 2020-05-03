@@ -4,15 +4,6 @@ import Worker from "../../../svg/worker.svg";
 import Closed from "../../../svg/closed.svg";
 
 export default function Ticket(props) {
-  const Separator = (color) => {
-    const styles = {
-      border: "1px solid " + color,
-      width: "90%",
-      marginBottom: "7px",
-    };
-    return <div style={styles}> </div>;
-  };
-
   let bgColor, borderColor, separatorColor;
   switch (props.priority) {
     case 0: //max priority
@@ -88,6 +79,14 @@ export default function Ticket(props) {
       </span>
     );
   };
+  const Separator = (color) => {
+    const styles = {
+      border: "1px solid " + color,
+      width: "90%",
+      marginBottom: "7px",
+    };
+    return <div style={styles}> </div>;
+  };
   const SummaryText = (text) => {
     return (
       <span
@@ -108,7 +107,7 @@ export default function Ticket(props) {
     else Comp = Closed;
 
     return (
-      <span style={{ position: "absolute", left: "1%", top: "77%" }}>
+      <span style={{ position: "absolute", left: "4.5%", top: "73%" }}>
         {SizeSVG(Comp)}
       </span>
     );
@@ -118,8 +117,8 @@ export default function Ticket(props) {
       <span
         style={{
           position: "absolute",
-          right: "3%",
-          top: "90%",
+          right: "8.3%",
+          top: "82.2%",
           fontStyle: "italic",
           color: "rgb(200,200,200)",
         }}
