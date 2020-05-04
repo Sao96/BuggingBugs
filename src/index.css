@@ -1,2 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Quattrocento+Sans&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap");
+
+.MuiDrawer-paper {
+  background-color: aqua;
+}

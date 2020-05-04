@@ -1,72 +1,144 @@
-import React from 'react';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import Dashboard from "../../svg/dashboard.svg"
-import AllTickets from "../../svg/alltickets.svg"
-import ClosedTickets from "../../svg/closedtickets.svg"
-import MyTickets from "../../svg/mytickets.svg"
-import NewTicket from "../../svg/newticket.svg"
-import OpenTickets from "../../svg/opentickets.svg"
-import PendingTickets from "../../svg/pendingtickets.svg"
-import Projects from "../../svg/projects.svg"
+import React from "react";
+import { createMuiTheme } from "@material-ui/core/styles";
+import clsx from "clsx";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import MenuIcon from "@material-ui/icons/Menu";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import DashboardIcon from "../../svg/dashboard.svg";
+import OpenTicketsIcon from "../../svg/opentickets.svg";
+import PendingTicketsIcon from "../../svg/pendingtickets.svg";
+import ClosedTicketsIcon from "../../svg/closedtickets.svg";
+import { withStyles } from "@material-ui/core/styles";
 
-const drawerWidth = 180;
-
+const drawerWidth = 240;
+const navColor = "rgb(0, 196, 46)";
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    display: "flex",
+  },
+  menuButton: {
+    marginRight: 36,
+  },
+  hide: {
+    display: "none",
   },
   drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
-    },
-  },
-  // necessary for content to be below app bar
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
     width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: "nowrap",
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    backgroundColor: navColor,
+    color: "rgb(237, 237, 237)",
+  },
+  drawerClose: {
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: "hidden",
+    width: theme.spacing(7) + 1,
+    [theme.breakpoints.up("sm")]: {
+      width: theme.spacing(9) + 1,
+    },
+    backgroundColor: navColor,
+    color: "white",
+  },
+  toolbar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
   },
 }));
 
-function ResponsiveDrawer(props) {
-  const SizeSVG = (Comp) => { return <Comp style={{width: "45px", height:"45px"}} />}
-  const icons = [Dashboard, NewTicket, MyTickets, OpenTickets, ClosedTickets, AllTickets, ClosedTickets, PendingTickets, Projects]
+function MiniDrawer() {
   const classes = useStyles();
-  const drawer = (
-    <div >
-      <div className={classes.toolbar} />
-      <List>
-        {['Dashboard', 'New Ticket', 'My Tickets', 'Open Tickets', 'Closed Tickets', 'All Tickets', 'Closed Tickets', 'Pending Approval', 'My Projects'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{SizeSVG(icons[index])}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  const handleDrawer = () => {
+    console.log("risitas-duran", open);
+    open ? handleDrawerClose() : handleDrawerOpen();
+  };
+
+  const SizeSVG = (Comp) => {
+    return <Comp style={{ width: "45px", height: "45px", fill: "black" }} />;
+  };
+
+  const Icons = {
+    ["Dashboard"]: DashboardIcon,
+    ["Open Tickets"]: OpenTicketsIcon,
+    ["Pending Approval"]: PendingTicketsIcon,
+    ["Closed Tickets"]: ClosedTicketsIcon,
+  };
+
   return (
     <div className={classes.root}>
-      <nav className={classes.drawer} aria-label="mailbox folders">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-      </nav>
+      <Drawer
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
+        }}
+        PaperProps={{ backgroundColor: "red" }}
+        style={{ backgroundColor: "rgb(0,0,0,0)" }}
+      >
+        <div className={classes.toolbar}>
+          <IconButton onClick={handleDrawer}>
+            {!open ? <MenuIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </div>
+        <Divider />
+        <List>
+          {[
+            "Dashboard",
+            "Open Tickets",
+            "Pending Approval",
+            "Closed Tickets",
+          ].map((name) => (
+            <ListItem button key={name} style={{ marginBottom: "20px" }}>
+              <ListItemIcon>{SizeSVG(Icons[name])}</ListItemIcon>
+              <ListItemText style={{ fontSize: "30px" }} primary={name} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
     </div>
   );
 }
 
-export default ResponsiveDrawer;
+export default MiniDrawer;
