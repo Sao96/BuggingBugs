@@ -18,7 +18,7 @@ import PendingTicketsIcon from "../../svg/pendingtickets.svg";
 import ClosedTicketsIcon from "../../svg/closedtickets.svg";
 import { withStyles } from "@material-ui/core/styles";
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 const navColor = "rgb(0, 196, 46)";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: "nowrap",
+    whiteSpace: "wrap",
   },
   drawerOpen: {
     width: drawerWidth,
@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     backgroundColor: navColor,
     color: "rgb(237, 237, 237)",
+    marginRight: "50px",
   },
   drawerClose: {
     transition: theme.transitions.create("width", {
@@ -50,12 +51,13 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: "hidden",
-    width: theme.spacing(7) + 1,
+    width: theme.spacing(5) + 1,
     [theme.breakpoints.up("sm")]: {
       width: theme.spacing(9) + 1,
     },
     backgroundColor: navColor,
     color: "white",
+    marginRight: "50px",
   },
   toolbar: {
     display: "flex",
@@ -67,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    // padding: theme.spacing(3),
   },
 }));
 
