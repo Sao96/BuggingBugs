@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Sidebar from "./components/sidebar.jsx";
 import Ticket from "./components/pins/ticket.jsx";
 import TicketBoard from "./components/ticketboard.jsx";
+import ModalTest from "./components/modal.jsx";
 import "./index.css";
 
 export default class App extends Component {
@@ -19,6 +20,7 @@ export default class App extends Component {
 
     return (
       <div className="main" style={style}>
+        <ModalTest />
         <Sidebar />
         <TicketBoard />
       </div>

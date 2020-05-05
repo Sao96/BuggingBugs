@@ -2,6 +2,7 @@ import React from "react";
 import Open from "../../../svg/open.svg";
 import Worker from "../../../svg/worker.svg";
 import Closed from "../../../svg/closed.svg";
+import Modal from "../modal.jsx";
 
 export default function Ticket(props) {
   let bgColor = "rgb(27, 78, 112)";
@@ -153,8 +154,11 @@ export default function Ticket(props) {
     );
   };
 
+  const handleClick = () => {
+    props.boardHandler(props);
+  };
   return (
-    <div style={ticketStyle}>
+    <div style={ticketStyle} onClick={handleClick}>
       <div>
         {PFPImage(props.pfp)}
         {Sender(props.author)}

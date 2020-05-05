@@ -27,6 +27,7 @@
     "make-webpack-config": "^1.5.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "rodal": "^1.8.1",
     "style-loader": "^1.2.1",
     "svg-inline-loader": "^0.8.2",
     "ttf-loader": "^1.0.2",

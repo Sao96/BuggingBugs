@@ -1,19 +1,41 @@
-import React, { Component } from "react";
+import React, { createRef, Component } from "react";
 import Ticket from "./pins/ticket.jsx";
 import * as sample from "../samples.jsx";
+import Modal from "../components/modal.jsx";
 
 export default class TicketBoard extends Component {
   constructor(props) {
     super(props);
+    this.state = { modalOpen: false };
+    console.log("the state:", this.state);
+    this.ticketClickHandler = this.ticketClickHandler.bind(this);
+    this.modalRef = createRef();
+  }
+
+  ticketClickHandler(e) {
+    console.log(e);
+    console.log(this.state);
+    this.setState({ isTicketOpen: true });
+    document.addEventListener(
+      "mousedown",
+      this.outsideTicketClickHandler.bind(this)
+    );
+  }
+
+  outsideTicketClickHandler(e) {
+    if (!this.modalRef.current.contains(e.target)) {
+      this.setState({ isTicketOpen: false });
+      document.removeEventListener("mousedown", this.outsideTicketClickHandler);
+    }
   }
 
   randomTickets(n) {
     let res = [];
     let samples = [
-      <Ticket {...sample.a} />,
-      <Ticket {...sample.b} />,
-      <Ticket {...sample.c} />,
-      <Ticket {...sample.d} />,
+      <Ticket boardHandler={this.ticketClickHandler} {...sample.a} />,
+      <Ticket boardHandler={this.ticketClickHandler} {...sample.b} />,
+      <Ticket boardHandler={this.ticketClickHandler} {...sample.c} />,
+      <Ticket boardHandler={this.ticketClickHandler} {...sample.d} />,
     ];
     for (let a = 0; a < n; ++a) {
       res.push(samples[Math.floor(Math.random() * 100) % 4]);
@@ -28,6 +50,12 @@ export default class TicketBoard extends Component {
       flexWrap: "wrap",
       justifyContent: "center",
     };
-    return <div style={boardStyle}>{this.randomTickets(100)}</div>;
+
+    return (
+      <div>
+        <Modal assignedRef={this.modalRef} isOpen={this.state.isTicketOpen} />
+        <div style={boardStyle}>{this.randomTickets(100)}</div>
+      </div>
+    );
   }
 }
