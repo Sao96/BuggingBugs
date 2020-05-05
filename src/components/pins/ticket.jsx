@@ -18,11 +18,13 @@ export default function Ticket(props) {
       break;
     case 1:
       priorityText = "High";
-      priorityColor = "rgb(255, 106, 0)"; //orange
+      priorityColor = "rgb(255, 106, 0)";
+      separatorColor = "rgb(255, 106, 0)";
       break;
     case 2: //med priority
       priorityText = "Med";
       priorityColor = "yellow";
+      separatorColor = "rgb(255, 255,0)";
       break;
     case 3:
       priorityText = "Low";
@@ -46,8 +48,8 @@ export default function Ticket(props) {
     position: "relative",
   };
 
-  const SizeSVG = (Comp) => {
-    return <Comp style={{ fill: "white", width: "50px", height: "65px" }} />;
+  const SizeSVG = (Comp, color = "white") => {
+    return <Comp style={{ fill: color, width: "50px", height: "65px" }} />;
   };
   const PFPImage = (image) => {
     return (
@@ -111,7 +113,7 @@ export default function Ticket(props) {
 
     return (
       <span style={{ position: "absolute", left: "4.5%", top: "73%" }}>
-        {SizeSVG(Comp)}
+        {SizeSVG(Comp, separatorColor)}
       </span>
     );
   };
