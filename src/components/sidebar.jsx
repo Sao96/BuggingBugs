@@ -17,8 +17,12 @@ import OpenTicketsIcon from "../../svg/opentickets.svg";
 import PendingTicketsIcon from "../../svg/pendingtickets.svg";
 import ClosedTicketsIcon from "../../svg/closedtickets.svg";
 
-const drawerWidth = 300;
-const navColor = "rgb(15, 176, 0)";
+const drawerStyles = {
+  width: 300,
+  color: "rgb(15, 176, 0)",
+  marginRight: "50px",
+  boxShadow: "12px 10px 23px -6px rgba(0,0,0,0.75)",
+};
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -30,20 +34,20 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   },
   drawer: {
-    width: drawerWidth,
+    width: drawerStyles.width,
     flexShrink: 0,
     whiteSpace: "wrap",
   },
   drawerOpen: {
-    width: drawerWidth,
+    width: drawerStyles.width,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    backgroundColor: navColor,
+    backgroundColor: drawerStyles.color,
     color: "white",
-    marginRight: "50px",
-    boxShadow: "12px 10px 23px -6px rgba(0,0,0,0.75)",
+    marginRight: drawerStyles.marginRight,
+    boxShadow: drawerStyles.boxShadow,
   },
   drawerClose: {
     transition: theme.transitions.create("width", {
@@ -55,10 +59,10 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up("sm")]: {
       width: theme.spacing(9) + 1,
     },
-    backgroundColor: navColor,
+    backgroundColor: drawerStyles.color,
     color: "white",
-    marginRight: "50px",
-    boxShadow: "12px 10px 23px -6px rgba(0,0,0,0.75)",
+    marginRight: drawerStyles.marginRight,
+    boxShadow: drawerStyles.boxShadow,
   },
   toolbar: {
     display: "flex",
