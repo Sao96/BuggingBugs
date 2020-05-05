@@ -28,6 +28,6 @@ export default class TicketBoard extends Component {
       flexWrap: "wrap",
       justifyContent: "center",
     };
-    return <div style={boardStyle}>{this.randomTickets(100)}</div>;
+    return <div style={boardStyle}>{this.randomTickets(7)}</div>;
   }
 }

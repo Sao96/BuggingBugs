@@ -6,7 +6,8 @@ import Closed from "../../../svg/closed.svg";
 export default function Ticket(props) {
   let bgColor = "rgb(27, 78, 112)";
   let borderColor = "black";
-  let separatorColor, priorityText, priorityColor;
+  let separatorColor = "rgb(0, 212, 4)";
+  let priorityText, priorityColor;
   switch (props.priority) {
     case 0: //max priority
       bgColor = "rgb(120, 0, 0)";
@@ -16,19 +17,16 @@ export default function Ticket(props) {
       priorityColor = "red";
       break;
     case 1:
-      separatorColor = "rgb(0, 212, 4)";
       priorityText = "High";
-      priorityColor = "rgb(255, 106, 0)";
+      priorityColor = "rgb(255, 106, 0)"; //orange
       break;
     case 2: //med priority
-      separatorColor = "rgb(0, 212, 4)";
       priorityText = "Med";
       priorityColor = "yellow";
       break;
     case 3:
-      separatorColor = "rgb(0, 212, 4)";
       priorityText = "Low";
-      priorityColor = "rgb(0, 212, 4)";
+      priorityColor = "rgb(0, 212, 4)"; //green
   }
 
   const ticketStyle = {

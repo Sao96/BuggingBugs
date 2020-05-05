@@ -16,7 +16,6 @@ import DashboardIcon from "../../svg/dashboard.svg";
 import OpenTicketsIcon from "../../svg/opentickets.svg";
 import PendingTicketsIcon from "../../svg/pendingtickets.svg";
 import ClosedTicketsIcon from "../../svg/closedtickets.svg";
-import { withStyles } from "@material-ui/core/styles";
 
 const drawerWidth = 300;
 const navColor = "rgb(15, 176, 0)";
@@ -71,7 +70,6 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    // padding: theme.spacing(3),
   },
 }));
 
