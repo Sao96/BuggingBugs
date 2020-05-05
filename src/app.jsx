@@ -19,7 +19,7 @@ export default class App extends Component {
 
     return (
       <div className="main" style={style}>
-        <Sidebar style={{ backgroundColor: "blue" }} />
+        <Sidebar />
         <TicketBoard />
       </div>
     );

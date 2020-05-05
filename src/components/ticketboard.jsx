@@ -26,7 +26,7 @@ export default class TicketBoard extends Component {
     const boardStyle = {
       display: "flex",
       flexWrap: "wrap",
-      justifyContent: "left",
+      justifyContent: "center",
     };
     return <div style={boardStyle}>{this.randomTickets(100)}</div>;
   }

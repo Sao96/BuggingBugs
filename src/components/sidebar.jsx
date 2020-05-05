@@ -19,7 +19,7 @@ import ClosedTicketsIcon from "../../svg/closedtickets.svg";
 import { withStyles } from "@material-ui/core/styles";
 
 const drawerWidth = 300;
-const navColor = "rgb(0, 196, 46)";
+const navColor = "rgb(15, 176, 0)";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -42,8 +42,9 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
     backgroundColor: navColor,
-    color: "rgb(237, 237, 237)",
+    color: "white",
     marginRight: "50px",
+    boxShadow: "12px 10px 23px -6px rgba(0,0,0,0.75)",
   },
   drawerClose: {
     transition: theme.transitions.create("width", {
@@ -58,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: navColor,
     color: "white",
     marginRight: "50px",
+    boxShadow: "12px 10px 23px -6px rgba(0,0,0,0.75)",
   },
   toolbar: {
     display: "flex",
@@ -92,14 +94,14 @@ function MiniDrawer() {
   };
 
   const SizeSVG = (Comp) => {
-    return <Comp style={{ width: "45px", height: "45px", fill: "black" }} />;
+    return <Comp style={{ width: "45px", height: "45px", fill: "white" }} />;
   };
 
   const Icons = {
     ["Dashboard"]: DashboardIcon,
-    ["Open Tickets"]: OpenTicketsIcon,
-    ["Pending Approval"]: PendingTicketsIcon,
-    ["Closed Tickets"]: ClosedTicketsIcon,
+    ["Open"]: OpenTicketsIcon,
+    ["Pending"]: PendingTicketsIcon,
+    ["Closed"]: ClosedTicketsIcon,
   };
 
   return (
@@ -117,7 +119,10 @@ function MiniDrawer() {
           }),
         }}
         PaperProps={{ backgroundColor: "red" }}
-        style={{ backgroundColor: "rgb(0,0,0,0)" }}
+        style={{
+          backgroundColor: "rgb(0,0,0,0)",
+          boxShadow: "0px 0px 0px 0px rgba(0,0,0,0)",
+        }}
       >
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawer}>
@@ -126,15 +131,13 @@ function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          {[
-            "Dashboard",
-            "Open Tickets",
-            "Pending Approval",
-            "Closed Tickets",
-          ].map((name) => (
-            <ListItem button key={name} style={{ marginBottom: "20px" }}>
+          {["Dashboard", "Open", "Pending", "Closed"].map((name) => (
+            <ListItem button key={name} style={{ marginBottom: "40px" }}>
               <ListItemIcon>{SizeSVG(Icons[name])}</ListItemIcon>
-              <ListItemText style={{ fontSize: "30px" }} primary={name} />
+              <ListItemText
+                style={{ fontSize: "30px", paddingLeft: "10px" }}
+                primary={name}
+              />
             </ListItem>
           ))}
         </List>

@@ -4,27 +4,31 @@ import Worker from "../../../svg/worker.svg";
 import Closed from "../../../svg/closed.svg";
 
 export default function Ticket(props) {
-  let bgColor, borderColor, separatorColor;
+  let bgColor = "rgb(27, 78, 112)";
+  let borderColor = "black";
+  let separatorColor, priorityText, priorityColor;
   switch (props.priority) {
     case 0: //max priority
-      bgColor = "rgb(150,0,.5)";
-      borderColor = "rgb(50, 0, 0)";
-      separatorColor = "red";
+      bgColor = "rgb(120, 0, 0)";
+      borderColor = "black";
+      separatorColor = "rgb(255, 0,0)";
+      priorityText = "MAX";
+      priorityColor = "red";
       break;
     case 1:
-      bgColor = "rgb(185, 84, 0 )";
-      borderColor = "rgb(59, 30, 0)";
-      separatorColor = "rgb(255, 116, 0 )";
+      separatorColor = "rgb(0, 212, 4)";
+      priorityText = "High";
+      priorityColor = "rgb(255, 106, 0)";
       break;
-    case 2: //high priority
-      bgColor = "rgb(101, 118, 0)";
-      borderColor = "rgb(54, 64, 0)";
-      separatorColor = "rgb(172, 202, 0 )";
+    case 2: //med priority
+      separatorColor = "rgb(0, 212, 4)";
+      priorityText = "Med";
+      priorityColor = "yellow";
       break;
     case 3:
-      bgColor = "rgb(0, 152, 143 )";
-      borderColor = "rgb(0, 126, 118 )";
-      separatorColor = "rgb(0, 234, 219  )";
+      separatorColor = "rgb(0, 212, 4)";
+      priorityText = "Low";
+      priorityColor = "rgb(0, 212, 4)";
   }
 
   const ticketStyle = {
@@ -35,8 +39,8 @@ export default function Ticket(props) {
     backgroundColor: bgColor,
     border: "0.5px solid " + borderColor,
     color: "white",
-    marginTop: "30px",
-    marginRight: "30px",
+    marginBottom: "70px",
+    marginRight: "50px",
     padding: "4px 0px 0px 2px",
     boxShadow: "10px 10px 23px -6px rgba(0,0,0,0.75)",
     fontFamily: "Didact Gothic, Quattrocento Sans",
@@ -113,6 +117,26 @@ export default function Ticket(props) {
       </span>
     );
   };
+  const PriorityText = (text, pColor) => {
+    return (
+      <span
+        style={{
+          position: "absolute",
+          left: "27%",
+          top: "80.2%",
+          fontStyle: "italic",
+          color: "rgb(200,200,200)",
+        }}
+      >
+        Priority:
+        <span style={{ color: pColor, fontSize: "21px", fontStyle: "normal" }}>
+          {" "}
+          {text}
+        </span>
+      </span>
+    );
+  };
+
   const DueDate = (date) => {
     return (
       <span
@@ -137,6 +161,7 @@ export default function Ticket(props) {
         {Separator(separatorColor)}
         {SummaryText(props.summary)}
         {StatusIcon(props.status)}
+        {PriorityText(priorityText, priorityColor)}
         {DueDate(props.duedate)}
       </div>
     </div>
