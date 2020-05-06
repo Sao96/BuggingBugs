@@ -20,18 +20,13 @@ export default class TicketForm extends Component {
     };
   }
 
-  handleSubmit(event) {
-    alert("A name was submitted: ");
-    event.preventDefault();
-  }
-
   TicketInfoSection() {
-    ``;
     const concern = {
       border: "1px solid #999",
       borderCollapse: "collapse",
       fontStyle: "",
       fontFamily: "Didact Gothic, Quattrocento Sans",
+      justifyContent: "center",
     };
     return (
       <table style={concern}>
@@ -64,11 +59,11 @@ export default class TicketForm extends Component {
   }
 
   AttachmentsSection() {
-    return <div>TopKek</div>;
+    // return <div>fill me later</div>;
   }
 
   DiscussionSection() {
-    return <div>Lel</div>;
+    // return <div>fill me later</div>;
   }
 
   render() {

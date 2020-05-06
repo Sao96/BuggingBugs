@@ -22,12 +22,14 @@ export default function topkek(props) {
     border: "1px solid #888",
     width: "80%",
     backgroundColor: "white",
+    display: "flex",
+    justifyContent: "center",
   };
 
   return (
     <div style={overlayStyle}>
       <div ref={props.assignedRef} style={contentStyle}>
-        Honestly, it's kind of weird learning how to use browsers
+        {props.children}
       </div>
     </div>
   );

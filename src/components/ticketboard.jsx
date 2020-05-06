@@ -2,20 +2,18 @@ import React, { createRef, Component } from "react";
 import Ticket from "./pins/ticket.jsx";
 import * as sample from "../samples.jsx";
 import Modal from "../components/modal.jsx";
+import TicketForm from "./pages/ticketform.jsx";
 
 export default class TicketBoard extends Component {
   constructor(props) {
     super(props);
     this.state = { modalOpen: false };
-    console.log("the state:", this.state);
     this.ticketClickHandler = this.ticketClickHandler.bind(this);
     this.modalRef = createRef();
     this.modalClickHandler = this.outsideTicketClickHandler.bind(this);
   }
 
   ticketClickHandler(e) {
-    console.log(e);
-    console.log(this.state);
     this.setState({ isTicketOpen: true });
     document.addEventListener("mousedown", this.modalClickHandler);
   }
@@ -49,9 +47,22 @@ export default class TicketBoard extends Component {
       justifyContent: "center",
     };
 
+    const test = {
+      headline: "Vanguard system is broken",
+      priority: "High",
+      environment: "Windows 10 v10.5.2, Google Chrome v10.2",
+      tags: "React",
+      time: "8:30",
+      dueTime: "10/12",
+      summary:
+        "It seems everytime we launch the game vanguard breaks our computer.",
+    };
+
     return (
       <div>
-        <Modal assignedRef={this.modalRef} isOpen={this.state.isTicketOpen} />
+        <Modal assignedRef={this.modalRef} isOpen={this.state.isTicketOpen}>
+          <TicketForm {...test} />
+        </Modal>
         <div style={boardStyle}>{this.randomTickets(100)}</div>
       </div>
     );

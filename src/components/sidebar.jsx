@@ -91,7 +91,6 @@ function MiniDrawer() {
   };
 
   const handleDrawer = () => {
-    console.log("risitas-duran", open);
     open ? handleDrawerClose() : handleDrawerOpen();
   };
 
