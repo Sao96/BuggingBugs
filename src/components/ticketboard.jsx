@@ -10,22 +10,20 @@ export default class TicketBoard extends Component {
     console.log("the state:", this.state);
     this.ticketClickHandler = this.ticketClickHandler.bind(this);
     this.modalRef = createRef();
+    this.modalClickHandler = this.outsideTicketClickHandler.bind(this);
   }
 
   ticketClickHandler(e) {
     console.log(e);
     console.log(this.state);
     this.setState({ isTicketOpen: true });
-    document.addEventListener(
-      "mousedown",
-      this.outsideTicketClickHandler.bind(this)
-    );
+    document.addEventListener("mousedown", this.modalClickHandler);
   }
 
   outsideTicketClickHandler(e) {
     if (!this.modalRef.current.contains(e.target)) {
       this.setState({ isTicketOpen: false });
-      document.removeEventListener("mousedown", this.outsideTicketClickHandler);
+      document.removeEventListener("mousedown", this.modalClickHandler);
     }
   }
 
