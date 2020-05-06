@@ -1,2 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Quattrocento+Sans&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap");
+td,
+th {
+  border: 1px solid rgb(0, 0, 0);
+  padding: 0.5rem;
+}
