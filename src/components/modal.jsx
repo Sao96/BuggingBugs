@@ -20,10 +20,11 @@ export default function topkek(props) {
     margin: "auto",
     padding: "20px",
     border: "1px solid #888",
-    width: "80%",
+    width: "90%",
     backgroundColor: "white",
     display: "flex",
     justifyContent: "center",
+    position: "relative",
   };
 
   return (

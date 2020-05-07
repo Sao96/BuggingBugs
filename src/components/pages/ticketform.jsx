@@ -4,6 +4,45 @@ function attachment(props) {
   //pic, name, attachment
 }
 
+function TicketInfoTable(props) {
+  const concern = {
+    border: "1px solid #999",
+    borderCollapse: "collapse",
+    fontStyle: "",
+    fontFamily: "Didact Gothic, Quattrocento Sans",
+  };
+  return (
+    <div>
+      <table style={concern}>
+        <tr>
+          <td style={concern}>Priority</td>
+          <td>{props.priority}</td>
+        </tr>
+        <tr>
+          <td>Due</td>
+          <td>{props.dueTime}</td>
+        </tr>
+        <tr>
+          <td>Time</td>
+          <td>{props.time}</td>
+        </tr>
+        <tr>
+          <td>Tags</td>
+          <td>{props.tags}</td>
+        </tr>
+        <tr>
+          <td>Environment</td>
+          <td>{props.environment}</td>
+        </tr>
+        <tr>
+          <td>Sumarry</td>
+          <td>{props.summary}</td>
+        </tr>
+      </table>
+    </div>
+  );
+}
+
 const sample = {
   pfp: "https://i.imgur.com/aIBs6cj.png",
   name: "Smithy Jones",
@@ -22,9 +61,12 @@ const sample2 = {
 function CommentBox(props) {}
 
 function Comment(props) {
-  const commentStyle = {
-    backgroundColor: "orange",
+  const commentBoxStyle = {
+    backgroundColor: "green",
     paddingLeft: "10px",
+    paddingTop: "10px",
+    position: "relative",
+    display: "flex",
   };
   const imgStyle = {
     height: "40px",
@@ -35,21 +77,19 @@ function Comment(props) {
     borderWidth: "1px",
     marginRight: "5px",
   };
+
   return (
-    <div style={{ display: "flex" }}>
+    <div style={commentBoxStyle}>
       <img style={imgStyle} src={props.pfp} />
-      <div style={commentStyle}>
-        <span style={{ fontSize: "16px", paddingRight: "15px" }}>
-          {" "}
+      <div style={{ position: "relative", left: "10px" }}>
+        <span style={{ fontSize: "16px", paddingRight: "8px" }}>
           {props.name}
         </span>
         <span style={{ fontSize: "14px" }}>{props.date}</span>
-        <div style={{ flexBasis: "100%", height: "5px" }}></div>
-        <span
-          style={{ position: "relative", display: "flex", flexWrap: "wrap" }}
-        >
+
+        <p style={{ position: "relative", maxWidth: "500px" }}>
           {props.message}
-        </span>
+        </p>
       </div>
     </div>
   );
@@ -59,72 +99,18 @@ export default class TicketForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      headline: props.headline,
-      priority: props.priority,
-      environment: props.environment,
-      tags: props.tags,
-      time: props.time,
-      dueTime: props.dueTime,
-      summary: props.summary,
+      bugInfo: { ...props },
     };
-  }
-
-  TicketInfoSection() {
-    const concern = {
-      border: "1px solid #999",
-      borderCollapse: "collapse",
-      fontStyle: "",
-      fontFamily: "Didact Gothic, Quattrocento Sans",
-      justifyContent: "center",
-    };
-    return (
-      <table style={concern}>
-        <tr>
-          <td style={concern}>Priority</td>
-          <td>{this.state.priority}</td>
-        </tr>
-        <tr>
-          <td>Due</td>
-          <td>{this.state.dueTime}</td>
-        </tr>
-        <tr>
-          <td>Time</td>
-          <td>{this.state.time}</td>
-        </tr>
-        <tr>
-          <td>Tags</td>
-          <td>{this.state.tags}</td>
-        </tr>
-        <tr>
-          <td>Environment</td>
-          <td>{this.state.environment}</td>
-        </tr>
-        <tr>
-          <td>Sumarry</td>
-          <td>{this.state.summary}</td>
-        </tr>
-      </table>
-    );
-  }
-
-  AttachmentsSection() {
-    // return <div>fill me later</div>;
-  }
-
-  DiscussionSection() {
-    // return <div>fill me later</div>;
-    return <div></div>;
   }
 
   render() {
     return (
       <div style={{ backgroundColor: "white" }}>
-        {this.TicketInfoSection()}
+        <TicketInfoTable {...this.state.bugInfo} />
         <h1>Comments</h1>
+        <textarea></textarea>
         <Comment {...sample} />
-        <br></br>
         <Comment {...sample2} />
-        {this.DiscussionSection()}
       </div>
     );
   }
