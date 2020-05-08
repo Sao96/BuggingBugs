@@ -10,34 +10,39 @@ function TicketInfoTable(props) {
     borderCollapse: "collapse",
     fontStyle: "",
     fontFamily: "Didact Gothic, Quattrocento Sans",
+    color: "white",
+    marginBottom: "20px",
   };
+
+  let tableData = [
+    ["Priority", props.priority],
+    ["Due", props.dueTime],
+    ["Time", props.time],
+    ["Tags", props.tags],
+    ["Environment", props.environment],
+    ["Summary", props.summary],
+  ];
+
+  const even = { backgroundColor: "rgb(70,100,120, 0.7)" };
+  const odd = { backgroundColor: "rgb(30,60,80)" };
+  const tableRows = tableData.map((data, idx) => {
+    return (
+      <tr style={idx % 2 ? odd : even}>
+        <td style={{ fontSize: "17px", padding: "0px 20px" }}>{data[0]}</td>
+        <td style={{ fontSize: "17px", fontFamily: "Heebo" }}> {data[1]}</td>
+      </tr>
+    );
+  });
+
   return (
-    <div>
+    <div
+      style={{
+        maxWidth: "1000px",
+        boxShadow: "10px 10px 23px -6px rgba(0,0,0,0.75)",
+      }}
+    >
       <table style={concern}>
-        <tr>
-          <td style={concern}>Priority</td>
-          <td>{props.priority}</td>
-        </tr>
-        <tr>
-          <td>Due</td>
-          <td>{props.dueTime}</td>
-        </tr>
-        <tr>
-          <td>Time</td>
-          <td>{props.time}</td>
-        </tr>
-        <tr>
-          <td>Tags</td>
-          <td>{props.tags}</td>
-        </tr>
-        <tr>
-          <td>Environment</td>
-          <td>{props.environment}</td>
-        </tr>
-        <tr>
-          <td>Sumarry</td>
-          <td>{props.summary}</td>
-        </tr>
+        <tbody>{tableRows}</tbody>
       </table>
     </div>
   );
@@ -62,11 +67,20 @@ function CommentBox(props) {}
 
 function Comment(props) {
   const commentBoxStyle = {
-    backgroundColor: "green",
+    backgroundColor: "rgb(70,100,120, 0.7)",
+    border: "solid",
+    borderWidth: "1px",
+    borderColor: "black",
+    borderRadius: "20px",
     paddingLeft: "10px",
     paddingTop: "10px",
     position: "relative",
     display: "flex",
+    color: "white",
+    marginBottom: "10px",
+    fontFamily: "Didact Gothic, Quattrocento Sans",
+    boxShadow: "10px 10px 23px -6px rgba(0,0,0,0.75)",
+    paddingRight: "20px",
   };
   const imgStyle = {
     height: "40px",
@@ -85,9 +99,13 @@ function Comment(props) {
         <span style={{ fontSize: "16px", paddingRight: "8px" }}>
           {props.name}
         </span>
-        <span style={{ fontSize: "14px" }}>{props.date}</span>
+        <span style={{ fontSize: "14px", color: "rgb(209, 209, 209)" }}>
+          {props.date}
+        </span>
 
-        <p style={{ position: "relative", maxWidth: "500px" }}>
+        <p
+          style={{ position: "relative", maxWidth: "1000px", fontSize: "16px" }}
+        >
           {props.message}
         </p>
       </div>
@@ -105,10 +123,9 @@ export default class TicketForm extends Component {
 
   render() {
     return (
-      <div style={{ backgroundColor: "white" }}>
+      <div style={{}}>
         <TicketInfoTable {...this.state.bugInfo} />
-        <h1>Comments</h1>
-        <textarea></textarea>
+        {/* <textarea value="Enter a new comment..."></textarea> */}
         <Comment {...sample} />
         <Comment {...sample2} />
       </div>

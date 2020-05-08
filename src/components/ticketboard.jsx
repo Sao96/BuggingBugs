@@ -55,7 +55,7 @@ export default class TicketBoard extends Component {
       time: "8:30",
       dueTime: "10/12",
       summary:
-        "It seems everytime we launch the game vanguard breaks our computer.",
+        "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet. Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     };
 
     return (
