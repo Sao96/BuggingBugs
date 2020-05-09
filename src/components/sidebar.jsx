@@ -19,7 +19,7 @@ import ClosedTicketsIcon from "../../svg/closedtickets.svg";
 
 const drawerStyles = {
   width: 300,
-  color: "rgb(15, 176, 0)",
+  color: "rgb(73, 99, 114)",
   marginRight: "50px",
   boxShadow: "12px 10px 23px -6px rgba(0,0,0,0.75)",
 };
@@ -102,7 +102,6 @@ function MiniDrawer() {
     ["Dashboard"]: DashboardIcon,
     ["Open"]: OpenTicketsIcon,
     ["Pending"]: PendingTicketsIcon,
-    ["Closed"]: ClosedTicketsIcon,
   };
 
   return (
@@ -127,12 +126,16 @@ function MiniDrawer() {
       >
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawer}>
-            {!open ? <MenuIcon /> : <ChevronLeftIcon />}
+            {!open ? (
+              <MenuIcon style={{ color: "white" }} />
+            ) : (
+              <ChevronLeftIcon />
+            )}
           </IconButton>
         </div>
         <Divider />
         <List>
-          {["Dashboard", "Open", "Pending", "Closed"].map((name) => (
+          {["Dashboard", "Open", "Pending"].map((name) => (
             <ListItem button key={name} style={{ marginBottom: "40px" }}>
               <ListItemIcon>{SizeSVG(Icons[name])}</ListItemIcon>
               <ListItemText

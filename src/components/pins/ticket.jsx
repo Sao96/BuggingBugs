@@ -5,31 +5,29 @@ import Closed from "../../../svg/closed.svg";
 import Modal from "../modal.jsx";
 
 export default function Ticket(props) {
-  let bgColor = "rgb(27, 78, 112)";
+  let bgColor, priorityText, priorityColor;
   let borderColor = "black";
-  let separatorColor = "rgb(0, 212, 4)";
-  let priorityText, priorityColor;
+
   switch (props.priority) {
     case 0: //max priority
-      bgColor = "rgb(120, 0, 0)";
-      borderColor = "black";
-      separatorColor = "rgb(255, 0,0)";
+      bgColor = "rgb(143, 0, 0)";
       priorityText = "MAX";
       priorityColor = "red";
       break;
     case 1:
+      bgColor = "rgb(207, 80, 0)";
       priorityText = "High";
-      priorityColor = "rgb(255, 106, 0)";
-      separatorColor = "rgb(255, 106, 0)";
+      priorityColor = "rgb(255,175,0)";
       break;
     case 2: //med priority
+      bgColor = "rgb(156, 142, 0)";
       priorityText = "Med";
       priorityColor = "yellow";
-      separatorColor = "rgb(255, 255,0)";
       break;
     case 3:
       priorityText = "Low";
-      priorityColor = "rgb(0, 212, 4)"; //green
+      bgColor = "rgb(38, 135, 16)";
+      priorityColor = "rgb(0, 255, 22)"; //green
   }
 
   const ticketStyle = {
@@ -43,7 +41,7 @@ export default function Ticket(props) {
     marginBottom: "70px",
     marginRight: "50px",
     padding: "4px 0px 0px 2px",
-    boxShadow: "10px 10px 23px -6px rgba(0,0,0,0.75)",
+    boxShadow: "2px 4px 4px 0px rgba(0,0,0,0.75)",
     fontFamily: "Didact Gothic, Quattrocento Sans",
     fontSize: "18px",
     position: "relative",
@@ -114,7 +112,7 @@ export default function Ticket(props) {
 
     return (
       <span style={{ position: "absolute", left: "4.5%", top: "73%" }}>
-        {SizeSVG(Comp, separatorColor)}
+        {SizeSVG(Comp, priorityColor)}
       </span>
     );
   };
@@ -162,7 +160,7 @@ export default function Ticket(props) {
       <div>
         {PFPImage(props.pfp)}
         {Sender(props.author)}
-        {Separator(separatorColor)}
+        {Separator(priorityColor)}
         {SummaryText(props.summary)}
         {StatusIcon(props.status)}
         {PriorityText(priorityText, priorityColor)}

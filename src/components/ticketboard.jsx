@@ -27,17 +27,26 @@ export default class TicketBoard extends Component {
 
   randomTickets(n) {
     let res = [];
-    let samples = [
-      <Ticket boardHandler={this.ticketClickHandler} {...sample.a} />,
-      <Ticket boardHandler={this.ticketClickHandler} {...sample.b} />,
-      <Ticket boardHandler={this.ticketClickHandler} {...sample.c} />,
-      <Ticket boardHandler={this.ticketClickHandler} {...sample.d} />,
-    ];
+    let samples = ["a", "b", "c", "d"];
     for (let a = 0; a < n; ++a) {
-      res.push(samples[Math.floor(Math.random() * 100) % 4]);
+      res.push(sample[samples[Math.floor(Math.random() * 100) % 4]]);
     }
 
-    return res;
+    console.log(res);
+    res.sort((a, b) => {
+      if (a.priority < b.priority) {
+        return -1;
+      } else if (a.priority == b.priority && a.duedate < b.duedate) {
+        return -1;
+      }
+      return 0;
+    });
+
+    console.log(res);
+
+    return res.map((card) => {
+      return <Ticket boardHandler={this.ticketClickHandler} {...card} />;
+    });
   }
 
   render() {
@@ -63,7 +72,7 @@ export default class TicketBoard extends Component {
         <Modal assignedRef={this.modalRef} isOpen={this.state.isTicketOpen}>
           <TicketForm {...test} />
         </Modal>
-        <div style={boardStyle}>{this.randomTickets(100)}</div>
+        <div style={boardStyle}>{this.randomTickets(10)}</div>
       </div>
     );
   }
