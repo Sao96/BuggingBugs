@@ -1,5 +1,24 @@
 import React, { Component } from "react";
-import AddAttachment from "../../../svg/AddAttachment.svg";
+import AddAttachmentButtonIcon from "../../../svg/AddAttachment.svg";
+import DocumentIcon from "../../../svg/TxtDoc.svg";
+import ImageIcon from "../../../svg/ImgDoc.svg";
+
+const headerStyle = {
+  color: "white",
+  fontSize: "24px",
+  fontFamily: "Didact Gothic",
+  marginBottom: "15px",
+};
+
+const hrStyle = {
+  position: "relative",
+  bottom: "5px",
+};
+
+const centerDiv = {
+  display: "flex",
+  justifyContent: "center",
+};
 
 function TicketInfoTable(props) {
   const concern = {
@@ -26,7 +45,12 @@ function TicketInfoTable(props) {
     return (
       <tr style={idx % 2 ? odd : even}>
         <td style={{ fontSize: "17px", padding: "0px 20px" }}>{data[0]}</td>
-        <td style={{ fontSize: "17px", fontFamily: "Heebo" }}> {data[1]}</td>
+        <td
+          style={{ fontSize: "17px", fontFamily: "Heebo", paddingLeft: "30px" }}
+        >
+          {" "}
+          {data[1]}
+        </td>
       </tr>
     );
   });
@@ -34,8 +58,7 @@ function TicketInfoTable(props) {
   return (
     <div
       style={{
-        maxWidth: "1000px",
-        boxShadow: "10px 10px 23px -6px rgba(0,0,0,0.75)",
+        boxShadow: "1px 1px 1px 0px rgba(0,0,0,0.75)",
       }}
     >
       <table style={concern}>
@@ -51,7 +74,6 @@ function Comment(props) {
     border: "solid",
     borderWidth: "1px",
     borderColor: "black",
-    borderRadius: "20px",
     paddingLeft: "10px",
     paddingTop: "10px",
     position: "relative",
@@ -59,7 +81,7 @@ function Comment(props) {
     color: "white",
     marginBottom: "10px",
     fontFamily: "Didact Gothic, Quattrocento Sans",
-    boxShadow: "10px 10px 23px -6px rgba(0,0,0,0.75)",
+    boxShadow: "1px 1px 1px 0px rgba(0,0,0,0.75)",
     paddingRight: "20px",
   };
   const imgStyle = {
@@ -95,7 +117,7 @@ function Comment(props) {
 
 function CommentInputBox() {
   const textInputStyle = {
-    backgroundColor: "rgb(10,40,60)",
+    backgroundColor: "rgb(10,25,45)",
     color: "white",
     fontFamily: "Didact Gothic",
     fontSize: "17px",
@@ -120,14 +142,79 @@ function CommentInputBox() {
         placeholder="Enter a new comment..."
         onChange={ReiszeTextarea.bind(this)}
       ></textarea>
-      <AddAttachment
+    </div>
+  );
+}
+
+function AttachmentSection() {
+  function AttachmentItem(props) {
+    const attchmentItemStyle = {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "13px",
+    };
+    const iconStyling = {
+      fill: "white",
+      height: "60px",
+      width: "60px",
+    };
+
+    const attachTypes = {
+      img: ImageIcon,
+      txt: DocumentIcon,
+    };
+    const textStyling = {
+      textAlign: "center",
+      position: "relative",
+      color: "rgb(170, 170, 170)",
+      bottom: "10px",
+      fontFamily: "Didact Gothic",
+      width: "100px",
+      overflowWrap: "break-word",
+    };
+
+    const AttachType = attachTypes[props.type];
+    return (
+      <div style={attchmentItemStyle}>
+        <AttachType style={iconStyling} />
+
+        <div style={textStyling}>{props.name}</div>
+      </div>
+    );
+  }
+
+  const attachSecStyle = {
+    backgroundColor: "rgb(10,40,60)",
+    color: "white",
+    paddingTop: "10px",
+    paddingRight: "15px",
+    marginBottom: "20px",
+    width: "max-content",
+  };
+
+  return (
+    <div style={attachSecStyle}>
+      <div
         style={{
-          height: "40px",
-          width: "40px",
+          display: "flex",
           position: "relative",
-          top: "40px",
+          alignItems: "center",
         }}
-      />
+      >
+        <AddAttachmentButtonIcon
+          style={{
+            height: "40px",
+            width: "40px",
+            fill: "white",
+            paddingLeft: "10px",
+          }}
+        />
+        <AttachmentItem type={"img"} name="cars.jpg" />
+        <AttachmentItem type={"txt"} name="secreth.cpp" />
+        <AttachmentItem type={"txt"} name="sqladaasdadasd.js" />
+      </div>
     </div>
   );
 }
@@ -156,11 +243,20 @@ export default class TicketForm extends Component {
         "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet. ",
       date: "May 7, 2019, 12:19 PST",
     };
-    function CommentBox(props) {}
+
     return (
       <div style={{}}>
         <TicketInfoTable {...this.state.bugInfo} />
-        <CommentInputBox />
+        <div style={headerStyle}> Attachments </div>
+        <hr style={hrStyle}></hr>
+        <div style={centerDiv}>
+          <AttachmentSection />
+        </div>
+        <div style={headerStyle}>Comments</div>
+        <hr style={hrStyle}></hr>
+        <div style={centerDiv}>
+          <CommentInputBox />
+        </div>
         <Comment {...commentSample} />
         <Comment {...commentSample2} />
       </div>
