@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-
-function attachment(props) {
-  //pic, name, attachment
-}
+import AddAttachment from "../../../svg/AddAttachment.svg";
 
 function TicketInfoTable(props) {
   const concern = {
@@ -47,23 +44,6 @@ function TicketInfoTable(props) {
     </div>
   );
 }
-
-const sample = {
-  pfp: "https://i.imgur.com/aIBs6cj.png",
-  name: "Smithy Jones",
-  message:
-    "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet. Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
-  date: "May 7, 2019, 12:19 PST",
-};
-
-const sample2 = {
-  pfp: "https://i.imgur.com/aIBs6cj.png",
-  name: "Smithy Jones",
-  message:
-    "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet. ",
-  date: "May 7, 2019, 12:19 PST",
-};
-function CommentBox(props) {}
 
 function Comment(props) {
   const commentBoxStyle = {
@@ -113,6 +93,45 @@ function Comment(props) {
   );
 }
 
+function CommentInputBox() {
+  const textInputStyle = {
+    backgroundColor: "rgb(10,40,60)",
+    color: "white",
+    fontFamily: "Didact Gothic",
+    fontSize: "17px",
+    width: "500px",
+    minHeight: "100px",
+    overflow: "auto",
+    resize: "vertical",
+    marginBottom: "10px",
+    resize: "none",
+  };
+  //once the textbox breaks a new line, extend height
+  const ReiszeTextarea = (e) => {
+    const textBox = e.target;
+    textBox.style.height = "auto";
+    textBox.style.height = textBox.scrollHeight + "px";
+  };
+
+  return (
+    <div style={{ display: "flex" }}>
+      <textarea
+        style={textInputStyle}
+        placeholder="Enter a new comment..."
+        onChange={ReiszeTextarea.bind(this)}
+      ></textarea>
+      <AddAttachment
+        style={{
+          height: "40px",
+          width: "40px",
+          position: "relative",
+          top: "40px",
+        }}
+      />
+    </div>
+  );
+}
+
 export default class TicketForm extends Component {
   constructor(props) {
     super(props);
@@ -122,12 +141,28 @@ export default class TicketForm extends Component {
   }
 
   render() {
+    const commentSample = {
+      pfp: "https://i.imgur.com/aIBs6cj.png",
+      name: "Smithy Jones",
+      message:
+        "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet. Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
+      date: "May 7, 2019, 12:19 PST",
+    };
+
+    const commentSample2 = {
+      pfp: "https://i.imgur.com/aIBs6cj.png",
+      name: "Smithy Jones",
+      message:
+        "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet. ",
+      date: "May 7, 2019, 12:19 PST",
+    };
+    function CommentBox(props) {}
     return (
       <div style={{}}>
         <TicketInfoTable {...this.state.bugInfo} />
-        {/* <textarea value="Enter a new comment..."></textarea> */}
-        <Comment {...sample} />
-        <Comment {...sample2} />
+        <CommentInputBox />
+        <Comment {...commentSample} />
+        <Comment {...commentSample2} />
       </div>
     );
   }
