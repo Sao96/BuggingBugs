@@ -72,8 +72,6 @@ function FilterOptions(props) {
         padding: "20px",
         display: filterMenuOpen ? "inline-block" : "none",
         margin: "5px 0px",
-        border: "solid 1px rgb(73, 99, 114)",
-        borderTopStyle: "solid px",
     };
 
     const handleDisplayClick = (e) => {
@@ -86,6 +84,7 @@ function FilterOptions(props) {
                 <Button
                     onClick={handleDisplayClick}
                     backgroundColor={"rgb(10, 20, 31)"}
+                    text={filterMenuOpen ? "Hide Filters" : "Open Filters"}
                 />
             </div>
             <div style={filterStyles}>

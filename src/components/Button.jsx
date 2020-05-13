@@ -36,7 +36,7 @@ export default function Button(props) {
                 onClick={props.onClick}
                 style={btnStyle}
             >
-                Display Filters
+                {props.text}
             </div>
         </div>
     );
