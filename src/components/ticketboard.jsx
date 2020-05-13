@@ -4,50 +4,95 @@ import * as sample from "../samples.jsx";
 import Modal from "../components/modal.jsx";
 import TicketForm from "./pages/ticketform.jsx";
 import Button from "./Button.jsx";
-import { connect } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import actions from "../reduxitems/actions.js";
 
-function FilterOptions(props) {
-    function Choices(props) {
-        const choicesStyles = {
-            display: "flex",
-            flexDirection: "column",
-        };
+let x;
+function Choices(props) {
+    const choicesStyles = {
+        display: "flex",
+        color: "white",
+        fontFamily: "Didact Gothic, Quattrocento Sans",
+    };
+    const headerStyle = {
+        color: "rgb(203, 234, 244)",
+        fontSize: "22px",
+        fontFamily: "Didact Gothic, Quattrocento Sans",
+    };
+    const boxItemStyle = {
+        marginRight: "10px",
+    };
+
+    const selector = (TARGET_FILTER) => {
+        useSelector((state) => {
+            return state[TARGET_FILTER];
+        });
+    };
+    const filterOptions = [
+        ["Open", actions.FILTER_TS_OPEN],
+        ["In Progress", actions.FILTER_TS_IN_PROGRESS],
+        ["Pending Approval", actions.FILTER_TS_PENDING_APPROVAL],
+        ["Closed", actions.FILTER_TS_CLOSED],
+    ];
+    const dispatch = useDispatch();
+
+    const alertStore = (action) => {
+        dispatch({ type: action });
+    };
+    const inputBoxes = filterOptions.map((field) => {
         return (
-            <div style={choicesStyles}>
-                <input type="checkbox"></input>
-                <input type="checkbox"></input>
-                <input type="checkbox"></input>
-                <input type="checkbox"></input>
-            </div>
+            <label style={boxItemStyle}>
+                <input
+                    type="checkbox"
+                    onClick={alertStore.bind(null, field[1])}
+                    checked={selector(field[1])}
+                ></input>
+                {field[0]}
+            </label>
         );
-    }
+    });
+
+    return (
+        <div>
+            <div style={headerStyle}>Ticket Status</div>
+            <div style={choicesStyles}>{inputBoxes}</div>
+        </div>
+    );
+}
+
+function FilterOptions(props) {
+    const filterMenuOpen = useSelector((state) => {
+        return state.DISPLAY_SEARCH_FILTER;
+    });
+
+    const dispatch = useDispatch();
+
     const filterStyles = {
-        backgroundColor: "gray",
-        display: "none",
+        backgroundColor: "rgb(10, 20, 31)",
+        padding: "20px",
+        display: filterMenuOpen ? "inline-block" : "none",
+        margin: "5px 0px",
+        border: "solid 1px rgb(73, 99, 114)",
+        borderTopStyle: "solid px",
     };
 
     const handleDisplayClick = (e) => {
-        if (!isActive) {
-            isActive = true;
-        }
+        dispatch({ type: actions.DISPLAY_SEARCH_FILTER });
     };
 
-    const [isActive, setActive] = useState(false);
     return (
         <div>
-            <Button backgroundColor={"rgb(10, 20, 31)"} />
+            <div>
+                <Button
+                    onClick={handleDisplayClick}
+                    backgroundColor={"rgb(10, 20, 31)"}
+                />
+            </div>
             <div style={filterStyles}>
                 <Choices />
             </div>
         </div>
     );
-}
-
-function mapStateToProps(state) {
-    return {
-        modalOpen: state.MODAL_ACTIVE,
-    };
 }
 
 class TicketBoard extends Component {
@@ -57,16 +102,16 @@ class TicketBoard extends Component {
         this.ticketClickHandler = this.ticketClickHandler.bind(this);
         this.modalRef = createRef();
         this.modalClickHandler = this.outsideTicketClickHandler.bind(this);
+        x = props.store;
     }
 
     ticketClickHandler(e) {
         this.props.dispatch({ type: actions.MODAL_ACTIVE });
-        console.log(this.props.store.getState());
+
         document.addEventListener("mousedown", this.modalClickHandler);
     }
 
     outsideTicketClickHandler(e) {
-        console.log(this.props.store.getState());
         if (!this.modalRef.current.contains(e.target)) {
             this.props.dispatch({ type: actions.MODAL_ACTIVE });
             document.removeEventListener("mousedown", this.modalClickHandler);
@@ -79,8 +124,6 @@ class TicketBoard extends Component {
         for (let a = 0; a < n; ++a) {
             res.push(sample[samples[Math.floor(Math.random() * 100) % 4]]);
         }
-
-        console.log(res);
         res.sort((a, b) => {
             if (a.priority < b.priority) {
                 return -1;
@@ -89,8 +132,6 @@ class TicketBoard extends Component {
             }
             return 0;
         });
-
-        console.log(res);
 
         return res.map((card) => {
             return <Ticket boardHandler={this.ticketClickHandler} {...card} />;
@@ -130,4 +171,10 @@ class TicketBoard extends Component {
     }
 }
 
-export default connect(mapStateToProps)(TicketBoard);
+const mapStateToTicketBoardProps = (state) => {
+    return {
+        modalOpen: state.MODAL_ACTIVE,
+    };
+};
+
+export default connect(mapStateToTicketBoardProps)(TicketBoard);

@@ -18,7 +18,6 @@ export default class App extends Component {
             position: "relative",
         };
         let store = createStore(reducer);
-        console.log(store.getState());
         return (
             <Provider store={store}>
                 <div className="main" style={style}>

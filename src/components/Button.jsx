@@ -33,6 +33,7 @@ export default function Button(props) {
             <div
                 onMouseEnter={buttonHover}
                 onMouseOut={buttonLeave}
+                onClick={props.onClick}
                 style={btnStyle}
             >
                 Display Filters

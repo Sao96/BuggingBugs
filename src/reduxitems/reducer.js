@@ -11,8 +11,24 @@ function reducer(prevState = initialState, action) {
                 a.DISPLAY_SEARCH_FILTER
             ];
             break;
+        case a.FILTER_TS_OPEN:
+            newState[a.FILTER_TS_OPEN] = !newState[a.FILTER_TS_OPEN];
+            break;
+        case a.FILTER_TS_IN_PROGRESS:
+            newState[a.FILTER_TS_IN_PROGRESS] = !newState[
+                a.FILTER_TS_IN_PROGRESS
+            ];
+            break;
+        case a.FILTER_TS_PENDING_APPROVAL:
+            newState[a.FILTER_TS_PENDING_APPROVAL] = !newState[
+                a.FILTER_TS_PENDING_APPROVAL
+            ];
+            break;
+
+        case a.FILTER_TS_CLOSED:
+            newState[a.FILTER_TS_CLOSED] = !newState[a.FILTER_TS_CLOSED];
+            break;
     }
-    console.log("HAHAH", newState);
     return newState;
 }
 
