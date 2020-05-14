@@ -8,7 +8,7 @@ import { connect, useSelector, useDispatch } from "react-redux";
 import actions from "../reduxitems/actions.js";
 
 let x;
-function Choices(props) {
+function ChoicesBox(props) {
     const choicesStyles = {
         display: "flex",
         color: "white",
@@ -88,7 +88,7 @@ function FilterOptions(props) {
                 />
             </div>
             <div style={filterStyles}>
-                <Choices />
+                <ChoicesBox />
             </div>
         </div>
     );
@@ -118,11 +118,25 @@ class TicketBoard extends Component {
     }
 
     randomTickets(n) {
-        let res = [];
-        let samples = ["a", "b", "c", "d"];
-        for (let a = 0; a < n; ++a) {
-            res.push(sample[samples[Math.floor(Math.random() * 100) % 4]]);
+        let res = [...sample.premade];
+        const mapPirorityToStore = {
+            0: this.props.filterOpen,
+            1: this.props.filterInProgress,
+            2: this.props.filterPendingApproval,
+            3: this.props.filterClosed,
+        };
+        const filterActive = ((filterVals) => {
+            for (status in filterVals) {
+                if (filterVals[status]) return true;
+            }
+            return false;
+        })(mapPirorityToStore);
+        if (filterActive) {
+            res = res.filter((ticket) => {
+                return mapPirorityToStore[ticket.status];
+            });
         }
+
         res.sort((a, b) => {
             if (a.priority < b.priority) {
                 return -1;
@@ -173,6 +187,10 @@ class TicketBoard extends Component {
 const mapStateToTicketBoardProps = (state) => {
     return {
         modalOpen: state.MODAL_ACTIVE,
+        filterOpen: state.FILTER_TS_OPEN,
+        filterInProgress: state.FILTER_TS_IN_PROGRESS,
+        filterPendingApproval: state.FILTER_TS_PENDING_APPROVAL,
+        filterClosed: state.filterClosed,
     };
 };
 
