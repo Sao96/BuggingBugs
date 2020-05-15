@@ -106,7 +106,6 @@ class TicketBoard extends Component {
 
     ticketClickHandler(e) {
         this.props.dispatch({ type: actions.MODAL_ACTIVE });
-
         document.addEventListener("mousedown", this.modalClickHandler);
     }
 
