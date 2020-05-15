@@ -28,6 +28,10 @@ function reducer(prevState = initialState, action) {
         case a.FILTER_TS_CLOSED:
             newState[a.FILTER_TS_CLOSED] = !newState[a.FILTER_TS_CLOSED];
             break;
+        case a.CREATE_PROJECT_MODAL_OPEN:
+            newState[a.CREATE_PROJECT_MODAL_OPEN] = !newState[
+                a.CREATE_PROJECT_MODAL_OPEN
+            ];
     }
     return newState;
 }

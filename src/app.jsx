@@ -6,6 +6,7 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import reducer from "./reduxitems/reducer.js";
 import "./index.css";
+import Dashboard from "./components/pages/dashboard.jsx";
 
 export default class App extends Component {
     constructor(props) {
@@ -20,9 +21,10 @@ export default class App extends Component {
         let store = createStore(reducer);
         return (
             <Provider store={store}>
-                <div className="main" style={style}>
+                <div className="main" style={style} className="defaultStyle">
                     <Sidebar />
-                    <TicketBoard store={store} />
+                    <Dashboard />
+                    {/* <TicketBoard store={store} /> */}
                 </div>
             </Provider>
         );

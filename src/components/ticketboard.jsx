@@ -84,7 +84,7 @@ function FilterOptions(props) {
                 <Button
                     onClick={handleDisplayClick}
                     backgroundColor={"rgb(10, 20, 31)"}
-                    text={filterMenuOpen ? "Hide Filters" : "Open Filters"}
+                    text={filterMenuOpen ? "Hide Filters" : "Show Filters"}
                 />
             </div>
             <div style={filterStyles}>

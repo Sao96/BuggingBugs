@@ -6,6 +6,7 @@ const initialState = {
     [a.FILTER_TS_IN_PROGRESS]: false,
     [a.FILTER_TS_PENDING_APPROVAL]: false,
     [a.FILTER_TS_CLOSED]: false,
+    [a.CREATE_PROJECT_MODAL_OPEN]: false,
 };
 
 export default initialState;
