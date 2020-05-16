@@ -1,9 +1,9 @@
 import React, { Component, createRef } from "react";
-import ProjectCard from "../pins/projectcard.jsx";
-import AddAttachmentButtonIcon from "../../../svg/AddAttachment.svg";
-import Modal from "../modal.jsx";
+import ProjectCard from "./projectcard.jsx";
+import AddAttachmentButtonIcon from "../../../../svg/AddAttachment.svg";
+import Modal from "../../util/modal.jsx";
 import NewProjectForm from "./newprojectform.jsx";
-import actions from "../../reduxitems/actions.js";
+import actions from "../../../reduxitems/actions.js";
 import { connect, useSelector, useDispatch } from "react-redux";
 
 class Dashboard extends Component {

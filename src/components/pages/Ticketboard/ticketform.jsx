@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import AddAttachmentButtonIcon from "../../../svg/AddAttachment.svg";
-import DocumentIcon from "../../../svg/TxtDoc.svg";
-import ImageIcon from "../../../svg/ImgDoc.svg";
+import AddAttachmentButtonIcon from "../../../../svg/AddAttachment.svg";
+import DocumentIcon from "../../../../svg/TxtDoc.svg";
+import ImageIcon from "../../../../svg/ImgDoc.svg";
 
 const headerStyle = {
     color: "white",

@@ -1,8 +1,8 @@
 import React from "react";
-import Open from "../../../svg/open.svg";
-import Worker from "../../../svg/worker.svg";
-import Closed from "../../../svg/closed.svg";
-import Modal from "../modal.jsx";
+import Open from "../../../../svg/open.svg";
+import Worker from "../../../../svg/worker.svg";
+import Closed from "../../../../svg/closed.svg";
+import Modal from "../../util/modal.jsx";
 
 export default function Ticket(props) {
     let bgColor, priorityText, priorityColor;

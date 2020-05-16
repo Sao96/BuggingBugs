@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import TicketForm from "./components/pages/ticketform.jsx";
+import TicketForm from "./components/pages/Ticketboard/ticketform.jsx";
 import Sidebar from "./components/sidebar.jsx";
-import TicketBoard from "./components/ticketboard.jsx";
+import TicketBoard from "./components/pages/Ticketboard/ticketboard.jsx";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import reducer from "./reduxitems/reducer.js";
 import "./index.css";
-import Dashboard from "./components/pages/dashboard.jsx";
+import Dashboard from "./components/pages/Dashboard/dashboard.jsx";
 
 export default class App extends Component {
     constructor(props) {

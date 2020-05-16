@@ -1,11 +1,11 @@
 import React, { createRef, Component, useState } from "react";
-import Ticket from "./pins/ticket.jsx";
-import * as sample from "../samples.jsx";
-import Modal from "../components/modal.jsx";
-import TicketForm from "./pages/ticketform.jsx";
-import Button from "./Button.jsx";
+import Ticket from "./ticket.jsx";
+import * as sample from "../../../samples.jsx";
+import Modal from "../../util/modal.jsx";
+import TicketForm from "./ticketform.jsx";
+import Button from "../../util/Button.jsx";
 import { connect, useSelector, useDispatch } from "react-redux";
-import actions from "../reduxitems/actions.js";
+import actions from "../../../reduxitems/actions.js";
 
 let x;
 function ChoicesBox(props) {
