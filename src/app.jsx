@@ -23,7 +23,7 @@ export default class App extends Component {
             <Provider store={store}>
                 <div className="main" style={style} className="defaultStyle">
                     <Sidebar />
-                    <Dashboard />
+                    <Dashboard x={store} />
                     {/* <TicketBoard store={store} /> */}
                 </div>
             </Provider>

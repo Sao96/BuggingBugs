@@ -24,7 +24,6 @@ function reducer(prevState = initialState, action) {
                 a.FILTER_TS_PENDING_APPROVAL
             ];
             break;
-
         case a.FILTER_TS_CLOSED:
             newState[a.FILTER_TS_CLOSED] = !newState[a.FILTER_TS_CLOSED];
             break;
@@ -32,6 +31,10 @@ function reducer(prevState = initialState, action) {
             newState[a.CREATE_PROJECT_MODAL_OPEN] = !newState[
                 a.CREATE_PROJECT_MODAL_OPEN
             ];
+            break;
+        case a.MODAL_REF:
+            newState[a.MODAL_REF] = action.modalRef;
+            break;
     }
     return newState;
 }

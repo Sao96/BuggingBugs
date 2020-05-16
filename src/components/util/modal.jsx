@@ -1,16 +1,19 @@
 //initial styles taken from w3schools modal example
-import React, { useState } from "react";
-import { connect } from "react-redux";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import actions from "../../reduxitems/actions.js";
 
-function mapStateToProps(state) {
-    return {
-        isOpen: state.MODAL_ACTIVE,
-    };
-}
+const selector = (field) => {
+    return useSelector((state) => {
+        return state[field];
+    });
+};
 
 function Modal(props) {
     let overlayStyle = {
-        display: props.isOpen ? "flex" : "none" /* Hidden by default */,
+        display: selector(actions.MODAL_ACTIVE)
+            ? "flex"
+            : "none" /* Hidden by default */,
         position: "fixed" /* Stay in place */,
         zIndex: "4000" /* Sit on top */,
         left: "0",
@@ -23,21 +26,28 @@ function Modal(props) {
         alignItems: "center",
     };
 
-    const contentStyle = {
+    const mainStyle = {
         margin: "auto",
         padding: "20px",
         border: "1px solid black",
         backgroundColor: "rgb(33, 59, 74)",
         marginTop: "50px",
+        zIndex: "5000",
     };
 
+    const dispatch = useDispatch();
+    const clickHandler = (e) => {
+        if (!props.assignedRef.current.contains(e.target)) {
+            dispatch({ type: actions.MODAL_ACTIVE });
+        }
+    };
     return (
-        <div style={overlayStyle}>
-            <div ref={props.assignedRef} style={contentStyle}>
+        <div style={overlayStyle} onClick={clickHandler}>
+            <div ref={props.assignedRef} style={mainStyle}>
                 {props.children}
             </div>
         </div>
     );
 }
 
-export default connect(mapStateToProps)(Modal);
+export default Modal;

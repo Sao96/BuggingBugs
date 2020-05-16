@@ -1,4 +1,4 @@
-import React, { Component, createRef } from "react";
+import React, { Component, createRef, useState, useCallback } from "react";
 import ProjectCard from "./projectcard.jsx";
 import AddAttachmentButtonIcon from "../../../../svg/AddAttachment.svg";
 import Modal from "../../util/modal.jsx";
@@ -6,44 +6,29 @@ import NewProjectForm from "./newprojectform.jsx";
 import actions from "../../../reduxitems/actions.js";
 import { connect, useSelector, useDispatch } from "react-redux";
 
-class Dashboard extends Component {
-    constructor(props) {
-        super(props);
-        this.modalRef = createRef();
-        this.handleNewProjIconClickBind = this.handleNewProjIconClick.bind(
-            this
-        );
-        this.outsideModalClickHandlerBind = this.outsideModalClickHandler.bind(
-            this
-        );
-    }
+const modalRef = createRef();
+function DashboardX(props) {
+    const dispatch = useDispatch();
+    const selector = (field) => {
+        return useSelector((state) => {
+            return state[field];
+        });
+    };
+    const launchModalHandler = () => {
+        dispatch({ type: actions.MODAL_ACTIVE });
+    };
 
-    handleNewProjIconClick() {
-        this.props.dispatch({ type: actions.MODAL_ACTIVE });
-        document.addEventListener(
-            "mousedown",
-            this.outsideModalClickHandlerBind
-        );
-    }
-    outsideModalClickHandler(e) {
-        if (!this.modalRef.current.contains(e.target)) {
-            this.props.dispatch({ type: actions.MODAL_ACTIVE });
-            document.removeEventListener(
-                "mousedown",
-                this.outsideModalClickHandlerBind
-            );
-        }
-    }
+    const mainStyle = {
+        color: "white",
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "center",
+    };
 
-    render() {
-        const dashboardStyle = {
-            color: "white",
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-        };
+    const DisplayProjects = () => {
+        //convert into a component.
         return (
-            <div style={dashboardStyle}>
+            <>
                 <ProjectCard />
                 <ProjectCard />
                 <ProjectCard />
@@ -55,23 +40,23 @@ class Dashboard extends Component {
                         paddingLeft: "10px",
                         cursor: "pointer",
                     }}
-                    onClick={this.handleNewProjIconClickBind}
+                    onClick={launchModalHandler}
                 />
-                <Modal
-                    assignedRef={this.modalRef}
-                    isOpen={this.props.MODAL_ACTIVE}
-                >
-                    <NewProjectForm />
-                </Modal>
-            </div>
+            </>
         );
-    }
+    };
+
+    return (
+        <div style={mainStyle}>
+            {DisplayProjects()}
+            <Modal
+                assignedRef={modalRef}
+                isOpen={selector(actions.MODAL_ACTIVE)}
+            >
+                <NewProjectForm />
+            </Modal>
+        </div>
+    );
 }
 
-const mapStateToDashboardProps = (state) => {
-    return {
-        modalOpen: state.MODAL_ACTIVE,
-    };
-};
-
-export default connect(mapStateToDashboardProps)(Dashboard);
+export default DashboardX;

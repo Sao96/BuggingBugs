@@ -2,7 +2,7 @@ import React from "react";
 import Open from "../../../../svg/open.svg";
 import Worker from "../../../../svg/worker.svg";
 import Closed from "../../../../svg/closed.svg";
-import Modal from "../../util/modal.jsx";
+import Separator from "../../util/separator.jsx";
 
 export default function Ticket(props) {
     let bgColor, priorityText, priorityColor;
@@ -30,8 +30,7 @@ export default function Ticket(props) {
             priorityColor = "rgb(0, 255, 22)"; //green
     }
 
-    const ticketStyle = {
-        //primary style of tickets
+    const mainStyle = {
         width: "360px",
         height: "230px",
         borderRadius: "10px",
@@ -48,9 +47,6 @@ export default function Ticket(props) {
         cursor: "pointer",
     };
 
-    const SizeSVG = (Comp, color = "white") => {
-        return <Comp style={{ fill: color, width: "50px", height: "65px" }} />;
-    };
     const PFPImage = (image) => {
         return (
             <span style={{ paddingLeft: "10px" }}>
@@ -84,14 +80,7 @@ export default function Ticket(props) {
             </span>
         );
     };
-    const Separator = (color) => {
-        const styles = {
-            border: "1px solid " + color,
-            width: "90%",
-            marginBottom: "7px",
-        };
-        return <div style={styles}> </div>;
-    };
+
     const SummaryText = (text) => {
         return (
             <span
@@ -105,12 +94,16 @@ export default function Ticket(props) {
             </span>
         );
     };
+
+    const SizeSVG = (Comp, color = "white") => {
+        return <Comp style={{ fill: color, width: "50px", height: "65px" }} />;
+    };
+
     const StatusIcon = (status) => {
         let Comp;
         if (status == 0) Comp = Open;
         else if (status == 1) Comp = Worker;
         else Comp = Closed;
-
         return (
             <span style={{ position: "absolute", left: "4.5%", top: "73%" }}>
                 {SizeSVG(Comp, priorityColor)}
@@ -163,16 +156,14 @@ export default function Ticket(props) {
         props.boardHandler(props);
     };
     return (
-        <div style={ticketStyle} onClick={handleClick}>
-            <div>
-                {PFPImage(props.pfp)}
-                {Sender(props.author)}
-                {Separator(priorityColor)}
-                {SummaryText(props.summary)}
-                {StatusIcon(props.status)}
-                {PriorityText(priorityText, priorityColor)}
-                {DueDate(props.duedate)}
-            </div>
-        </div>
+        <main style={mainStyle} onClick={handleClick}>
+            {PFPImage(props.pfp)}
+            {Sender(props.author)}
+            {Separator(priorityColor)}
+            {SummaryText(props.summary)}
+            {StatusIcon(props.status)}
+            {PriorityText(priorityText, priorityColor)}
+            {DueDate(props.duedate)}
+        </main>
     );
 }

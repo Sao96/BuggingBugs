@@ -9,87 +9,106 @@ import actions from "../../../reduxitems/actions.js";
 
 let x;
 function ChoicesBox(props) {
-    const choicesStyles = {
-        display: "flex",
-        color: "white",
-        fontFamily: "Didact Gothic, Quattrocento Sans",
-    };
-    const headerStyle = {
-        color: "rgb(203, 234, 244)",
-        fontSize: "22px",
-        fontFamily: "Didact Gothic, Quattrocento Sans",
-    };
-    const boxItemStyle = {
-        marginRight: "10px",
-    };
-
-    const selector = (TARGET_FILTER) => {
-        useSelector((state) => {
-            return state[TARGET_FILTER];
-        });
-    };
-    const filterOptions = [
-        ["Open", actions.FILTER_TS_OPEN],
-        ["In Progress", actions.FILTER_TS_IN_PROGRESS],
-        ["Pending Approval", actions.FILTER_TS_PENDING_APPROVAL],
-        ["Closed", actions.FILTER_TS_CLOSED],
-    ];
-    const dispatch = useDispatch();
-
-    const alertStore = (action) => {
-        dispatch({ type: action });
-    };
-    const inputBoxes = filterOptions.map((field) => {
+    const Header = (headerText) => {
         return (
-            <label style={boxItemStyle}>
-                <input
-                    type="checkbox"
-                    onClick={alertStore.bind(null, field[1])}
-                    checked={selector(field[1])}
-                ></input>
-                {field[0]}
-            </label>
+            <div
+                style={{
+                    color: "rgb(203, 234, 244)",
+                    fontSize: "22px",
+                    fontFamily: "Didact Gothic, Quattrocento Sans",
+                }}
+            >
+                {headerText}
+            </div>
         );
-    });
+    };
+
+    //this needs to be more modular. Many filters in future.
+    const Choices = () => {
+        const mainStyle = {
+            display: "flex",
+            color: "white",
+            fontFamily: "Didact Gothic, Quattrocento Sans",
+        };
+        const boxItemStyle = {
+            marginRight: "10px",
+        };
+        const selector = (TARGET_FILTER) => {
+            useSelector((state) => {
+                return state[TARGET_FILTER];
+            });
+        };
+        const filterOptions = [
+            ["Open", actions.FILTER_TS_OPEN],
+            ["In Progress", actions.FILTER_TS_IN_PROGRESS],
+            ["Pending Approval", actions.FILTER_TS_PENDING_APPROVAL],
+            ["Closed", actions.FILTER_TS_CLOSED],
+        ];
+        const dispatch = useDispatch();
+        const alertStore = (action) => {
+            dispatch({ type: action });
+        };
+        const inputBoxes = filterOptions.map((field) => {
+            return (
+                <label style={boxItemStyle}>
+                    <input
+                        type="checkbox"
+                        onClick={alertStore.bind(null, field[1])}
+                        checked={selector(field[1])}
+                    ></input>
+                    {field[0]}
+                </label>
+            );
+        });
+
+        return <div style={mainStyle}>{inputBoxes}</div>;
+    };
 
     return (
         <div>
-            <div style={headerStyle}>Ticket Status</div>
-            <div style={choicesStyles}>{inputBoxes}</div>
+            {Header(props.headerText)}
+            {Choices()}
         </div>
     );
 }
 
 function FilterOptions(props) {
+    const dispatch = useDispatch();
     const filterMenuOpen = useSelector((state) => {
         return state.DISPLAY_SEARCH_FILTER;
     });
 
-    const dispatch = useDispatch();
-
-    const filterStyles = {
-        backgroundColor: "rgb(10, 20, 31)",
-        padding: "20px",
-        display: filterMenuOpen ? "inline-block" : "none",
-        margin: "5px 0px",
+    const ShowButton = () => {
+        const handleDisplayClick = (e) => {
+            dispatch({ type: actions.DISPLAY_SEARCH_FILTER });
+        };
+        return (
+            <Button
+                onClick={handleDisplayClick}
+                backgroundColor={"rgb(10, 20, 31)"}
+                text={filterMenuOpen ? "Hide Filters" : "Show Filters"}
+            />
+        );
     };
+    const Filters = () => {
+        const filterStyles = {
+            backgroundColor: "rgb(10, 20, 31)",
+            padding: "20px",
+            display: filterMenuOpen ? "inline-block" : "none",
+            margin: "5px 0px",
+        };
 
-    const handleDisplayClick = (e) => {
-        dispatch({ type: actions.DISPLAY_SEARCH_FILTER });
+        return (
+            <div style={filterStyles}>
+                <ChoicesBox headerText="Ticket Status" />
+            </div>
+        );
     };
 
     return (
         <div>
-            <div>
-                <Button
-                    onClick={handleDisplayClick}
-                    backgroundColor={"rgb(10, 20, 31)"}
-                    text={filterMenuOpen ? "Hide Filters" : "Show Filters"}
-                />
-            </div>
-            <div style={filterStyles}>
-                <ChoicesBox />
-            </div>
+            {ShowButton()}
+            {Filters()}
         </div>
     );
 }
@@ -97,9 +116,8 @@ function FilterOptions(props) {
 class TicketBoard extends Component {
     constructor(props) {
         super(props);
-        this.state = { modalOpen: false };
-        this.ticketClickHandler = this.ticketClickHandler.bind(this);
         this.modalRef = createRef();
+        this.ticketClickHandler = this.ticketClickHandler.bind(this);
         this.modalClickHandler = this.outsideTicketClickHandler.bind(this);
         x = props.store;
     }
@@ -172,7 +190,7 @@ class TicketBoard extends Component {
             <div>
                 <Modal
                     assignedRef={this.modalRef}
-                    isOpen={this.state.isTicketOpen}
+                    isOpen={this.props.modalOpen}
                 >
                     <TicketForm {...test} />
                 </Modal>
