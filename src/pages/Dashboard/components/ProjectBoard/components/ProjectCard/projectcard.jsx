@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PieChart, FullOption } from "react-minimal-pie-chart";
+import { PieChart } from "react-minimal-pie-chart";
 
 function ProjectStatusChart(props) {
     const [hovered, setHovered] = useState(null);

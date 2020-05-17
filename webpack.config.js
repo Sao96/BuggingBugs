@@ -1,6 +1,3 @@
-require("@babel/core").transform("code", {
-    plugins: ["@babel/plugin-proposal-class-properties"],
-});
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
@@ -23,6 +20,9 @@ module.exports = {
     resolve: {
         alias: {
             react: path.resolve("./node_modules/react"),
+            svg: path.resolve("./src/svg/"),
+            reduxitems: path.resolve("./src/reduxitems/"),
+            util: path.resolve("./src/util/"),
         },
     },
     module: {

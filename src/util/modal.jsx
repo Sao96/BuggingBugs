@@ -1,7 +1,7 @@
 //initial styles taken from w3schools modal example
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import actions from "../../reduxitems/actions.js";
+import actions from "reduxitems/actions.js";
 
 const selector = (field) => {
     return useSelector((state) => {

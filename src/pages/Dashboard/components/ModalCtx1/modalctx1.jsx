@@ -1,7 +1,7 @@
 import React from "react";
-import InviteIcon from "../../../../svg/invite2.svg";
-import CreateGroupIcon from "../../../../svg/create.svg";
-import Button from "../../util/Button.jsx";
+import InviteIcon from "svg/invite2.svg";
+import CreateGroupIcon from "svg/create.svg";
+import Button from "util/Button.jsx";
 
 export default function NewProjectForm(props) {
     const projFormStyle = {
