@@ -1,4 +1,4 @@
-const actions = {
+const ticketboardActions = {
     MODAL_ACTIVE: "MODAL_ACTIVE",
     DISPLAY_SEARCH_FILTER: "DISPLAY_SEARCH_FILTER",
     FILTER_TS_OPEN: "FILTER_TS_OPEN",
@@ -8,4 +8,4 @@ const actions = {
     CREATE_PROJECT_MODAL_OPEN: "CREATE_PROJECT_MODAL_OPEN",
 };
 
-export default actions;
+export { ticketboardActions };

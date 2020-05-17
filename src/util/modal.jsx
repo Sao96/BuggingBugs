@@ -1,17 +1,17 @@
 //initial styles taken from w3schools modal example
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import actions from "reduxitems/actions.js";
+import { sharedActions } from "actions/sharedactions.js";
 
 const selector = (field) => {
     return useSelector((state) => {
-        return state[field];
+        return state.shared[field];
     });
 };
 
 function Modal(props) {
     let overlayStyle = {
-        display: selector(actions.MODAL_ACTIVE)
+        display: selector(sharedActions.MODAL_STATE) //if > 0, display
             ? "flex"
             : "none" /* Hidden by default */,
         position: "fixed" /* Stay in place */,
@@ -38,7 +38,7 @@ function Modal(props) {
     const dispatch = useDispatch();
     const clickHandler = (e) => {
         if (!props.assignedRef.current.contains(e.target)) {
-            dispatch({ type: actions.MODAL_ACTIVE });
+            dispatch({ type: sharedActions.MODAL_STATE, modalState: 0 });
         }
     };
     return (

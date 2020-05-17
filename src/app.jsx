@@ -4,7 +4,7 @@ import Sidebar from "./util/sidebar.jsx";
 // import TicketBoard from "./components/pages/Ticketboard/ticketboard.jsx";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import reducer from "./reduxitems/reducer.js";
+import { combinedReducer } from "reducers/combinedreducer.js";
 import "./index.css";
 import Dashboard from "./pages/Dashboard/dashboard.jsx";
 
@@ -18,7 +18,7 @@ export default class App extends Component {
             display: "flex",
             position: "relative",
         };
-        let store = createStore(reducer);
+        let store = createStore(combinedReducer);
         return (
             <Provider store={store}>
                 <div className="main" style={style} className="defaultStyle">

@@ -1,13 +1,16 @@
-import React, { Component, createRef, useState, useCallback } from "react";
+import React, { createRef, useState } from "react";
 import AddAttachmentButtonIcon from "svg/AddAttachment.svg";
-import Modal from "../../util/modal.jsx";
-import ModalCtx1 from "./components/ModalCtx1/modalctx1.jsx";
 import ProjectBoard from "./components/ProjectBoard/projectboard.jsx";
-import actions from "reduxitems/actions.js";
+import { dashboardActions } from "actions/dashboardactions.js";
+import { sharedActions } from "actions/sharedactions.js";
 import { useSelector, useDispatch } from "react-redux";
+import Modal from "util/modal.jsx";
+import ModalCreateProject from "./components/ModalCreateProject/modalcreateproject.jsx";
+import ModalJoinProject from "./components/ModalJoinProject/modaljoinproject.jsx";
 
 function Dashboard(props) {
     const modalRef = createRef();
+    // const [modalState, setModalState] = useState(0);
     const dispatch = useDispatch();
     const selector = (field) => {
         return useSelector((state) => {
@@ -15,7 +18,7 @@ function Dashboard(props) {
         });
     };
     const launchModalHandler = () => {
-        dispatch({ type: actions.MODAL_ACTIVE });
+        dispatch({ type: sharedActions.MODAL_STATE, modalState: 1 });
     };
 
     const mainStyle = {
@@ -24,27 +27,29 @@ function Dashboard(props) {
         flexWrap: "wrap",
         alignItems: "center",
     };
+    const addAttachmentButtonStyle = {
+        height: "100px",
+        width: "100px",
+        fill: "white",
+        paddingLeft: "10px",
+        cursor: "pointer",
+    };
 
     return (
-        <div style={mainStyle}>
+        <main style={mainStyle}>
             <ProjectBoard />
             <AddAttachmentButtonIcon
-                style={{
-                    height: "100px",
-                    width: "100px",
-                    fill: "white",
-                    paddingLeft: "10px",
-                    cursor: "pointer",
-                }}
+                style={addAttachmentButtonStyle}
                 onClick={launchModalHandler}
             />
             <Modal
                 assignedRef={modalRef}
-                isOpen={selector(actions.MODAL_ACTIVE)}
+                isOpen={selector(sharedActions.modalState)}
             >
-                <ModalCtx1 />
+                {/* <ModalCreateProject /> */}
+                <ModalJoinProject />
             </Modal>
-        </div>
+        </main>
     );
 }
 
