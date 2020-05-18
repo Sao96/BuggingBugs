@@ -3,22 +3,23 @@ import AddAttachmentButtonIcon from "svg/AddAttachment.svg";
 import ProjectBoard from "./components/ProjectBoard/projectboard.jsx";
 import { dashboardActions } from "actions/dashboardactions.js";
 import { sharedActions } from "actions/sharedactions.js";
+import { sharedFields } from "fields/sharedfields.js";
 import { useSelector, useDispatch } from "react-redux";
 import Modal from "util/modal.jsx";
+import ModalNewProject from "./components/ModalNewProject/modalnewproject.jsx";
 import ModalCreateProject from "./components/ModalCreateProject/modalcreateproject.jsx";
 import ModalJoinProject from "./components/ModalJoinProject/modaljoinproject.jsx";
 
 function Dashboard(props) {
     const modalRef = createRef();
-    // const [modalState, setModalState] = useState(0);
     const dispatch = useDispatch();
-    const selector = (field) => {
+    const selector = (key, field) => {
         return useSelector((state) => {
-            return state[field];
+            return state[key][field];
         });
     };
     const launchModalHandler = () => {
-        dispatch({ type: sharedActions.MODAL_STATE, modalState: 1 });
+        dispatch({ type: sharedActions.PUSH_MODAL_STATE, modalState: 1 });
     };
 
     const mainStyle = {
@@ -35,6 +36,17 @@ function Dashboard(props) {
         cursor: "pointer",
     };
 
+    const currModalContext = () => {
+        const currModalStack = selector("shared", sharedFields.MODAL_STACK);
+        switch (currModalStack[currModalStack.length - 1]) {
+            case 1:
+                return <ModalNewProject />;
+            case 2:
+                return <ModalCreateProject />;
+            case 3:
+                return <ModalJoinProject />;
+        }
+    };
     return (
         <main style={mainStyle}>
             <ProjectBoard />
@@ -42,13 +54,7 @@ function Dashboard(props) {
                 style={addAttachmentButtonStyle}
                 onClick={launchModalHandler}
             />
-            <Modal
-                assignedRef={modalRef}
-                isOpen={selector(sharedActions.modalState)}
-            >
-                {/* <ModalCreateProject /> */}
-                <ModalJoinProject />
-            </Modal>
+            <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
         </main>
     );
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "util/Button.jsx";
 import CreateGroupIcon from "svg/create.svg";
+
 function ModalCreateProject(props) {
     const mainStyle = {
         display: "flex",
@@ -8,12 +9,14 @@ function ModalCreateProject(props) {
         fontFamily: "didact gothic",
         alignItems: "center",
         flexDirection: "column",
+        position: "relative",
     };
     const createGroupSvgStyle = {
         height: "130px",
         width: "130px",
         fill: "rgb(180,180,180)",
     };
+
     return (
         <div style={mainStyle}>
             <CreateGroupIcon style={createGroupSvgStyle} />

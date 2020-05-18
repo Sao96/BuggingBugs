@@ -23,6 +23,10 @@ module.exports = {
             svg: path.resolve("./src/svg/"),
             reduxitems: path.resolve("./src/reduxitems/"),
             util: path.resolve("./src/util/"),
+            actions: path.resolve("./src/actions/"),
+            reducers: path.resolve("./src/reducers/"),
+            initialstates: path.resolve("./src/initialstates/"),
+            fields: path.resolve("./src/fields/"),
         },
     },
     module: {
