@@ -12,18 +12,16 @@ const selector = (field) => {
 
 function Modal(props) {
     let overlayStyle = {
-        display: selector(sharedFields.MODAL_STACK).length //if > 0, display
-            ? "flex"
-            : "none" /* Hidden by default */,
-        position: "fixed" /* Stay in place */,
-        zIndex: "4000" /* Sit on top */,
+        display: selector(sharedFields.MODAL_STACK).length ? "flex" : "none",
+        position: "fixed",
+        zIndex: "4000",
         left: "0",
         top: "0",
-        width: "100%" /* Full width */,
-        height: "100%" /* Full height */,
+        width: "100%",
+        height: "100%",
         overflow: "auto",
-        backgroundColor: "rgb(0,0,0)" /* Fallback color */,
-        backgroundColor: "rgba(0,0,0,0.8)" /* Black w/ opacity */,
+        backgroundColor: "rgb(0,0,0)",
+        backgroundColor: "rgba(0,0,0,0.8)",
         alignItems: "center",
     };
     const mainStyle = {

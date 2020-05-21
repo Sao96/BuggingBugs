@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import AddAttachmentButtonIcon from "../../../../svg/AddAttachment.svg";
-import DocumentIcon from "../../../../svg/TxtDoc.svg";
-import ImageIcon from "../../../../svg/ImgDoc.svg";
+import AddAttachmentButtonIcon from "svg/AddAttachment.svg";
+import DocumentIcon from "svg/TxtDoc.svg";
+import ImageIcon from "svg/ImgDoc.svg";
+import { useSelector, useDispatch } from "react-redux";
+import { ticketboardFields } from "fields/ticketboardfields.js";
 
 const headerStyle = {
     color: "white",
@@ -30,13 +32,26 @@ function TicketInfoTable(props) {
         marginBottom: "20px",
     };
 
+    const dispatch = useDispatch();
+    const selector = (key, field) => {
+        console.log("the key to the", key, field);
+        return useSelector((state) => {
+            return state[key][field];
+        });
+    };
+
+    const ticketInfo = selector(
+        "ticketboard",
+        ticketboardFields.DISP_TICKET_INFO
+    );
+
     let tableData = [
-        ["Priority", props.priority],
-        ["Due", props.dueTime],
-        ["Time", props.time],
-        ["Tags", props.tags],
-        ["Environment", props.environment],
-        ["Summary", props.summary],
+        ["Priority", ticketInfo.priority],
+        ["Due", ticketInfo.dueTime],
+        ["Time", ticketInfo.time],
+        ["Tags", ticketInfo.tags],
+        ["Environment", ticketInfo.environment],
+        ["Summary", ticketInfo.summary],
     ];
 
     const even = { backgroundColor: "rgb(70,100,120, 0.7)" };
