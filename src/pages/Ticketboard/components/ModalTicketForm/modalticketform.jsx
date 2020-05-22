@@ -34,7 +34,6 @@ function TicketInfoTable(props) {
 
     const dispatch = useDispatch();
     const selector = (key, field) => {
-        console.log("the key to the", key, field);
         return useSelector((state) => {
             return state[key][field];
         });

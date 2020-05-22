@@ -4,25 +4,32 @@ import Ticket from "./components/Ticket/ticket.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import { sharedActions } from "actions/sharedactions.js";
 import { sharedFields } from "fields/sharedfields.js";
+import { ticketboardFields } from "fields/ticketboardfields.js";
+
 const randomTickets = () => {
     let res = [...sample.premade];
-    // const mapPirorityToStore = {
-    //     0: this.props.filterOpen,
-    //     1: this.props.filterInProgress,
-    //     2: this.props.filterPendingApproval,
-    //     3: this.props.filterClosed,
-    // };
-    // const filterActive = ((filterVals) => {
-    //     for (status in filterVals) {
-    //         if (filterVals[status]) return true;
-    //     }
-    //     return false;
-    // })(mapPirorityToStore);
-    // if (filterActive) {
-    //     res = res.filter((ticket) => {
-    //         return mapPirorityToStore[ticket.status];
-    //     });
-    // }
+    const filterSelector = (field) => {
+        return useSelector((state) => {
+            return state.ticketboard[field];
+        });
+    };
+    const mapPirorityToStore = {
+        0: filterSelector(ticketboardFields.FILTER_TS_OPEN),
+        1: filterSelector(ticketboardFields.FILTER_TS_IN_PROGRESS),
+        2: filterSelector(ticketboardFields.FILTER_TS_PENDING_APPROVAL),
+        3: filterSelector(ticketboardFields.FILTER_TS_CLOSED),
+    };
+    const filterActive = ((filterVals) => {
+        for (status in filterVals) {
+            if (filterVals[status]) return true;
+        }
+        return false;
+    })(mapPirorityToStore);
+    if (filterActive) {
+        res = res.filter((ticket) => {
+            return mapPirorityToStore[ticket.status];
+        });
+    }
 
     res.sort((a, b) => {
         if (a.priority < b.priority) {

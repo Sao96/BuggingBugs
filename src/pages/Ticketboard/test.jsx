@@ -5,7 +5,7 @@ import Modal from "util/modal.jsx";
 import { sharedActions } from "actions/sharedactions.js";
 import { sharedFields } from "fields/sharedfields.js";
 import ModalTicketForm from "./components/ModalTicketForm/modalticketform.jsx";
-
+import { Filter } from "./components/Filter/filter.jsx";
 function TicketBoard(props) {
     const modalRef = createRef();
     const dispatch = useDispatch();
@@ -30,9 +30,9 @@ function TicketBoard(props) {
 
     return (
         <div style={mainStyle}>
+            <Filter />
             <TicketDisplayer />
             <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
-            HERRO WORD
         </div>
     );
 }

@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { combinedReducer } from "reducers/combinedreducer.js";
 import "./index.css";
 import Dashboard from "./pages/Dashboard/dashboard.jsx";
-import { TicketBoard } from "./pages/Ticketboard/test.jsx";
+import { TicketBoard } from "./pages/Ticketboard/ticketboard.jsx";
 export default class App extends Component {
     constructor(props) {
         super(props);
