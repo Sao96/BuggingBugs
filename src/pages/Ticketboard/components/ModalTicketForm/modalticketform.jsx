@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import AddAttachmentButtonIcon from "svg/AddAttachment.svg";
 import DocumentIcon from "svg/TxtDoc.svg";
 import ImageIcon from "svg/ImgDoc.svg";
+import CloseIcon from "svg/close.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { ticketboardFields } from "fields/ticketboardfields.js";
 
@@ -113,6 +114,15 @@ function Comment(props) {
         borderWidth: "1px",
         marginRight: "5px",
     };
+    const closeSvgStyle = {
+        height: "30px",
+        width: "30px",
+        display: "inline",
+        position: "absolute",
+        left: "96%",
+        top: "-3px",
+        fill: "rgb(230,230,230)",
+    };
 
     return (
         <div style={commentBoxStyle}>
@@ -124,7 +134,7 @@ function Comment(props) {
                 <span style={{ fontSize: "14px", color: "rgb(209, 209, 209)" }}>
                     {props.date}
                 </span>
-
+                <CloseIcon style={closeSvgStyle} />
                 <p
                     style={{
                         position: "relative",
