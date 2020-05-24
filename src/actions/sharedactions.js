@@ -3,6 +3,7 @@ const sharedActions = {
     PUSH_MODAL_STATE: "PUSH_MODAL_STATE",
     POP_MODAL_STATE: "POP_MODAL_STATE",
     EMPTY_MODAL_STACK: "EMPTY_MODAL_STACK",
+    SET_AUTH_LEVEL: "SET_AUTH_LEVEL",
 };
 
 export { sharedActions };

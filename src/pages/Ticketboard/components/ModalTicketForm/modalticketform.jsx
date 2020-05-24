@@ -243,47 +243,40 @@ function AttachmentSection() {
     );
 }
 
-export default class TicketForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            bugInfo: { ...props },
-        };
-    }
+function ModalTicketForm(props) {
+    const commentSample = {
+        pfp: "https://i.imgur.com/aIBs6cj.png",
+        name: "Smithy Jones",
+        message:
+            "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet. Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
+        date: "May 7, 2019, 12:19 PST",
+    };
 
-    render() {
-        const commentSample = {
-            pfp: "https://i.imgur.com/aIBs6cj.png",
-            name: "Smithy Jones",
-            message:
-                "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet. Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
-            date: "May 7, 2019, 12:19 PST",
-        };
+    const commentSample2 = {
+        pfp: "https://i.imgur.com/aIBs6cj.png",
+        name: "Smithy Jones",
+        message:
+            "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet. ",
+        date: "May 7, 2019, 12:19 PST",
+    };
 
-        const commentSample2 = {
-            pfp: "https://i.imgur.com/aIBs6cj.png",
-            name: "Smithy Jones",
-            message:
-                "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet. ",
-            date: "May 7, 2019, 12:19 PST",
-        };
-
-        return (
-            <div style={{ width: "700px" }}>
-                <TicketInfoTable {...this.state.bugInfo} />
-                <div style={headerStyle}> Attachments </div>
-                <hr style={hrStyle}></hr>
-                <div style={centerDiv}>
-                    <AttachmentSection />
-                </div>
-                <div style={headerStyle}>Comments</div>
-                <hr style={hrStyle}></hr>
-                <div style={centerDiv}>
-                    <CommentInputBox />
-                </div>
-                <Comment {...commentSample} />
-                <Comment {...commentSample2} />
+    return (
+        <div style={{ width: "700px" }}>
+            <TicketInfoTable />
+            <div style={headerStyle}> Attachments </div>
+            <hr style={hrStyle}></hr>
+            <div style={centerDiv}>
+                <AttachmentSection />
             </div>
-        );
-    }
+            <div style={headerStyle}>Comments</div>
+            <hr style={hrStyle}></hr>
+            <div style={centerDiv}>
+                <CommentInputBox />
+            </div>
+            <Comment {...commentSample} />
+            <Comment {...commentSample2} />
+        </div>
+    );
 }
+
+export { ModalTicketForm };

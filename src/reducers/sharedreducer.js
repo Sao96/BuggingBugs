@@ -17,6 +17,9 @@ function sharedReducer(prevState = sharedInitialState, action) {
         case sharedActions.EMPTY_MODAL_STACK:
             newState[sharedFields.MODAL_STACK] = [];
             break;
+        case sharedActions.SET_AUTH_LEVEL:
+            newState[sharedFields.AUTH_LEVEL] = actions.authLevel;
+            break;
     }
 
     return newState;

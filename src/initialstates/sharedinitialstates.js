@@ -1,7 +1,8 @@
-import { sharedActions } from "actions/sharedactions.js";
+import { sharedFields } from "fields/sharedfields.js";
 
 const sharedInitialState = {
-    [sharedActions.MODAL_STACK]: [],
+    [sharedFields.MODAL_STACK]: [],
+    [sharedFields.AUTH_LEVEL]: 0,
 };
 
 export { sharedInitialState };
