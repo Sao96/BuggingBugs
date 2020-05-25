@@ -6,6 +6,7 @@ import { combinedReducer } from "reducers/combinedreducer.js";
 import "./index.css";
 import Dashboard from "./pages/Dashboard/dashboard.jsx";
 import { TicketBoard } from "./pages/Ticketboard/ticketboard.jsx";
+import { Navbar } from "util/navbar.jsx";
 export default class App extends Component {
     constructor(props) {
         super(props);
@@ -21,7 +22,7 @@ export default class App extends Component {
         return (
             <Provider store={store}>
                 <div className="main" style={style} className="defaultStyle">
-                    <Sidebar />
+                    <Navbar />
                     {/* <Dashboard x={store} /> */}
                     <TicketBoard store={store} />
                 </div>
