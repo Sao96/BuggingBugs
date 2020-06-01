@@ -1,4 +1,4 @@
-import React, { createRef } from "react";
+import React, { createRef, useCallback } from "react";
 import Button from "util/Button.jsx";
 
 const formItemStyle = {
@@ -79,22 +79,48 @@ const inputFields = (fieldRefs) => {
     return data;
 };
 
-const CreateForm = (fieldRefs) => {
+const PushTicket = async (fieldRefs) => {
+    const data = {};
+    for (let field in fieldRefs) {
+        if (fieldRefs[field].current) {
+            data[field] = fieldRefs[field].current.value;
+        }
+    }
+    const url = "http://localhost:3000/createticket";
+    const res = await fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        cache: "no-cache",
+        redirect: "follow",
+        body: JSON.stringify(data),
+    });
+    console.log(res);
+};
+
+function CreateForm(props) {
     const mainStyle = {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
     };
+
+    const createClickHandler = useCallback(() => {
+        PushTicket(props.fieldRefs);
+    }, [props.fieldRefs]);
     return (
         <div style={mainStyle}>
             <div>
-                {selectFields(fieldRefs)}
-                {inputFields(fieldRefs)}
+                {selectFields(props.fieldRefs)}
+                {inputFields(props.fieldRefs)}
             </div>
-            <Button text={"Create Ticket"} backgroundColor="green" />
+            <Button
+                text={"Create Ticket"}
+                onClick={createClickHandler}
+                backgroundColor="green"
+            />
         </div>
     );
-};
+}
 
 function ModalCreateTicketForm(props) {
     const fieldRefs = {
@@ -108,7 +134,7 @@ function ModalCreateTicketForm(props) {
     };
     return (
         <div>
-            <CreateForm />
+            <CreateForm fieldRefs={fieldRefs} />
         </div>
     );
 }

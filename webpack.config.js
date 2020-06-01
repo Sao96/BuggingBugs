@@ -1,12 +1,11 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-
 module.exports = {
     devServer: {
         historyApiFallback: true,
     },
     entry: {
-        main: path.join(__dirname, "src", "index.js"),
+        main: ["babel-polyfill", path.join(__dirname, "src", "index.js")],
     },
     output: {
         path: path.join(__dirname, "build"),
