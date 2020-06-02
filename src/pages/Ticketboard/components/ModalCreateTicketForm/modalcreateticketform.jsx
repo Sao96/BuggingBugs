@@ -86,7 +86,7 @@ const PushTicket = async (fieldRefs) => {
             data[field] = fieldRefs[field].current.value;
         }
     }
-    const url = "http://localhost:3000/createticket";
+    const url = "http://localhost:3000/createticket"; //subject to change
     const res = await fetch(url, {
         method: "POST",
         mode: "no-cors",

@@ -1,4 +1,6 @@
+package-lock.json
 test.py
 ./server/.env
 /node_modules
 node_modules
+
