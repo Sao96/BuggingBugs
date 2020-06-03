@@ -1,7 +1,8 @@
-import googleVerifier from "./InfoVerifiers/GoogleVerifier";
-import nativeVerifier from "./InfoVerifiers/NativeVerifier";
+import { googleVerifier } from "./InfoVerifiers/GoogleVerifier";
+import { nativeVerifier } from "./InfoVerifiers/NativeVerifier";
 
-function getType(req, res) {
+async function verifyInfo(req, res, next) {
+    console.log(googleVerifier);
     switch (req.body.type) {
         case "google":
             await googleVerifier(req);
@@ -11,9 +12,9 @@ function getType(req, res) {
             break;
         default:
             req.body.err.status = 400;
-            req.body.err.what = "Bad Credentials"
+            req.body.err.what = "Bad Credentials";
     }
-    if (req.body.err.status){
+    if (req.body.err.status) {
         res.status(req.body.err.status).send(req.body.err.resmsg);
         return;
     }
@@ -21,4 +22,4 @@ function getType(req, res) {
     next();
 }
 
-export { getType };
+export { verifyInfo };

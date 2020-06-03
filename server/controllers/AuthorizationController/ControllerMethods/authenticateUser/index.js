@@ -1,7 +1,7 @@
-import { nativeAuthenticator } from "./Authenticators/nativeAuthenticator/nativeAuthenticator";
+import { nativeAuthenticator } from "./Authenticators/nativeAuthenticator";
 import { googleAuthenticator } from "./Authenticators/googleAuthenticator";
 
-function authenticateUser(req, res) {
+function authenticateUser(req, res, next) {
     if (req.body.dbSearch.length === 0) {
         req.body.err.status = 400;
         req.body.err.what = "User does not exist in DB.";
@@ -31,3 +31,5 @@ function authenticateUser(req, res) {
 
     next();
 }
+
+export { authenticateUser };

@@ -1,18 +1,18 @@
-import addGlobalUser from "./addUserToTable/AddGlobalUser";
-import addNativeUser from "./addUserToTable/AddNativeUser";
-import addGoogleUser from "./addUserToTable/AddNativeUser";
+import addGlobalUser from "./addUserToTable/addGlobalUser";
+import addNativeUser from "./addUserToTable/addNativeUser";
+import addGoogleUser from "./addUserToTable/addNativeUser";
 
-function createUser(req, res){
+async function createUser(req, res, next) {
     await addGlobalUser(req);
-    switch(req.body.type){
+    switch (req.body.type) {
         case "native":
-            addNativeUser(req);
+            await addNativeUser(req);
             break;
         case "google":
-            addGoogleUser(req);
+            await addGoogleUser(req);
             break;
         default:
-            //throw errow
+        //throw errow
     }
     if (req.body.err.status) {
         if (req.body.err.status === 500) {
@@ -23,6 +23,8 @@ function createUser(req, res){
         return;
     }
 
-    res.status(200).send("User Created")
+    res.status(200).send("User Created");
     req.completed = true;
 }
+
+export { createUser };

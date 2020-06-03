@@ -1,14 +1,14 @@
 import { OAuth2Client } from "google-auth-library";
 
 async function googleVerifier(req, res) {
-    if (!req.body.token || typeof authData.token !== "string") {
+    if (!req.body.token || typeof req.body.token !== "string") {
         return false;
     }
     const clientId = process.env.GOOGLE_CLIENT_ID;
     const client = new OAuth2Client(clientId);
     const ticket = await client
         .verifyIdToken({
-            idToken: authData.token,
+            idToken: req.body.token,
             audience: clientId,
         })
         .catch((err) => {

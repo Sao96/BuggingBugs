@@ -1,7 +1,7 @@
-import googleUserChecker from "./userTableCheckers/googleUserChecker";
-import nativeUserChecker from "./userTableCheckers/nativeUserChecker";
+import { googleUserChecker } from "./userTableCheckers/googleUserChecker";
+import { nativeUserChecker } from "./userTableCheckers/nativeUserChecker";
 
-async function userExists(req, res) {
+async function userExists(req, res, next) {
     switch (req.body.type) {
         case "google":
             req.body.userExists = await googleUserChecker(req);

@@ -3,7 +3,7 @@ import { authorizationController } from "./AuthorizationController/";
 //combine all controllers
 const controller = {
     tbController: ticketboardController,
-    authController: authorizationController,
+    authorizationController: authorizationController,
 };
 
 export { controller };
