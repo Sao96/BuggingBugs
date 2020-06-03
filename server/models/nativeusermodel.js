@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 var nativeUserSchema = new mongoose.Schema({
-    uid: String,
+    uid: mongoose.Schema.Types.ObjectId,
     email: String,
     pwSalt: String,
     pwSaltedHash: String,

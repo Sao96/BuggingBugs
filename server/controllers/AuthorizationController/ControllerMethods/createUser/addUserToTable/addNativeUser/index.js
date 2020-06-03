@@ -21,3 +21,5 @@ async function addNativeUser(req) {
         }
     });
 }
+
+export { addNativeUser };

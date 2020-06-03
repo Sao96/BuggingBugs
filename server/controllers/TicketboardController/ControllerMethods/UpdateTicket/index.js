@@ -19,7 +19,6 @@ async function updateTicket(req, res) {
 
     Tickets.insertOne(req.ticketInfo, (err) => {
         if (err) {
-            console.log(err);
             res.status(500).send(errMsg[500]);
             return;
         }

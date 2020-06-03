@@ -44,7 +44,3 @@ POSTRoutes.forEach((item) => {
     const [path, action] = item;
     app.post(path, action);
 });
-
-app.use((req, res, next) => {
-    console.log(req.err);
-});

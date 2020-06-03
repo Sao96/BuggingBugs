@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 var googleUserSchema = new mongoose.Schema({
-    uid: String,
+    uid: mongoose.Schema.Types.ObjectId,
     sub: String,
 });
 mongoose.model("GoogleUser", googleUserSchema, "GoogleUsers");

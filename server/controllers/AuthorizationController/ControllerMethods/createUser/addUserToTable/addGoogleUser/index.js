@@ -6,7 +6,7 @@ async function addGoogleUser(req) {
         uid: req.body.userData.uid,
         sub: req.body.googleInfo.sub,
     });
-    await newGoogleUser.save((err) => {
+    await newGoogleUser.save((err, written) => {
         if (err) {
             req.body.err.status = 500;
             req.body.err.what = err;

@@ -44,7 +44,6 @@ function validFields(params) {
 }
 
 async function validateTicket(req, res) {
-    console.log(req);
     const params = {
         from: uid,
         to: req.query.to,
