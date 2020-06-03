@@ -4,7 +4,6 @@ async function googleVerifier(req, res) {
     if (!req.body.token || typeof authData.token !== "string") {
         return false;
     }
-    const errFound = null;
     const clientId = process.env.GOOGLE_CLIENT_ID;
     const client = new OAuth2Client(clientId);
     const ticket = await client
@@ -13,20 +12,20 @@ async function googleVerifier(req, res) {
             audience: clientId,
         })
         .catch((err) => {
-            errFound = err;
+            req.body.err.status = 409;
+            req.body.err.what = err;
+            req.body.err.resmsg = "Cannot validate google token.";
         });
-
-    if (errFound) {
-        res.status(409);
+    if (req.body.err.status) {
         return false;
     }
     const payload = ticket.getPayload();
-    req.body.userInfo = {
+    req.body.googleInfo = {
         sub: payload.sub,
-        name: payload.name,
-        email: payload.email,
-        pfp: payload.picture,
     };
+    req.body.userData.name = payload.name;
+    req.body.userData.email = payload.email;
+    req.body.userData.pfp = payload.picture;
 
     return true;
 }

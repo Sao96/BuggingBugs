@@ -14,7 +14,7 @@ function getType(req, res) {
             req.body.err.what = "Bad Credentials"
     }
     if (req.body.err.status){
-        res.status(req.body.err.status).send(req.body.err.what);
+        res.status(req.body.err.status).send(req.body.err.resmsg);
         return;
     }
 

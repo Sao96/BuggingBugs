@@ -8,6 +8,7 @@ const POSTRoutes = [
     ["/login", controller.authorizationController.getSession],
     ["/register", controller.authorizationController.verifyInfo],
     ["/register", controller.authorizationController.userExists],
+    ["/register", controller.authorizationController.createUser],
     ["/gettickets", controller.tbController.getTickets],
     // ["/createticket", controller.tbController.validateTicket],
     // ["/createticket", controller.tbController.uploadTicket],

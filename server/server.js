@@ -25,6 +25,9 @@ app.use(
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use((req, res) => {
+    req.body.err = {};
+});
 
 app.listen(3000, () => {
     console.log("Server Active");

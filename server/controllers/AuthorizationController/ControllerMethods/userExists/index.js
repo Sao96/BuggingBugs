@@ -1,5 +1,6 @@
 import googleUserChecker from "./userTableCheckers/googleUserChecker";
 import nativeUserChecker from "./userTableCheckers/nativeUserChecker";
+
 async function userExists(req, res) {
     switch (req.body.type) {
         case "google":
@@ -11,14 +12,10 @@ async function userExists(req, res) {
         default:
             req.body.err.status = 500;
             req.body.err.what = "Internal issue @userExists checking req type";
+            req.body.err.resmsg = "An internal error has occured.";
     }
-
     if (req.body.err.status) {
-        if (req.body.err.status === 500) {
-            res.send(500);
-        } else {
-            res.status(req.body.err.status).send(req.body.err.what);
-        }
+        res.status(req.body.err.status).send(req.body.err.resmsg);
         return;
     }
 
