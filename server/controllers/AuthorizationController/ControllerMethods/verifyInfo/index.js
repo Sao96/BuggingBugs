@@ -13,6 +13,7 @@ async function verifyInfo(req, res, next) {
             req.body.err.status = 400;
             req.body.err.what = "Bad Credentials";
     }
+
     if (req.body.err.status) {
         res.status(req.body.err.status).send(req.body.err.resmsg);
         return;
