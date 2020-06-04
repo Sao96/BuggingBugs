@@ -18,17 +18,27 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            key: "user_sid",
+            // key: "user_sid",
             expires: 1000 * 60 * 60 * 24 * 360 * 5,
         },
     })
 );
-app.use(cors());
+app.use(
+    cors({
+        origin: "http://localhost:8080",
+        methods: "GET,POST",
+        credentials: true,
+    })
+);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use((req, res, next) => {
     req.body.err = {};
     req.body.userData = {};
+    if (req.session.uid) {
+        req.session.uid = mongoose.Types.ObjectId(req.session.uid);
+    }
+
     next();
 });
 

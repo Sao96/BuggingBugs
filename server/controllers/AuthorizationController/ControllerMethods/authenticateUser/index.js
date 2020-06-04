@@ -11,10 +11,10 @@ function authenticateUser(req, res, next) {
     if (!req.body.err.status) {
         switch (req.body.type) {
             case "native":
-                nativeAuthenticator();
+                nativeAuthenticator(req);
                 break;
             case "google":
-                googleAuthenticator();
+                googleAuthenticator(req);
                 break;
             default:
                 req.body.err.status = 500;
