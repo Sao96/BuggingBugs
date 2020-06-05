@@ -6,20 +6,30 @@ async function getProjects(req, res) {
         res.status(300).redirect("/login");
         return;
     }
-    console.log("soldier side", typeof req.session.uid);
-    const filter = {
-        uid: req.session.uid,
-    };
+    const uid = req.session.uid;
     try {
-        console.log("soldier side2");
-        req.body.dbSearch = await Mongoose.model("Project").find(filter);
-        console.log("soldier side3");
-        console.log(req.body.dbSearch);
+        req.body.dbSearch = await Mongoose.model("UserIn").aggregate([
+            { $match: { uid: uid } },
+            {
+                $lookup: {
+                    from: "Projects",
+                    localField: "pid",
+                    foreignField: "_id",
+                    as: "projInfo",
+                },
+            },
+            { $unwind: { path: "$projInfo" } },
+            { $project: { projInfo: true } },
+        ]);
+        req.body.dbSearch = req.body.dbSearch.map((proj) => {
+            return proj.projInfo;
+        });
         res.status(200).send(
             JSON.stringify({
                 projects: req.body.dbSearch,
             })
         );
+        console.log(req.body.dbSearch);
     } catch (err) {
         console.log(err);
         req.body.err.status = 500;

@@ -13,5 +13,8 @@ const POSTRoutes = [
     ["/register", controller.authorizationController.userExists],
     ["/register", controller.authorizationController.createUser],
     ["/gettickets", controller.tbController.getTickets],
+    ["/createproject", controller.projectboardController.createProject],
+    ["/createproject", controller.projectboardController.addUserToProject],
 ];
+
 export { GETRoutes, POSTRoutes };

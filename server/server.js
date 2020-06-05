@@ -35,9 +35,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use((req, res, next) => {
     req.body.err = {};
     req.body.userData = {};
-    if (req.session.uid) {
-        req.session.uid = mongoose.Types.ObjectId(req.session.uid);
+    if (!req.session.uid) {
+        req.session.uid = "5ed858b3d46108494dab3127";
     }
+
+    req.session.uid = mongoose.Types.ObjectId(req.session.uid);
 
     next();
 });
