@@ -35,10 +35,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use((req, res, next) => {
     req.body.err = {};
     req.body.userData = {};
-    if (req.session.uid) {
-        req.body.userData.uid = req.session.uid;
-    }
-
+    console.log(req.path);
     next();
 });
 

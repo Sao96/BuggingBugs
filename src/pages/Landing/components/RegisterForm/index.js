@@ -1,5 +1,7 @@
 import React, { createRef, useCallback } from "react";
 import Button from "util/Button.jsx";
+import { GoogleLoginForm } from "../GoogleAuthenticate";
+import { domain } from "routes";
 
 const formItemStyle = {
     marginBottom: "25px",
@@ -25,8 +27,9 @@ const inputFields = (fieldRefs) => {
     };
     const data = [
         ["Email", "text", fieldRefs.email],
-        ["Username", "text", fieldRefs.username],
-        ["Password", "text", fieldRefs.password],
+        ["First Name", "text", fieldRefs.firstName],
+        ["Last Name", "text", fieldRefs.lastName],
+        ["Password (8 or more characters)", "text", fieldRefs.password],
         ["Enter Password Again", "text", fieldRefs.repassword],
     ].map((data) => {
         return (
@@ -40,27 +43,30 @@ const inputFields = (fieldRefs) => {
 };
 
 const PushRegister = async (regInfoRefs) => {
-    const data = {};
+    const data = { type: "native" };
     for (let field in regInfoRefs) {
         if (regInfoRefs[field].current) {
             data[field] = regInfoRefs[field].current.value;
         }
     }
-    const url = "http://localhost:3000/register";
-    const res = await fetch(url, {
+    const endpoint = domain + "register";
+    const res = await fetch(endpoint, {
         method: "POST",
-        mode: "no-cors",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        mode: "cors",
         cache: "no-cache",
         redirect: "follow",
         body: JSON.stringify(data),
     });
-    console.log(res);
 };
 
 const RegisterForm = (props) => {
     const fieldRefs = {
         email: createRef(),
-        username: createRef(),
+        firstName: createRef(),
+        lastName: createRef(),
         password: createRef(),
         repassword: createRef(),
     };
@@ -71,16 +77,24 @@ const RegisterForm = (props) => {
         alignItems: "center",
     };
     const registerClickHandler = useCallback(() => {
-        PushRegister(props.fieldRefs);
-    }, [props.fieldRefs]);
+        PushRegister(fieldRefs);
+    }, [fieldRefs]);
 
     return (
         <div style={mainStyle}>
             <div style={{ fontSize: "30px", paddingBottom: "20px" }}>
                 REGISTER FORM
             </div>
+            <GoogleLoginForm
+                text={"Register"}
+                endpoint={"http://localhost:3000/register"}
+            />
             <div>{inputFields(fieldRefs)}</div>
-            <Button text={"Register"} backgroundColor={"green"} />
+            <Button
+                onClick={registerClickHandler}
+                text={"Register"}
+                backgroundColor={"green"}
+            />
         </div>
     );
 };

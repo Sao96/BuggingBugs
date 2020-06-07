@@ -47,8 +47,7 @@ function TicketInfoTable(props) {
 
     let tableData = [
         ["Priority", ticketInfo.priority],
-        ["Due", ticketInfo.dueTime],
-        ["Time", ticketInfo.time],
+        ["Due", ticketInfo.due.toString()],
         ["Tags", ticketInfo.tags],
         ["Environment", ticketInfo.environment],
         ["Summary", ticketInfo.summary],
@@ -273,7 +272,7 @@ function ModalTicketForm(props) {
     return (
         <div style={{ width: "700px" }}>
             <TicketInfoTable />
-            <div style={headerStyle}> Attachments </div>
+            {/* <div style={headerStyle}> Attachments </div>
             <hr style={hrStyle}></hr>
             <div style={centerDiv}>
                 <AttachmentSection />
@@ -284,7 +283,7 @@ function ModalTicketForm(props) {
                 <CommentInputBox />
             </div>
             <Comment {...commentSample} />
-            <Comment {...commentSample2} />
+            <Comment {...commentSample2} /> */}
         </div>
     );
 }

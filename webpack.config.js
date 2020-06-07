@@ -3,6 +3,13 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
     devServer: {
         historyApiFallback: true,
+        proxy: {
+            "/api": {
+                target: "http://localhost:3000",
+                pathRewrite: { "^/api$": "" },
+                changeOrigin: true,
+            },
+        },
     },
     entry: {
         main: ["babel-polyfill", path.join(__dirname, "src", "index.js")],
@@ -22,6 +29,7 @@ module.exports = {
             svg: path.resolve("./src/svg/"),
             reduxitems: path.resolve("./src/reduxitems/"),
             util: path.resolve("./src/util/"),
+            routes: path.resolve("./src/routes/"),
             actions: path.resolve("./src/actions/"),
             reducers: path.resolve("./src/reducers/"),
             initialstates: path.resolve("./src/initialstates/"),

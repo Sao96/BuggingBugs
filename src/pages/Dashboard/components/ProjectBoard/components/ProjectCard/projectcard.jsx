@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
+import { NavLink } from "react-router-dom";
 import { PieChart } from "react-minimal-pie-chart";
 
 function ProjectStatusChart(props) {
@@ -104,15 +105,22 @@ export default function ProjectCard(props) {
         position: "relative",
         bottom: "20px",
     };
+
     return (
         <div style={projectcardStyle}>
-            <div style={headerStyle}>Find Me a TV</div>
-            {Separator("rgb(71, 196, 255)")}
-            <ProjectStatusChart />
-            <div style={unreadStyle}>
-                Tickets Unread:{" "}
-                <span style={{ color: "rgb(255, 241, 133)" }}>5</span>
-            </div>
+            <NavLink
+                to={"/ticketboard" + "?pid=" + props.pid}
+                style={{ textDecoration: "none" }}
+            >
+                <div style={headerStyle}>{props.projectName}</div>
+                {Separator("rgb(71, 196, 255)")}
+                <ProjectStatusChart />
+
+                <div style={unreadStyle}>
+                    Tickets Unread:{" "}
+                    <span style={{ color: "rgb(255, 241, 133)" }}>5</span>
+                </div>
+            </NavLink>
         </div>
     );
 }

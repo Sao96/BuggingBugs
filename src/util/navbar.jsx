@@ -1,6 +1,9 @@
 import React, { useState, useCallback, createRef } from "react";
+import { NavLink } from "react-router-dom";
 import DashboardIcon from "svg/dashboard.svg";
 import OpenTicketsIcon from "svg/opentickets.svg";
+import LogoutIcon from "svg/logout.svg";
+import { domain } from "routes";
 
 const SizeSVG = (Comp) => {
     return <Comp style={{ width: "45px", height: "45px", fill: "white" }} />;
@@ -46,8 +49,8 @@ function Navbar(props) {
     };
 
     const items = [
-        ["Dashboard", DashboardIcon, createRef()],
-        ["Tickets", OpenTicketsIcon, createRef()],
+        ["Dashboard", DashboardIcon, createRef(), "/dashboard"],
+        ["Logout", LogoutIcon, createRef(), "/logout"],
     ].map((item) => {
         return (
             <div
@@ -60,18 +63,23 @@ function Navbar(props) {
                 }, [item[2]])}
                 ref={item[2]}
             >
-                <div
-                    style={{
-                        display: "inline-block",
-                        whiteSpace: "nowrap",
-                        position: "relative",
-                        paddingLeft: "10px",
-                        // left: "10px",
-                    }}
+                <NavLink
+                    to={item[3]}
+                    style={{ textDecoration: "none", color: "white" }}
                 >
-                    {SizeSVG(item[1])}
-                    <span style={textStyling}>{item[0]}</span>
-                </div>
+                    <div
+                        style={{
+                            display: "inline-block",
+                            whiteSpace: "nowrap",
+                            position: "relative",
+                            paddingLeft: "10px",
+                            // left: "10px",
+                        }}
+                    >
+                        {SizeSVG(item[1])}
+                        <span style={textStyling}>{item[0]}</span>
+                    </div>
+                </NavLink>
             </div>
         );
     });

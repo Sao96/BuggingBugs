@@ -12,7 +12,7 @@ const labelStyle = {
     fontFamily: "Didact Gothic",
     fontSize: "20px",
 };
-const selectFields = (fieldRefs) => {
+const selectFields = (fieldRefs, toSelectData) => {
     const selectStyle = {
         height: "35px",
         width: "200px",
@@ -26,12 +26,13 @@ const selectFields = (fieldRefs) => {
             "Priority",
             fieldRefs.priority,
             [
-                ["0", "MAX"],
-                ["1", "High"],
-                ["2", "Medium"],
-                ["3", "Low"],
+                [0, "MAX"],
+                [1, "High"],
+                [2, "Medium"],
+                [3, "Low"],
             ],
         ],
+        ["To", fieldRefs.to, toSelectData],
     ];
     for (let i in data) {
         data[i][2] = data[i][2].map((optionData) => {
@@ -63,10 +64,11 @@ const inputFields = (fieldRefs) => {
         paddingLeft: "3px",
     };
     const data = [
-        ["Due", "text", fieldRefs.due],
+        ["Due", "date", fieldRefs.due],
         ["Time", "text", fieldRefs.time],
-        ["Environment", "text", fieldRefs.env],
+        ["Environment", "text", fieldRefs.environment],
         ["Tags", "text", fieldRefs.tags],
+        ["Headline", "text", fieldRefs.headline],
         ["Summary", "text", fieldRefs.summary],
     ].map((data) => {
         return (
@@ -86,15 +88,21 @@ const PushTicket = async (fieldRefs) => {
             data[field] = fieldRefs[field].current.value;
         }
     }
-    const url = "http://localhost:3000/createticket"; //subject to change
-    const res = await fetch(url, {
+    data.priority = Math.floor(Number(data.priority));
+    var headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+    const endpoint =
+        "http://localhost:3000/createticket?pid=5edb75f55bf43e095256abad"; //subject to change
+    const res = await fetch(endpoint, {
         method: "POST",
-        mode: "no-cors",
+        headers: headers,
+        credentials: "include",
+        mode: "cors",
         cache: "no-cache",
         redirect: "follow",
         body: JSON.stringify(data),
-    });
-    console.log(res);
+    }); //THEN get the info to build the cards
 };
 
 function CreateForm(props) {
@@ -110,7 +118,7 @@ function CreateForm(props) {
     return (
         <div style={mainStyle}>
             <div>
-                {selectFields(props.fieldRefs)}
+                {selectFields(props.fieldRefs, props.toFields)}
                 {inputFields(props.fieldRefs)}
             </div>
             <Button
@@ -129,12 +137,17 @@ function ModalCreateTicketForm(props) {
         due: createRef(),
         time: createRef(),
         tags: createRef(),
-        env: createRef(),
+        environment: createRef(),
+        headline: createRef(),
         summary: createRef(),
     };
+    const toSelectData = [];
+    for (let user in props.users) {
+        toSelectData.push([user, props.users[user].name]);
+    }
     return (
         <div>
-            <CreateForm fieldRefs={fieldRefs} />
+            <CreateForm fieldRefs={fieldRefs} toFields={toSelectData} />
         </div>
     );
 }

@@ -4,7 +4,7 @@ const a = {
     priority: 0,
     status: 1,
     duedate: "5/20",
-    summary:
+    headline:
         "Strings sent to website end up being corrupted when displayed afterward. Text too close to borders.",
 };
 const b = {
@@ -14,7 +14,7 @@ const b = {
     priority: 1,
     status: 1,
     duedate: "5/21",
-    summary:
+    headline:
         "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
 };
 
@@ -24,7 +24,7 @@ const c = {
     priority: 2,
     status: 1,
     duedate: "5/24",
-    summary:
+    headline:
         "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
 };
 
@@ -34,7 +34,7 @@ const d = {
     priority: 3,
     status: 1,
     duedate: "5/25",
-    summary:
+    headline:
         "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
 };
 
@@ -46,7 +46,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -55,7 +55,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -64,7 +64,7 @@ const premade = [
         priority: 0,
         status: 1,
         duedate: "5/20",
-        summary:
+        headline:
             "Strings sent to website end up being corrupted when displayed afterward. Text too close to borders.",
     },
     {
@@ -73,7 +73,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -82,7 +82,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -92,7 +92,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -101,7 +101,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -110,7 +110,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -119,7 +119,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -129,7 +129,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -138,7 +138,7 @@ const premade = [
         priority: 0,
         status: 1,
         duedate: "5/20",
-        summary:
+        headline:
             "Strings sent to website end up being corrupted when displayed afterward. Text too close to borders.",
     },
     {
@@ -147,7 +147,7 @@ const premade = [
         priority: 0,
         status: 1,
         duedate: "5/20",
-        summary:
+        headline:
             "Strings sent to website end up being corrupted when displayed afterward. Text too close to borders.",
     },
     {
@@ -156,7 +156,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -165,7 +165,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -175,7 +175,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -184,7 +184,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -194,7 +194,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -203,7 +203,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -213,7 +213,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -223,7 +223,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -232,7 +232,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -241,7 +241,7 @@ const premade = [
         priority: 0,
         status: 1,
         duedate: "5/20",
-        summary:
+        headline:
             "Strings sent to website end up being corrupted when displayed afterward. Text too close to borders.",
     },
     {
@@ -250,7 +250,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -259,7 +259,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -268,7 +268,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -277,7 +277,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -286,7 +286,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -295,7 +295,7 @@ const premade = [
         priority: 0,
         status: 1,
         duedate: "5/20",
-        summary:
+        headline:
             "Strings sent to website end up being corrupted when displayed afterward. Text too close to borders.",
     },
     {
@@ -305,7 +305,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -314,7 +314,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -324,7 +324,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -333,7 +333,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -342,7 +342,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -352,7 +352,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -361,7 +361,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -370,7 +370,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -379,7 +379,7 @@ const premade = [
         priority: 0,
         status: 1,
         duedate: "5/20",
-        summary:
+        headline:
             "Strings sent to website end up being corrupted when displayed afterward. Text too close to borders.",
     },
     {
@@ -388,7 +388,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -397,7 +397,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -406,7 +406,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -416,7 +416,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -425,7 +425,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -435,7 +435,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -444,7 +444,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -454,7 +454,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -463,7 +463,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -472,7 +472,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -481,7 +481,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -491,7 +491,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -500,7 +500,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -510,7 +510,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -520,7 +520,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -529,7 +529,7 @@ const premade = [
         priority: 0,
         status: 1,
         duedate: "5/20",
-        summary:
+        headline:
             "Strings sent to website end up being corrupted when displayed afterward. Text too close to borders.",
     },
     {
@@ -538,7 +538,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -547,7 +547,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -556,7 +556,7 @@ const premade = [
         priority: 0,
         status: 1,
         duedate: "5/20",
-        summary:
+        headline:
             "Strings sent to website end up being corrupted when displayed afterward. Text too close to borders.",
     },
     {
@@ -565,7 +565,7 @@ const premade = [
         priority: 3,
         status: 1,
         duedate: "5/25",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -574,7 +574,7 @@ const premade = [
         priority: 2,
         status: 1,
         duedate: "5/24",
-        summary:
+        headline:
             "Display photos on the home feed get mixed with other users, homepage displays random photo's from the internet.",
     },
     {
@@ -584,7 +584,7 @@ const premade = [
         priority: 1,
         status: 1,
         duedate: "5/21",
-        summary:
+        headline:
             "Vanguard system causes the entire system to enter a deadlock state. Harddrive must be formatted for system to run back on.",
     },
     {
@@ -593,7 +593,7 @@ const premade = [
         priority: 0,
         status: 1,
         duedate: "5/20",
-        summary:
+        headline:
             "Strings sent to website end up being corrupted when displayed afterward. Text too close to borders.",
     },
 ];

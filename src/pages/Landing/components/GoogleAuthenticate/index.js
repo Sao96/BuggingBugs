@@ -1,31 +1,38 @@
 import React, { createRef, useCallback } from "react";
 import { GoogleLogin } from "react-google-login";
 
-const responseGoogle = async (googleUser) => {
+const googleLoginHandler = async (googleUser, endpoint) => {
     const data = {
         type: "google",
         token: googleUser.getAuthResponse().id_token,
     };
-    const url = "http://localhost:3000/login";
-    const res = await fetch(url, {
+    var headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+    const res = await fetch(endpoint, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers: headers,
+        credentials: "include",
         mode: "cors",
         cache: "no-cache",
         redirect: "follow",
         body: JSON.stringify(data),
     });
-    console.log(await res.json());
 };
-function GoogleLoginForm() {
+
+function GoogleLoginForm(props) {
+    const clickHandler = useCallback(
+        (googleUser) => {
+            googleLoginHandler(googleUser, props.endpoint);
+        },
+        [props.endpoint]
+    );
     return (
         <GoogleLogin
             clientId="544783505726-01oarpi4q6rshp7d4jcbshkvmb7qcj7a.apps.googleusercontent.com"
-            buttonText="Login"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
+            buttonText={props.text}
+            onSuccess={clickHandler}
+            onFailure={clickHandler}
             cookiePolicy={"single_host_origin"}
         />
     );

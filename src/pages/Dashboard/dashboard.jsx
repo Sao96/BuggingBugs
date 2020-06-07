@@ -1,5 +1,4 @@
 import React, { createRef, useState } from "react";
-import AddAttachmentButtonIcon from "svg/AddAttachment.svg";
 import ProjectBoard from "./components/ProjectBoard/projectboard.jsx";
 import { dashboardActions } from "actions/dashboardactions.js";
 import { sharedActions } from "actions/sharedactions.js";
@@ -28,13 +27,6 @@ function Dashboard(props) {
         flexWrap: "wrap",
         alignItems: "center",
     };
-    const addAttachmentButtonStyle = {
-        height: "100px",
-        width: "100px",
-        fill: "white",
-        paddingLeft: "10px",
-        cursor: "pointer",
-    };
 
     const currModalContext = () => {
         const currModalStack = selector("shared", sharedFields.MODAL_STACK);
@@ -49,11 +41,8 @@ function Dashboard(props) {
     };
     return (
         <main style={mainStyle}>
-            <ProjectBoard />
-            <AddAttachmentButtonIcon
-                style={addAttachmentButtonStyle}
-                onClick={launchModalHandler}
-            />
+            <ProjectBoard launchModalHandler={launchModalHandler} />
+
             <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
         </main>
     );

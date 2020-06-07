@@ -1,7 +1,7 @@
 import React, { createRef, useCallback } from "react";
 import Button from "util/Button.jsx";
 import { GoogleLoginForm } from "../GoogleAuthenticate";
-
+import { domain } from "routes";
 const formItemStyle = {
     marginBottom: "25px",
     display: "flex",
@@ -45,15 +45,14 @@ const PushLogin = async (regInfoRefs) => {
             data[field] = regInfoRefs[field].current.value;
         }
     }
-    const url = "http://localhost:3000/login";
-    const res = await fetch(url, {
+    const endpoint = domain + "login";
+    const res = await fetch(endpoint, {
         method: "POST",
         mode: "no-cors",
         cache: "no-cache",
         redirect: "follow",
         body: JSON.stringify(data),
     });
-    console.log(res);
 };
 
 const LoginForm = (props) => {
@@ -68,7 +67,7 @@ const LoginForm = (props) => {
         alignItems: "center",
     };
     const loginClickHandler = useCallback(() => {
-        PushRegister(props.fieldRefs);
+        PushLogin(props.fieldRefs);
     }, [props.fieldRefs]);
 
     return (
@@ -76,7 +75,7 @@ const LoginForm = (props) => {
             <div style={{ fontSize: "30px", paddingBottom: "20px" }}>
                 LOGIN FORM
             </div>
-            <GoogleLoginForm />
+            <GoogleLoginForm text={"Login"} endpoint={"/api/login"} />
             <div>{inputFields(fieldRefs)}</div>
             <Button text={"Login"} backgroundColor={"green"} />
         </div>

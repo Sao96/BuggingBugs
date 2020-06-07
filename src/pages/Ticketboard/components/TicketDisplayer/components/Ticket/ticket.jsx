@@ -41,7 +41,7 @@ const Sender = (name) => {
     );
 };
 
-const SummaryText = (text) => {
+const HeadlineText = (text) => {
     return (
         <span
             style={{
@@ -97,6 +97,13 @@ const PriorityText = (text, pColor) => {
 };
 
 const DueDate = (date) => {
+    date = new Date(date);
+    const cardDate =
+        String(date.getDate()) +
+        "/" +
+        String(date.getMonth() + 1) +
+        "/" +
+        String(date.getFullYear());
     return (
         <span
             style={{
@@ -107,7 +114,7 @@ const DueDate = (date) => {
                 color: "rgb(200,200,200)",
             }}
         >
-            Due: {date}
+            Due: {cardDate}
         </span>
     );
 };
@@ -115,7 +122,6 @@ const DueDate = (date) => {
 export default function Ticket(props) {
     let bgColor, priorityText, priorityColor;
     let borderColor = "black";
-
     switch (props.priority) {
         case 0: //max priority
             bgColor = "rgb(143, 0, 0)";
@@ -158,8 +164,7 @@ export default function Ticket(props) {
     const dispatch = useDispatch();
     const ticketModalInfo = {
         priority: priorityText,
-        time: props.time,
-        dueTime: props.dueTime,
+        due: new Date(props.due).toString(),
         tags: props.tags,
         environment: props.environment,
         summary: props.summary,
@@ -172,16 +177,15 @@ export default function Ticket(props) {
             ticketInfo: { ...ticketModalInfo },
         });
     };
-
     return (
         <main style={mainStyle} onClick={launchModalHandler}>
             {PFPImage(props.pfp)}
-            {Sender(props.author)}
+            {Sender(props.fromName)}
             {Separator(priorityColor)}
-            {SummaryText(props.summary)}
+            {HeadlineText(props.headline)}
             {StatusIcon(props.status, priorityColor)}
             {PriorityText(priorityText, priorityColor)}
-            {DueDate(props.duedate)}
+            {DueDate(props.due)}
         </main>
     );
 }

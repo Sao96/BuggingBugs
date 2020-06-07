@@ -1,12 +1,7 @@
 import Mongoose from "mongoose";
 
 async function getProjects(req, res) {
-    if (!req.session.uid) {
-        //probably log the fact this got redirected
-        res.status(300).redirect("/login");
-        return;
-    }
-    const uid = req.session.uid;
+    const uid = req.body.userData.uid;
     try {
         req.body.dbSearch = await Mongoose.model("UserIn").aggregate([
             { $match: { uid: uid } },
@@ -22,7 +17,6 @@ async function getProjects(req, res) {
             { $project: { _id: true, projInfo: true } },
         ]);
         req.body.dbSearch = req.body.dbSearch.map((proj) => {
-            console.log(proj.projInfo);
             return proj.projInfo;
         });
         res.status(200).send(
