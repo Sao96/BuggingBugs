@@ -35,11 +35,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use((req, res, next) => {
     req.body.err = {};
     req.body.userData = {};
-    if (!req.session.uid) {
-        req.session.uid = "5ed858b3d46108494dab3127";
+    if (req.session.uid) {
+        req.body.userData.uid = req.session.uid;
     }
-
-    req.session.uid = mongoose.Types.ObjectId(req.session.uid);
 
     next();
 });
@@ -50,11 +48,11 @@ app.listen(3000, () => {
 
 GETRoutes.forEach((item) => {
     const [path, action] = item;
-    app.get(path, action);
+    app.get("/api" + path, action);
 });
 POSTRoutes.forEach((item) => {
     const [path, action] = item;
-    app.post(path, action);
+    app.post("/api" + path, action);
 });
 app.use((err, req, res, next) => {
     console.log(err);

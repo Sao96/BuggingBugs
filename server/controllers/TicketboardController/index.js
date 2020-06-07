@@ -1,13 +1,17 @@
-import { getTickets } from "./ControllerMethods/GetTickets";
-import { validateTicket } from "./ControllerMethods/ValidateTicket";
-// import { createTicket } from "./validateticket.js";
-// import { updateTicket } from "./updateticket.js";
+import { validateTicketFields } from "./ControllerMethods/validateTicketFields";
+import { createTicket } from "./ControllerMethods/createTicket";
+import { getUsersInProj } from "./ControllerMethods/getUsersInProj";
+import { checkUsersInProj } from "./ControllerMethods/checkUserInProj";
+import { getTicketsInProj } from "./ControllerMethods/getTicketsInProj";
+import { sendProjData } from "./ControllerMethods/sendProjData";
 
 const ticketboardController = {
-    getTickets: getTickets,
-    validateTicket: validateTicket,
-    // createTicket: createTicket,
-    // updateTicket: updateTicket,
+    validateTicketFields: validateTicketFields,
+    createTicket: createTicket,
+    getUsersInProj: getUsersInProj,
+    checkUsersInProj: checkUsersInProj,
+    getTicketsInProj: getTicketsInProj,
+    sendProjData: sendProjData,
 };
 
 export { ticketboardController };

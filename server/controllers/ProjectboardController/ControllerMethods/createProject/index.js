@@ -24,7 +24,6 @@ async function createProject(req, res, next) {
     try {
         const newProj = await newProject.save();
         req.body.projectId = newProj._id;
-        console.log(req.body.projectId);
         req.body.projUserLevel = 0;
     } catch (err) {
         req.body.err.status = 500;

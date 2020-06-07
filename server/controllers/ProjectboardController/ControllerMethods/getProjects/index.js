@@ -19,9 +19,10 @@ async function getProjects(req, res) {
                 },
             },
             { $unwind: { path: "$projInfo" } },
-            { $project: { projInfo: true } },
+            { $project: { _id: true, projInfo: true } },
         ]);
         req.body.dbSearch = req.body.dbSearch.map((proj) => {
+            console.log(proj.projInfo);
             return proj.projInfo;
         });
         res.status(200).send(
@@ -29,9 +30,7 @@ async function getProjects(req, res) {
                 projects: req.body.dbSearch,
             })
         );
-        console.log(req.body.dbSearch);
     } catch (err) {
-        console.log(err);
         req.body.err.status = 500;
         req.body.err.what = err;
         req.body.err.resmsg = "An internal error has occured.";
