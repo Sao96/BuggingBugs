@@ -22,7 +22,6 @@ const loadProject = async (setUsers, setTickets, pid) => {
         cache: "no-cache",
         redirect: "follow",
     }); //THEN get the info to build the cards
-    console.log(res);
     const dbData = await res.json();
     setUsers(dbData.users);
     setTickets(dbData.tickets);

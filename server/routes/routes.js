@@ -9,6 +9,8 @@ const GETRoutes = [
     ["/loadproject", controller.tbController.checkUsersInProj],
     ["/loadproject", controller.tbController.getTicketsInProj],
     ["/loadproject", controller.tbController.sendProjData],
+
+    ["/amilogged", controller.authorizationController.amILogged],
 ];
 const POSTRoutes = [
     ["/login", controller.authorizationController.verifyInfo],

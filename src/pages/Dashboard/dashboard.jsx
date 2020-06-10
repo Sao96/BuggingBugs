@@ -8,6 +8,7 @@ import Modal from "util/modal.jsx";
 import ModalNewProject from "./components/ModalNewProject/modalnewproject.jsx";
 import ModalCreateProject from "./components/ModalCreateProject/modalcreateproject.jsx";
 import ModalJoinProject from "./components/ModalJoinProject/modaljoinproject.jsx";
+import { Navbar } from "util/navbar.jsx";
 
 function Dashboard(props) {
     const modalRef = createRef();
@@ -40,11 +41,13 @@ function Dashboard(props) {
         }
     };
     return (
-        <main style={mainStyle}>
-            <ProjectBoard launchModalHandler={launchModalHandler} />
+        <div>
+            <main style={mainStyle}>
+                <ProjectBoard launchModalHandler={launchModalHandler} />
 
-            <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
-        </main>
+                <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
+            </main>
+        </div>
     );
 }
 

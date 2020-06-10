@@ -20,8 +20,12 @@ function sharedReducer(prevState = sharedInitialState, action) {
         case sharedActions.SET_AUTH_LEVEL:
             newState[sharedFields.AUTH_LEVEL] = actions.authLevel;
             break;
+        case sharedActions.SET_LOGGED_IN:
+            newState[sharedFields.LOGGED_IN] = action.loggedIn;
+            break;
     }
 
+    console.log(newState);
     return newState;
 }
 export { sharedReducer };

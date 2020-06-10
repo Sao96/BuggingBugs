@@ -14,8 +14,8 @@ import { Logout } from "./pages/Logout";
 function Routing() {
     return (
         <Router>
-            <Navbar />
             {/* switch this path to 404 for default */}
+            <Navbar />
             <Switch>
                 <Route exact path="/dashboard" component={Dashboard} />
                 <Route exact path="/ticketboard" component={TicketBoard} />
