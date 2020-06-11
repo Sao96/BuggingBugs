@@ -163,10 +163,12 @@ export default function Ticket(props) {
 
     const dispatch = useDispatch();
     const ticketModalInfo = {
+        to: props.to,
         priority: priorityText,
         due: new Date(props.due).toString(),
         tags: props.tags,
         environment: props.environment,
+        headline: props.headline,
         summary: props.summary,
     };
 
