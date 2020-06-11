@@ -33,6 +33,22 @@ function ticketboardReducer(prevState = ticketboardInitialState, action) {
             newState[ticketboardFields.DISP_TICKET_INFO] = {
                 ...action.ticketInfo,
             };
+            break;
+        case ticketboardActions.FLUSH_CREATE_FORM_INFO:
+            newState[ticketboardFields.NEW_TICKET_FORM_INFO] = {
+                to: "",
+                priority: 0,
+                due: "",
+                time: "",
+                tags: "",
+                environment: "",
+                headline: "",
+                summary: "",
+            };
+        case ticketboardActions.SET_CREATE_FORM_INFO:
+            newState[ticketboardFields.NEW_TICKET_FORM_INFO] = {
+                ...action.initVals,
+            };
     }
     return newState;
 }

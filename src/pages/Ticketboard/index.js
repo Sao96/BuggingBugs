@@ -2,13 +2,16 @@ import React, { createRef, useState, useEffect } from "react";
 import { TicketDisplayer } from "./components/TicketDisplayer/ticketdisplayer.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import Modal from "util/modal.jsx";
+import { ModalTicketForm } from "./components/ModalTicketForm/";
+import { ModalCreateTicketForm } from "./components/ModalCreateTicketForm/";
+import { ModalEditTicketForm } from "./components/ModalEditTicketForm/";
 import { sharedActions } from "actions/sharedactions.js";
 import { sharedFields } from "fields/sharedfields.js";
-import { ModalTicketForm } from "./components/ModalTicketForm/modalticketform.jsx";
 import { Filter } from "./components/Filter/filter.jsx";
 import Button from "util/Button.jsx";
-import { ModalCreateTicketForm } from "./components/ModalCreateTicketForm/modalcreateticketform.jsx";
+
 import { domain } from "routes";
+
 const loadProject = async (setUsers, setTickets, pid) => {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
@@ -42,6 +45,9 @@ function TicketBoard(props) {
 
     useEffect(() => {
         loadProject(setUsers, setTickets, pid);
+        return () => {
+            dispatch({ type: sharedActions.EMPTY_MODAL_STACK });
+        };
     }, []);
 
     const ticketClickHandler = () => {
@@ -56,7 +62,9 @@ function TicketBoard(props) {
             case 1:
                 return <ModalTicketForm />;
             case 2:
-                return <ModalCreateTicketForm users={users} />;
+                return <ModalCreateTicketForm users={users} pid={pid} />;
+            case 3:
+                return <ModalEditTicketForm users={users} pid={pid} />;
         }
     };
 

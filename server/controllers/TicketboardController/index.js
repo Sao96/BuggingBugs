@@ -4,6 +4,7 @@ import { getUsersInProj } from "./ControllerMethods/getUsersInProj";
 import { checkUsersInProj } from "./ControllerMethods/checkUserInProj";
 import { getTicketsInProj } from "./ControllerMethods/getTicketsInProj";
 import { sendProjData } from "./ControllerMethods/sendProjData";
+import { updateTicket } from "./ControllerMethods/updateTicket";
 
 const ticketboardController = {
     validateTicketFields: validateTicketFields,
@@ -12,6 +13,7 @@ const ticketboardController = {
     checkUsersInProj: checkUsersInProj,
     getTicketsInProj: getTicketsInProj,
     sendProjData: sendProjData,
+    updateTicket: updateTicket,
 };
 
 export { ticketboardController };

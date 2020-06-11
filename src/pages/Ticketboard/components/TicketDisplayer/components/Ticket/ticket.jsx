@@ -99,9 +99,9 @@ const PriorityText = (text, pColor) => {
 const DueDate = (date) => {
     date = new Date(date);
     const cardDate =
-        String(date.getDate()) +
-        "/" +
         String(date.getMonth() + 1) +
+        "/" +
+        String(date.getDate() + 1) +
         "/" +
         String(date.getFullYear());
     return (
@@ -170,6 +170,7 @@ export default function Ticket(props) {
         environment: props.environment,
         headline: props.headline,
         summary: props.summary,
+        tid: props._id,
     };
 
     const launchModalHandler = () => {

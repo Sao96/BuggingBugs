@@ -1,11 +1,15 @@
-import React, { createRef, useCallback } from "react";
+import React, { createRef, useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ticketboardFields } from "fields/ticketboardfields";
 import Button from "util/Button.jsx";
 import { createSelectFields, createInputFields } from "../util/InputForm";
+import { domain } from "routes";
+import { Redirect, useHistory } from "react-router-dom";
+import { ErrorBox } from "util/ErrorBox";
 
-const PushTicket = async (fieldData) => {
+const PushTicketEdit = async (fieldData, setRes, pid, tid) => {
     const data = {};
+    data.tid = tid;
     for (let field in fieldData) {
         if (fieldData[field][0].current) {
             data[field] = fieldData[field][0].current.value;
@@ -15,8 +19,7 @@ const PushTicket = async (fieldData) => {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
-    const endpoint =
-        "http://localhost:3000/createticket?pid=5edb75f55bf43e095256abad"; //subject to change
+    const endpoint = domain + "updateticket?pid=" + pid; //subject to change
     const res = await fetch(endpoint, {
         method: "POST",
         headers: headers,
@@ -26,6 +29,7 @@ const PushTicket = async (fieldData) => {
         redirect: "follow",
         body: JSON.stringify(data),
     }); //THEN get the info to build the cards
+    setRes([res.status, await res.text()]);
 };
 
 //maps uid with name.
@@ -41,7 +45,7 @@ const createHTMLDate = (date) => {
     date = new Date(date);
     let year = date.getFullYear();
     let month = String(date.getMonth() + 1);
-    let day = String(date.getDate());
+    let day = String(date.getDate() + 1);
     if (month.length < 2) {
         month = "0" + month;
     }
@@ -51,11 +55,28 @@ const createHTMLDate = (date) => {
     return [year, month, day].join("-");
 };
 
+const ResRender = (props) => {
+    const res = props.res;
+    const pid = props.pid;
+    switch (res[0]) {
+        case 200:
+            useHistory().go();
+        case 300:
+            return <Redirect to={"/login"} />;
+        case 400:
+            return <ErrorBox text={res[1]} />;
+        case 500:
+            return <ErrorBox text={res[1]} />;
+        default:
+            return <></>;
+    }
+};
+
 function ModalEditTicketForm(props) {
     const currFieldVals = useSelector((state) => {
         return state.ticketboard[ticketboardFields.NEW_TICKET_FORM_INFO];
     });
-
+    const [res, setRes] = useState([-1, ""]);
     const fieldData = {
         to: [createRef(), currFieldVals.to],
         priority: [createRef(), currFieldVals.priority],
@@ -65,10 +86,11 @@ function ModalEditTicketForm(props) {
         headline: [createRef(), currFieldVals.headline],
         summary: [createRef(), currFieldVals.summary],
     };
+    const tid = currFieldVals.tid;
 
     const userMap = generateUserMap(props.users);
     const createClickHandler = useCallback(() => {
-        PushTicketEdit(fieldData);
+        PushTicketEdit(fieldData, setRes, props.pid, tid);
     }, [fieldData]);
 
     const mainStyle = {
@@ -79,12 +101,13 @@ function ModalEditTicketForm(props) {
 
     return (
         <div style={mainStyle}>
+            <ResRender res={res} pid={props.pid} />
             <div>
                 {createSelectFields(fieldData, userMap)}
                 {createInputFields(fieldData)}
             </div>
             <Button
-                text={"Create Ticket"}
+                text={"Edit Ticket"}
                 onClick={createClickHandler}
                 backgroundColor="green"
             />

@@ -1,4 +1,4 @@
-import React, { createRef, useState } from "react";
+import React, { createRef, useState, useEffect } from "react";
 import ProjectBoard from "./components/ProjectBoard/projectboard.jsx";
 import { dashboardActions } from "actions/dashboardactions.js";
 import { sharedActions } from "actions/sharedactions.js";
@@ -30,6 +30,11 @@ function Dashboard(props) {
     };
 
     const currModalContext = () => {
+        useEffect(() => {
+            return () => {
+                dispatch({ type: sharedActions.EMPTY_MODAL_STACK });
+            };
+        }, []);
         const currModalStack = selector("shared", sharedFields.MODAL_STACK);
         switch (currModalStack[currModalStack.length - 1]) {
             case 1:

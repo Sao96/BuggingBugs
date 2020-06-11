@@ -7,7 +7,6 @@ function checkLoggedIn(req, res, next) {
         req.body.err.status = 300;
         req.body.err.what = "User is not logged in";
         req.body.err.resmsg = "Not logged in";
-
         res.status(req.body.err.status).send(JSON.stringify({ url: "/login" }));
         return;
     }

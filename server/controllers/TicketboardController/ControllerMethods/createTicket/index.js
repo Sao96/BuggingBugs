@@ -3,10 +3,8 @@ import mongoose from "mongoose";
 async function createTicket(req, res, next) {
     const from_uid = req.body.userData.uid;
     const from_uid_idx = req.body.targetIds[from_uid];
-    console.log(
-        "time to pack it in",
-        req.body.usersFound[from_uid_idx].authLevel
-    );
+
+    req.body.usersFound[from_uid_idx].authLevel;
     if (req.body.usersFound[from_uid_idx].authLevel !== 0) {
         req.body.err.status = 400;
         req.body.err.what = "Insufficient Permissions to create ticket";
@@ -26,6 +24,7 @@ async function createTicket(req, res, next) {
         });
         try {
             await newTicket.save();
+            res.status(200).send("OK");
         } catch (err) {
             console.log(err);
             req.body.err.status = 500;

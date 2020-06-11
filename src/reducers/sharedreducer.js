@@ -25,7 +25,6 @@ function sharedReducer(prevState = sharedInitialState, action) {
             break;
     }
 
-    console.log(newState);
     return newState;
 }
 export { sharedReducer };

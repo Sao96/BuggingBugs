@@ -35,7 +35,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use((req, res, next) => {
     req.body.err = {};
     req.body.userData = {};
-    console.log(req.path);
     next();
 });
 

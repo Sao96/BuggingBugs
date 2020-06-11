@@ -56,7 +56,6 @@ async function validateTicketFields(req, res, next) {
 
     if (req.body.err.status) {
         res.status(req.body.err.status).send(req.body.err.resmsg);
-        console.log(req.body.err.what);
         return; //need to throw error to log its
     }
     req.body.targetIds = {

@@ -13,6 +13,16 @@ const ticketboardInitialState = {
         environment: "",
         summary: "",
     },
+    [ticketboardFields.NEW_TICKET_FORM_INFO]: {
+        to: "",
+        priority: 0,
+        due: "",
+        time: "",
+        tags: "",
+        environment: "",
+        headline: "",
+        summary: "",
+    },
 };
 
 export { ticketboardInitialState };

@@ -1,10 +1,12 @@
-import React, { createRef, useCallback } from "react";
+import React, { createRef, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory, Redirect } from "react-router";
 import { ticketboardFields } from "fields/ticketboardfields";
 import Button from "util/Button.jsx";
 import { createSelectFields, createInputFields } from "../util/InputForm";
+import { domain } from "routes";
 
-const PushTicket = async (fieldData) => {
+const PushTicket = async (fieldData, setRes, pid) => {
     const data = {};
     for (let field in fieldData) {
         if (fieldData[field][0].current) {
@@ -15,8 +17,7 @@ const PushTicket = async (fieldData) => {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
-    const endpoint =
-        "http://localhost:3000/createticket?pid=5edb75f55bf43e095256abad"; //subject to change
+    const endpoint = domain + "createticket?pid=" + pid; //subject to change
     const res = await fetch(endpoint, {
         method: "POST",
         headers: headers,
@@ -25,7 +26,8 @@ const PushTicket = async (fieldData) => {
         cache: "no-cache",
         redirect: "follow",
         body: JSON.stringify(data),
-    }); //THEN get the info to build the cards
+    });
+    setRes([res.status, await res.text()]);
 };
 
 //maps uid with name.
@@ -37,7 +39,25 @@ const generateUserMap = (users) => {
     return userMap;
 };
 
+const ResRender = (props) => {
+    const res = props.res;
+    const pid = props.pid;
+    switch (res[0]) {
+        case 200:
+            useHistory().go();
+        case 300:
+            return <Redirect to={"/login"} />;
+        case 400:
+            return <ErrorBox text={res[1]} />;
+        case 500:
+            return <ErrorBox text={res[1]} />;
+        default:
+            return <></>;
+    }
+};
+
 function ModalCreateTicketForm(props) {
+    const [res, setRes] = useState([-1, ""]);
     const fieldData = {
         to: [createRef(), ""],
         priority: [createRef(), "0"],
@@ -49,7 +69,7 @@ function ModalCreateTicketForm(props) {
     };
     const userMap = generateUserMap(props.users);
     const createClickHandler = useCallback(() => {
-        PushTicket(fieldData);
+        PushTicket(fieldData, setRes, props.pid);
     }, [props.fieldRefs]);
     const mainStyle = {
         display: "flex",
@@ -59,6 +79,7 @@ function ModalCreateTicketForm(props) {
 
     return (
         <div style={mainStyle}>
+            <ResRender res={res} pid={props.pid} />
             <div>
                 {createSelectFields(fieldData, userMap)}
                 {createInputFields(fieldData)}
