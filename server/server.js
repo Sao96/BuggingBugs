@@ -1,5 +1,6 @@
 import express from "express";
 import {} from "./models/ticketmodel";
+import {} from "module-alias/register";
 import { GETRoutes, POSTRoutes } from "./routes/routes.js";
 import mongoose from "mongoose";
 import session from "express-session";
@@ -58,6 +59,6 @@ app.use((req, res) => {
 });
 app.use((err, req, res, next) => {
     //handle all failure of responses
-    res.status(req.body.err.status).send(req.body.err.restxt);
+    res.status(req.body.err.status).send(JSON.stringify(req.body.err.restxt));
     console.log("ERROR FOUND", err);
 });
