@@ -22,7 +22,7 @@ async function sendProjData(req, res) {
         tickets: req.body.ticketsFound,
     };
     req.body.res.status = 200;
-    req.bdoy.res.data = { projData };
+    req.body.res.data = { projData };
 
     next();
 }

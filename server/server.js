@@ -1,6 +1,6 @@
 import express from "express";
-import {} from "./models/ticketmodel";
-import {} from "module-alias/register";
+import { } from "./models/ticketmodel";
+import { } from "module-alias/register";
 import { GETRoutes, POSTRoutes } from "./routes/routes.js";
 import mongoose from "mongoose";
 import session from "express-session";
@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import {} from "./models";
+import { } from "./models";
 
 dotenv.config();
 const app = express();
@@ -55,7 +55,9 @@ POSTRoutes.forEach((item) => {
 });
 app.use((req, res) => {
     console.log("SUCCESS", req.body.res);
-    req.status(req.body.res.status).send(JSON.stringify(req.body.res.data));
+    console.log(req.body.res.status)
+    console.log(req.url)
+    res.status(req.body.res.status).send(JSON.stringify(req.body.res.data));
 });
 app.use((err, req, res, next) => {
     //handle all failure of responses

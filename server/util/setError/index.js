@@ -8,3 +8,5 @@ function setError(
     req.body.err.what = what;
     req.body.err.restext = resText;
 }
+
+export { setError }

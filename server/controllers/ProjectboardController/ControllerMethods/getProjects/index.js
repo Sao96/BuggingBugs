@@ -1,9 +1,10 @@
-import Mongoose from "mongoose";
+import mongoose from "mongoose";
+import setError from "~/util/setError";
 
-async function getProjects(req, res) {
-    const uid = req.body.userData.uid;
+async function getProjects(req, res, next) {
+    const uid = mongoose.Types.ObjectId(req.body.userData.uid);
     try {
-        req.body.dbSearch = await Mongoose.model("UserIn").aggregate([
+        req.body.dbSearch = await mongoose.model("UserIn").aggregate([
             { $match: { uid: uid } },
             {
                 $lookup: {
@@ -19,16 +20,15 @@ async function getProjects(req, res) {
         req.body.dbSearch = req.body.dbSearch.map((proj) => {
             return proj.projInfo;
         });
-        res.status(200).send(
-            JSON.stringify({
-                projects: req.body.dbSearch,
-            })
-        );
+
     } catch (err) {
-        req.body.err.status = 500;
-        req.body.err.what = err;
-        req.body.err.resmsg = "An internal error has occured.";
+        setError(req, 500, err, "An internal error has occured.");
+        return next(req.body.err);
     }
+
+    req.body.res.status = 200;
+    req.body.res.data = { projects: req.body.dbSearch }
+    next()
 }
 
 export { getProjects };

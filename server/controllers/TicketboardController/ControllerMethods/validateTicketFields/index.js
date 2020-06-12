@@ -34,9 +34,9 @@ const validSummary = (summary) => {
  * to navigate the result of a @db query.
  */
 async function validateTicketFields(req, res, next) {
-    if (!req.session.uid) {
-        res.status(300).redirect("/login");
-    }
+    // if (!req.session.uid) {
+    //     res.status(300).redirect("/login");
+    // }
     if (!validTo(req.body.to)) {
         setError(req, 400, "Invalid Recipient.", "Invalid Recipient.");
     } else if (!validDue(req.body.due)) {
