@@ -1,25 +1,22 @@
 import mongoose from "mongoose";
+import { setError } from "~/util/setError";
 
+/**
+ * @function checkUsersInProj
+ * Expects all req params accessed to already be verified.
+ *
+ * On success sets @req.body.usersFound to the result of the @db.UsersIn search
+ * looking for all of the user info of users in a specific project.
+ */
 async function getUsersInProj(req, res, next) {
-    if (!req.query.pid) {
-        req.body.err.status = 500;
-        req.body.err.what = "No PID param";
-        req.body.err.resmsg = "No project to load";
-    } else if (!req.session.uid) {
-        res.status(300).redirect("/login");
-        return;
-    }
-    req.query.pid = mongoose.Types.ObjectId(req.query.pid);
+    const pid = mongoose.Types.ObjectId(req.query.pid);
     if (!req.body.err.status) {
         try {
-            const usersInSearch = {
-                pid: req.query.pid,
-            };
             const UsersIn = mongoose.model("UserIn");
             req.body.usersFound = await UsersIn.aggregate([
                 {
                     $match: {
-                        pid: mongoose.Types.ObjectId(req.query.pid),
+                        pid: pid,
                     },
                 },
                 {
@@ -34,14 +31,9 @@ async function getUsersInProj(req, res, next) {
                 { $project: { uid: true, authLevel: true, userInfo: true } },
             ]);
         } catch (err) {
-            req.body.err.status = 500;
-            req.body.err.what = err;
-            req.body.err.resmsg = "An internal error has occured.";
+            setError(req, 500, err, "An internal error has occured.");
+            return next(req.body.err);
         }
-    }
-    if (req.body.err.status) {
-        res.status(req.body.err).send(req.body.err.resmsg);
-        return;
     }
 
     next();

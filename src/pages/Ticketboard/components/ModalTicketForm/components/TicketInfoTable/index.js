@@ -8,6 +8,7 @@ function TicketInfoTable(props) {
         fontFamily: "Didact Gothic, Quattrocento Sans",
         color: "white",
         marginBottom: "20px",
+        boxShadow: "1px 1px 1px 0px rgba(0,0,0,0.75)",
     };
 
     const ticketInfo = props.ticketInfo;
@@ -42,11 +43,7 @@ function TicketInfoTable(props) {
     });
 
     return (
-        <div
-            style={{
-                boxShadow: "1px 1px 1px 0px rgba(0,0,0,0.75)",
-            }}
-        >
+        <div>
             <table style={concern}>
                 <tbody>{tableRows}</tbody>
             </table>

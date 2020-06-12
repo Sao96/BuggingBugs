@@ -41,7 +41,14 @@ function ModalTicketForm(props) {
     };
 
     return (
-        <div style={{ width: "700px" }}>
+        <div
+            style={{
+                width: "700px",
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+            }}
+        >
             <TicketInfoTable ticketInfo={ticketInfo} />
             <div style={centerDiv}>
                 <Button

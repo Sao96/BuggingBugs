@@ -1,4 +1,12 @@
 import mongoose from "mongoose";
+import { setError } from "~/util/setError";
+
+/**
+ * @function nativeUserChecker
+ * Expects @req.body.userData.email to be well defined.
+ *
+ * On success sets @req.body.dbSearch to what @db.NativeUsers finds.
+ */
 async function nativeUserChecker(req) {
     const filter = {
         email: req.body.userData.email,
@@ -6,10 +14,11 @@ async function nativeUserChecker(req) {
     try {
         req.body.dbSearch = await mongoose.model("NativeUser").find(filter);
     } catch (err) {
-        req.body.err.status = 500;
-        req.body.err.what = err;
-        req.body.err.resmsg = "An internal error has occured.";
+        setError(500, err, "An internal error has occured.");
+        return false;
     }
+
+    return true;
 }
 
 export { nativeUserChecker };

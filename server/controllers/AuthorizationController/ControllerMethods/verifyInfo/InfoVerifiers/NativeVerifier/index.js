@@ -1,3 +1,5 @@
+import { setError } from "~/util/setError";
+
 const validEmail = (email) => {
     const emailRegex = /\S+@\S+\.\S+/;
     return email && typeof email === "string" && emailRegex.test(email);
@@ -25,20 +27,29 @@ const capitalizeFirst = (s) => {
     return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
+/**
+ * @function nativeVerifier
+ * Expects @req.body to have a valid email, firstName, lastName, password,
+ * and repassword.
+ *
+ * On success, sets @req.body.userData's name, email, password, and pfp field
+ * and return true.
+ */
 async function nativeVerifier(req) {
     if (!validEmail(req.body.email)) {
-        req.body.err.status = 400;
-        req.body.err.resmsg = "Please enter a valid email";
-        req.body.err.what = "Invalid Email";
+        setError(req, 400, "Invalid email.", "Please enter a valid email.");
+        return false;
     } else if (!validUsername(req.body.firstName, req.body.lastName)) {
-        req.body.err.status = 400;
-        req.body.err.resmsg = "Please enter valid name(s)";
-        req.body.err.what = "Invalid name(s)";
+        setError(req, 400, "Invalid name(s)", "Please enter valid name(s)");
+        return false;
     } else if (!validPasswords(req.body.password, req.body.repassword)) {
-        req.body.err.status = 400;
-        req.body.err.resmsg =
-            "Please make sure both passwords are valid and match";
-        req.body.err.what = "Invalid password entry";
+        setError(
+            req,
+            400,
+            "Invalid password entry",
+            "Please make sure both passwords are valid and match"
+        );
+        return false;
     }
 
     req.body.userData.name =
@@ -48,6 +59,8 @@ async function nativeVerifier(req) {
     req.body.userData.email = req.body.email;
     req.body.userData.password = req.body.password;
     req.body.userData.pfp = "";
+
+    return true;
 }
 
 export { nativeVerifier };

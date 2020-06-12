@@ -8,13 +8,23 @@ const createUserInfoTable = (users) => {
     });
     return userInfoTable;
 };
-
+/**
+ * @function sendProjData
+ * Expects @req.body.usersFound and @req.body.ticketsFound to be lists of users
+ * and tickets from the database.
+ *
+ * On success, compiles the users into a direct mapping from their id's to their
+ * name and pfp, as well as the ticket data from @db.Tickets.
+ */
 async function sendProjData(req, res) {
     const projData = {
         users: createUserInfoTable(req.body.usersFound),
         tickets: req.body.ticketsFound,
     };
-    res.status(200).send(JSON.stringify(projData));
+    req.body.res.status = 200;
+    req.bdoy.res.data = { projData };
+
+    next();
 }
 
 export { sendProjData };

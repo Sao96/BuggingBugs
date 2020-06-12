@@ -32,8 +32,10 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use((req, res, next) => {
     req.body.err = {};
+    req.body.res = {};
     req.body.userData = {};
     next();
 });
@@ -50,6 +52,12 @@ POSTRoutes.forEach((item) => {
     const [path, action] = item;
     app.post("/api" + path, action);
 });
+app.use((req, res) => {
+    console.log("SUCCESS", req.body.res);
+    req.status(req.body.res.status).send(JSON.stringify(req.body.res.data));
+});
 app.use((err, req, res, next) => {
-    console.log(err);
+    //handle all failure of responses
+    res.status(req.body.err.status).send(req.body.err.restxt);
+    console.log("ERROR FOUND", err);
 });

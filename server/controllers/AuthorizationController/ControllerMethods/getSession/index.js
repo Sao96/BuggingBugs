@@ -1,7 +1,15 @@
+/**
+ * @function getSession
+ * Expects @req.body.userData.uid to be a well defined UID from @db
+ *
+ * Generates a session for the user.
+ */
 function getSession(req, res, next) {
     req.session.uid = req.body.userData.uid;
-    res.status(200).send("OKaaaaa");
-    req.completed = true;
+    req.body.res.status = 200;
+    req.body.res.data = {};
+
+    next();
 }
 
 export { getSession };

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { setError } from "~/util/setError";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -7,16 +8,20 @@ function validTid(tid) {
 }
 
 async function updateTicket(req, res, next) {
-    if (!validTid(req.body.tid)) {
-        req.body.err.status = 400;
-        req.body.err.what = "Invalid or missing TID";
-        req.body.err.resmsg = "Invalid or missing TID";
-        return;
+    if (req.body.usersFound[from_uid_idx].authLevel !== 0) {
+        setError(
+            req,
+            400,
+            "Insufficient Permissions to create ticket",
+            "Insufficient Permissions to create ticket"
+        );
+        return next(req.body.err);
     }
-    req.body.tid = ObjectId(req.body.tid);
+
+    const tid = ObjectId(req.body.tid);
     try {
         const where = {
-            _id: req.body.tid,
+            _id: tid,
             pid: ObjectId(req.query.pid),
         };
         const update = {
@@ -31,14 +36,13 @@ async function updateTicket(req, res, next) {
             },
         };
         const updated = await mongoose.model("Ticket").update(where, update);
-        console.log(where, update);
-        console.log(updated);
     } catch (err) {
-        req.body.err.status = 500;
-        req.body.err.what = err;
-        req.body.err.resmsg = "An internal error has occured.";
+        setError(req, 500, err, "An internal error has occured.");
+        return next(req.body.err);
     }
-    res.status(200).send("OK");
+
+    req.res.status = 200;
+    req.res.data = {};
     next();
 }
 export { updateTicket };

@@ -1,15 +1,29 @@
 import mongoose from "mongoose";
+import { setError } from "~/util/setError";
 
+/**
+ * @function createTicket
+ * Expects all used req fields compose a Ticket model.
+ * Verifies that the client has sufficient privileges create a ticket.
+ *
+ * On success, pushes a new ticket onto the database with the given
+ * information.
+ */
 async function createTicket(req, res, next) {
     const from_uid = req.body.userData.uid;
     const from_uid_idx = req.body.targetIds[from_uid];
 
     req.body.usersFound[from_uid_idx].authLevel;
     if (req.body.usersFound[from_uid_idx].authLevel !== 0) {
-        req.body.err.status = 400;
-        req.body.err.what = "Insufficient Permissions to create ticket";
-        req.body.err.resmsg = "Insufficient Permissions to create ticket";
-    } else {
+        setError(
+            req,
+            400,
+            "Insufficient Permissions to create ticket",
+            "Insufficient Permissions to create ticket"
+        );
+        return next(req.body.err);
+    }
+    try {
         const Tickets = mongoose.model("Ticket");
         const newTicket = new Tickets({
             pid: req.query.pid,
@@ -22,16 +36,15 @@ async function createTicket(req, res, next) {
             headline: req.body.headline,
             summary: req.body.summary,
         });
-        try {
-            await newTicket.save();
-            res.status(200).send("OK");
-        } catch (err) {
-            console.log(err);
-            req.body.err.status = 500;
-            req.body.err.what = err;
-            req.body.err.resmsg = "An internal error has occured.";
-        }
+        await newTicket.save();
+    } catch (err) {
+        setError(req, 500, err, "An internal error has occured.");
+        return next(req.body.err);
     }
+
+    req.body.res.status = 200;
+    req.body.res.data = {};
+    next();
 }
 
 export { createTicket };

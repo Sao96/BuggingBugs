@@ -1,8 +1,7 @@
-function amILogged(req, res) {
-    if (req.session.uid) {
-        res.status(200).send("Logged in");
-    } else {
-        res.status(400).send("Not logged in");
-    }
+function amILogged(req, res, next) {
+    req.body.res.status = 200;
+    req.body.res.data = { loggedIn: true };
+
+    next();
 }
 export { amILogged };

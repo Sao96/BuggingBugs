@@ -1,32 +1,47 @@
 import { addGlobalUser } from "./addUserToTable/addGlobalUser";
 import { addNativeUser } from "./addUserToTable/addNativeUser";
 import { addGoogleUser } from "./addUserToTable/addGoogleUser";
+import { setError } from "~/util/setError";
 
+/**
+ * @function createUser
+ * Expects @req.body.dbSearch to be a well defined search result from DB.
+ *
+ * On success registers user to db.GlobalUsers and db./respective table/
+ * and sets
+ */
 async function createUser(req, res, next) {
     if (req.body.dbSearch.length > 0) {
-        req.body.err.status = 400;
-        req.body.err.what = "User already in database";
-        req.body.err.restext = "User already in database";
-    } else {
-        await addGlobalUser(req);
-        switch (req.body.type) {
-            case "native":
-                await addNativeUser(req);
-                break;
-            case "google":
-                await addGoogleUser(req);
-                break;
-            default:
-            //throw errow
-        }
+        setError(req, 400, "User already in database", "User already exists.");
+        return next(req.body.err);
     }
-    if (req.body.err.status) {
-        res.status(req.body.err.status).send(req.body.err.restext);
-        return;
+    if (!(await addGlobalUser(req))) {
+        return next(req.body.err);
+    }
+    switch (req.body.type) {
+        case "native":
+            if (!(await addNativeUser(req))) {
+                return next(req.body.err);
+            }
+            break;
+        case "google":
+            if (!(await addGoogleUser(req))) {
+                return next(req.body.err);
+            }
+            break;
+        default:
+            setError(
+                500,
+                "An internal error has occured",
+                "An internal error has occured"
+            );
+            return next(req.body.err);
     }
 
-    res.status(200).send("User Created");
-    req.completed = true;
+    req.body.res.status = 200;
+    req.body.res.data = { message: "User Created" };
+
+    next();
 }
 
 export { createUser };

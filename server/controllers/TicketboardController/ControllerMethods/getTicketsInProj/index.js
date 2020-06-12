@@ -1,5 +1,13 @@
 import mongoose from "mongoose";
+import { setError } from "~/util/setError";
 
+/**
+ * @function getTicketsInProj
+ * Expects all used req fields have been verified already.
+ *
+ * On success, sets @req.body.ticketsFound to be the result of a DB search
+ * for tickets of a given project based on the users privilege.
+ */
 async function getTicketsInProj(req, res, next) {
     try {
         const uid = req.body.userData.uid;
@@ -14,10 +22,8 @@ async function getTicketsInProj(req, res, next) {
         const Tickets = mongoose.model("Ticket");
         req.body.ticketsFound = await Tickets.find(ticketsSearch);
     } catch (err) {
-        req.body.err.status = 500;
-        req.body.err.what = err;
-        req.body.err.resmsg = "An internal error has occured.";
-        return;
+        setError(req, 500, err, "An internal error has occured.");
+        return next(req.body.err);
     }
 
     next();

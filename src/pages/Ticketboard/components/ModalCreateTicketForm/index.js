@@ -5,6 +5,7 @@ import { ticketboardFields } from "fields/ticketboardfields";
 import Button from "util/Button.jsx";
 import { createSelectFields, createInputFields } from "../util/InputForm";
 import { domain } from "routes";
+import { ErrorBox } from "util/ErrorBox";
 
 const PushTicket = async (fieldData, setRes, pid) => {
     const data = {};

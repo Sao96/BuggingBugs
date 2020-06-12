@@ -1,4 +1,13 @@
 import mongoose from "mongoose";
+import { setError } from "~/util/setError";
+
+/**
+ * @function addUserToProject
+ * Expects @req.body.userData.uid; @req.body.projectId; and
+ * req.body.projUserLevel to be well defined UID's (strings or ObjectID form)
+ *
+ * On success adds user to to db.UsersIn with the corresponding project.
+ */
 async function addUserToProject(req, res, next) {
     const userIn = mongoose.model("UserIn");
     const newUserIn = new userIn({
@@ -9,13 +18,13 @@ async function addUserToProject(req, res, next) {
     try {
         await newUserIn.save();
     } catch (err) {
-        req.body.err.status = 500;
-        req.body.err.what = err;
-        req.body.err.resmsg = "An internal error has occured.";
-        return;
+        setError(req, 500, err, "An internal error has occured.");
+        return next(req.body.err);
     }
 
-    res.status(200).send("OK");
+    req.body.res.status = 200;
+    req.body.res.data = {};
+    next();
 }
 
 export { addUserToProject };

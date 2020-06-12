@@ -1,22 +1,29 @@
 import { googleVerifier } from "./InfoVerifiers/GoogleVerifier";
 import { nativeVerifier } from "./InfoVerifiers/NativeVerifier";
+import { setError } from "~/util/setError";
 
+/**
+ * @function verifyInfo
+ * Expects @req.body.type to be a well defined valid type.
+ *
+ * On success registers user to db.GlobalUsers and db./respective table/
+ * and sets
+ */
 async function verifyInfo(req, res, next) {
     switch (req.body.type) {
         case "google":
-            await googleVerifier(req);
+            if (!(await googleVerifier(req))) {
+                return next(req.body.err);
+            }
             break;
         case "native":
-            await nativeVerifier(req);
+            if (!(await nativeVerifier(req))) {
+                return next(req.body.err);
+            }
             break;
         default:
-            req.body.err.status = 400;
-            req.body.err.what = "Bad Credentials";
-    }
-
-    if (req.body.err.status) {
-        res.status(req.body.err.status).send(req.body.err.resmsg);
-        return;
+            setError(req, 400, "Bad defined type", "Not a supported type.");
+            return next(req.body.err);
     }
 
     next();

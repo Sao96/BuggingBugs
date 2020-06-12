@@ -1,4 +1,4 @@
-const bodyParser = require("body-parser");
+import { setError } from "~/util/setError";
 
 const validTo = (to) => {
     return true;
@@ -24,39 +24,35 @@ const validSummary = (summary) => {
     return typeof summary === "string";
 };
 
+/**
+ * @function validateTicketFields
+ * Validates all req fields that will be used as tickets, and verify
+ * They are all valid entries.
+ *
+ * On success, sets req.body.targetIds to a dictionary with index of each
+ * target ID (from and to) mapped to -1, which should be filled in later
+ * to navigate the result of a @db query.
+ */
 async function validateTicketFields(req, res, next) {
     if (!req.session.uid) {
         res.status(300).redirect("/login");
     }
     if (!validTo(req.body.to)) {
-        req.body.err.status = 400;
-        req.body.err.what = "Invalid recipient";
-        req.body.err.resmsg = "Invalid recipient";
+        setError(req, 400, "Invalid Recipient.", "Invalid Recipient.");
     } else if (!validDue(req.body.due)) {
-        req.body.err.status = 400;
-        req.body.err.what = "Invalid due time";
-        req.body.err.resmsg = "Invalid due time";
+        setError(req, 400, "Invalid Due Time.", "Invalid Due Time.");
     } else if (!validEnvironment(req.body.environment)) {
-        req.body.err.status = 400;
-        req.body.err.what = "Invalid environment";
-        req.body.err.resmsg = "Invalid environment";
+        setError(req, 400, "Invalid Environment", "Invalid Environment.");
     } else if (!validTags(req.body.tags)) {
-        req.body.err.status = 400;
-        req.body.err.what = "Invalid tags";
-        req.body.err.resmsg = "Invalid tags";
+        setError(req, 400, "Invalid Tags.", "Invalid Tags.");
     } else if (!validHeadline(req.body.headline)) {
-        req.body.err.status = 400;
-        req.body.err.what = "Invalid headline";
-        req.body.err.resmsg = "Invalid headline";
+        setError(req, 400, "Invalid Headline.", "Invalid Headline.");
     } else if (!validSummary(req.body.summary)) {
-        req.body.err.status = 400;
-        req.body.err.what = "Invalid summary";
-        req.body.err.resmsg = "Invalid summary";
+        setError(req, 400, "Invalid Recipient.", "Invalid Summary.");
     }
 
     if (req.body.err.status) {
-        res.status(req.body.err.status).send(req.body.err.resmsg);
-        return; //need to throw error to log its
+        return next(req.body.err);
     }
     req.body.targetIds = {
         [req.body.userData.uid]: -1,
