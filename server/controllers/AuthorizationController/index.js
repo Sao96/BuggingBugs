@@ -6,10 +6,12 @@ import { getSession } from "./ControllerMethods/getSession";
 import { logoutUser } from "./ControllerMethods/logoutUser";
 import { checkLoggedIn } from "./ControllerMethods/checkLoggedIn";
 import { amILogged } from "./ControllerMethods/amILogged";
+import { toIdExists } from "./ControllerMethods/toIdExists";
 
 const authorizationController = {
     verifyInfo: verifyInfo,
     userExists: userExists,
+    toIdExists: toIdExists,
     authenticateUser: authenticateUser,
     createUser: createUser,
     getSession: getSession,

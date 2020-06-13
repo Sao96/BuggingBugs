@@ -10,7 +10,20 @@ import { setError } from "~/util/setError";
  * information.
  */
 async function createTicket(req, res, next) {
-    const from_uid = req.body.userData.uid;
+    const from_uid = mongoose.Types.ObjectId(req.body.userData.uid);
+    const to_uid = mongoose.Types.ObjectId(req.body.to);
+    if (
+        req.body.targetIds[from_uid] == -1 ||
+        req.body.targetIds[to_uid] == -1
+    ) {
+        setError(
+            req,
+            400,
+            "You or who your sending to isn't in the group.",
+            "You or who your sending to isn't in the group."
+        );
+        return next(req.body.err);
+    }
     const from_uid_idx = req.body.targetIds[from_uid];
 
     req.body.usersFound[from_uid_idx].authLevel;

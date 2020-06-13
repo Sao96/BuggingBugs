@@ -16,13 +16,13 @@ const createUserInfoTable = (users) => {
  * On success, compiles the users into a direct mapping from their id's to their
  * name and pfp, as well as the ticket data from @db.Tickets.
  */
-async function sendProjData(req, res) {
+async function sendProjData(req, res, next) {
     const projData = {
         users: createUserInfoTable(req.body.usersFound),
         tickets: req.body.ticketsFound,
     };
     req.body.res.status = 200;
-    req.body.res.data = { projData };
+    req.body.res.data = { ...projData };
 
     next();
 }

@@ -1,6 +1,6 @@
 import express from "express";
-import { } from "./models/ticketmodel";
-import { } from "module-alias/register";
+import {} from "./models/ticketmodel";
+import {} from "module-alias/register";
 import { GETRoutes, POSTRoutes } from "./routes/routes.js";
 import mongoose from "mongoose";
 import session from "express-session";
@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import { } from "./models";
+import {} from "./models";
 
 dotenv.config();
 const app = express();
@@ -55,12 +55,16 @@ POSTRoutes.forEach((item) => {
 });
 app.use((req, res) => {
     console.log("SUCCESS", req.body.res);
-    console.log(req.body.res.status)
-    console.log(req.url)
+    console.log(req.body.res.status);
+    console.log(req.url);
     res.status(req.body.res.status).send(JSON.stringify(req.body.res.data));
 });
 app.use((err, req, res, next) => {
     //handle all failure of responses
-    res.status(req.body.err.status).send(JSON.stringify(req.body.err.restxt));
     console.log("ERROR FOUND", err);
+    if (!(req.body.err.status && req.body.err.restxt)) {
+        req.body.err.status = 500;
+        req.body.err.restxt = "An internal error has occured.";
+    }
+    res.status(req.body.err.status).send(JSON.stringify(req.body.err.restxt));
 });

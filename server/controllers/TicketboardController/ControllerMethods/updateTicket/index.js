@@ -8,6 +8,21 @@ function validTid(tid) {
 }
 
 async function updateTicket(req, res, next) {
+    const from_uid = mongoose.Types.ObjectId(req.body.userData.uid);
+    const to_uid = mongoose.Types.ObjectId(req.body.to);
+    if (
+        req.body.targetIds[from_uid] == -1 ||
+        req.body.targetIds[to_uid] == -1
+    ) {
+        setError(
+            req,
+            400,
+            "You or who your sending to isn't in the group.",
+            "You or who your sending to isn't in the group."
+        );
+        return next(req.body.err);
+    }
+    const from_uid_idx = req.body.targetIds[req.body.userData.uid];
     if (req.body.usersFound[from_uid_idx].authLevel !== 0) {
         setError(
             req,
@@ -41,8 +56,8 @@ async function updateTicket(req, res, next) {
         return next(req.body.err);
     }
 
-    req.res.status = 200;
-    req.res.data = {};
+    req.body.res.status = 200;
+    req.body.res.data = {};
     next();
 }
 export { updateTicket };

@@ -11,6 +11,9 @@ const GETRoutes = [
     ["/loadproject", controller.tbController.sendProjData],
 
     ["/amilogged", controller.authorizationController.amILogged],
+
+    // ["/getprojects", controller.authorizationController.checkLoggedIn],
+    // ["/getinvites", controller.userDataController.getInvites]
 ];
 const POSTRoutes = [
     ["/login", controller.authorizationController.verifyInfo],
@@ -39,6 +42,13 @@ const POSTRoutes = [
     ["/createproject", controller.authorizationController.checkLoggedIn],
     ["/createproject", controller.projectboardController.createProject],
     ["/createproject", controller.projectboardController.addUserToProject],
+
+    ["/createinvite", controller.authorizationController.checkLoggedIn],
+    ["/createinvite", controller.authorizationController.userIdExists],
+    ["/createinvite", controller.tbController.checkPid],
+    ["/createinvite", controller.tbController.getUsersInProj],
+    ["/createinvite", controller.tbController.checkUsersInProj],
+    ["/createinvite", controller.tbController.createInvite],
 ];
 
 export { GETRoutes, POSTRoutes };
