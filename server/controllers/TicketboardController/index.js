@@ -17,6 +17,7 @@ const ticketboardController = {
     sendProjData: sendProjData,
     updateTicket: updateTicket,
     checkPid: checkPid,
+    createInvite: createInvite
 };
 
 export { ticketboardController };

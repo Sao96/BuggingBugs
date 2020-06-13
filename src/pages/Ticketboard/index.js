@@ -65,6 +65,8 @@ function TicketBoard(props) {
                 return <ModalCreateTicketForm users={users} pid={pid} />;
             case 3:
                 return <ModalEditTicketForm users={users} pid={pid} />;
+            case 4:
+            // return <ModalAddUserForm />
         }
     };
 

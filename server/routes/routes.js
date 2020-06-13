@@ -44,7 +44,7 @@ const POSTRoutes = [
     ["/createproject", controller.projectboardController.addUserToProject],
 
     ["/createinvite", controller.authorizationController.checkLoggedIn],
-    ["/createinvite", controller.authorizationController.userIdExists],
+    ["/createinvite", controller.authorizationController.toIdExists],
     ["/createinvite", controller.tbController.checkPid],
     ["/createinvite", controller.tbController.getUsersInProj],
     ["/createinvite", controller.tbController.checkUsersInProj],

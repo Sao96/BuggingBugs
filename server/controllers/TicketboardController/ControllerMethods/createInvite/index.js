@@ -58,3 +58,5 @@ async function createInvite(req, res, next) {
     req.body.res.data = { message: "User successfully invited." };
     next();
 }
+
+export { createInvite }

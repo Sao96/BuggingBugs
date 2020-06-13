@@ -11,3 +11,5 @@ async function toIdExists(req, res, next) {
         req.body.to && mongoose.Types.ObjectId.isValid(req.body.to);
     next();
 }
+
+export { toIdExists }
