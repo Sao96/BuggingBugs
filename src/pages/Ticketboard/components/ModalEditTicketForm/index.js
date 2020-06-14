@@ -61,6 +61,7 @@ const ResRender = (props) => {
     switch (res[0]) {
         case 200:
             useHistory().go();
+            return <div></div>;
         case 300:
             return <Redirect to={"/login"} />;
         case 400:

@@ -55,16 +55,15 @@ POSTRoutes.forEach((item) => {
 });
 app.use((req, res) => {
     console.log("SUCCESS", req.body.res);
-    console.log(req.body.res.status);
-    console.log(req.url);
+    //need to send an internal status & res if empty
     res.status(req.body.res.status).send(JSON.stringify(req.body.res.data));
 });
 app.use((err, req, res, next) => {
     //handle all failure of responses
     console.log("ERROR FOUND", err);
-    if (!(req.body.err.status && req.body.err.restxt)) {
+    if (!(req.body.err.status && req.body.err.restext)) {
         req.body.err.status = 500;
         req.body.err.restxt = "An internal error has occured.";
     }
-    res.status(req.body.err.status).send(JSON.stringify(req.body.err.restxt));
+    res.status(req.body.err.status).send(JSON.stringify(req.body.err.restext));
 });

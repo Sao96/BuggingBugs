@@ -20,7 +20,7 @@ function Routing() {
                 <Route exact path="/dashboard" component={Dashboard} />
                 <Route exact path="/ticketboard" component={TicketBoard} />
                 <Route exact path="/logout" component={Logout} />
-                <Route component={Landing} />
+                {/* <Route component={Landing} /> */}
             </Switch>
         </Router>
     );

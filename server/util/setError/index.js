@@ -9,4 +9,4 @@ function setError(
     req.body.err.restext = resText;
 }
 
-export { setError }
+export { setError };

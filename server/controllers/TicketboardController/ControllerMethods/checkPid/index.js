@@ -7,7 +7,7 @@ import { setError } from "~/util/setError";
  *
  * On failure, flags an error to terminate the request.
  */
-async function checkPid(req, body, res) {
+async function checkPid(req, body, next) {
     if (!req.query.pid || !mongoose.Types.ObjectId.isValid(req.query.pid)) {
         setError(req, 400, "Invalid PID", "Invalid PID");
     }
@@ -15,4 +15,4 @@ async function checkPid(req, body, res) {
     next();
 }
 
-export { checkPid }
+export { checkPid };

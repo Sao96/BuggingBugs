@@ -59,4 +59,4 @@ async function createInvite(req, res, next) {
     next();
 }
 
-export { createInvite }
+export { createInvite };

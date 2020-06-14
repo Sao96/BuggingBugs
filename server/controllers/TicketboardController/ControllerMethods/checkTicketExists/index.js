@@ -7,7 +7,7 @@ import { setError } from "~/util/setError";
  * Expects @req.body.tid to be defined.
  *
  * On success registers user to db.GlobalUsers and db./respective table/
- * and sets
+ * and sets @req.body.targetIds to the client sending and the recipient
  */
 async function checkTicketExists(req, res, next) {
     const ObjectId = mongoose.Types.ObjectId;
