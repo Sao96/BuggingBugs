@@ -87,7 +87,7 @@ const RegisterForm = (props) => {
             </div>
             <GoogleLoginForm
                 text={"Register"}
-                endpoint={"http://localhost:3000/register"}
+                endpoint={domain + "/register"}
             />
             <div>{inputFields(fieldRefs)}</div>
             <Button

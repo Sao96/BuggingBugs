@@ -6,13 +6,8 @@ import { ErrorBox } from "util/ErrorBox";
 import { useSelector, useDispatch } from "react-redux";
 import { sharedFields } from "fields/sharedfields";
 import { sharedActions } from "actions/sharedactions";
-const googleLoginHandler = async (
-    googleUser,
-    endpoint,
-    setProcessing,
-    setError,
-    dispatch
-) => {
+
+const googleLoginHandler = async (googleUser, endpoint, setProcessing) => {
     setProcessing(true);
     const data = {
         type: "google",
@@ -31,41 +26,40 @@ const googleLoginHandler = async (
         body: JSON.stringify(data),
     });
     setProcessing(false);
-    switch (res.status) {
+    const resStatus = res.status,
+        resData = await res.json();
+    setRes([resData, resStatus]);
+};
+
+const ResRender = (props) => {
+    const res = props.res;
+    switch (res[1]) {
+        case -1:
+            return <></>;
         case 200:
             dispatch({
                 type: sharedActions.SET_LOGGED_IN,
                 loggedIn: true,
             });
-            break;
-        case 400:
-            setError([400, await res.text()]);
-            break;
+            return <></>;
         default:
-            setError([500, "An unknown error has occured."]);
+            dispatch({
+                type: loginActions.SET_ERROR,
+                error: res[0].length ? res[0] : "An unknown error has occured.",
+            });
+            return <></>;
     }
 };
 
-const redirectLogged = (alreadyLogged) => {
-    const loggedIn = alreadyLogged;
-
-    return loggedIn ? <Redirect to={"/dashboard"} /> : <div></div>;
-};
-
-const errorDisplay = (statusCode, statusMessage) => {
-    return statusCode === 400 || statusCode === 500 ? (
-        <ErrorBox text={statusMessage} />
-    ) : (
-        <></>
-    );
-};
-
-const buttonDisplay = (buttonText, processing, handler) => {
+const GoogleButton = (props) => {
+    const buttonText = props.buttonText;
+    const processing = props.processing;
+    const buttonClickHandler = props.handler;
     let buttonDisplay;
     if (processing) {
         buttonDisplay = (
             <ClipLoader
-                size={150}
+                size={50}
                 color={"rgb(200,200,200)"}
                 loading={processing}
             />
@@ -75,7 +69,7 @@ const buttonDisplay = (buttonText, processing, handler) => {
             <GoogleLogin
                 clientId="544783505726-01oarpi4q6rshp7d4jcbshkvmb7qcj7a.apps.googleusercontent.com"
                 buttonText={buttonText}
-                onSuccess={handler}
+                onSuccess={buttonClickHandler}
                 cookiePolicy={"single_host_origin"}
             />
         );
@@ -86,10 +80,7 @@ const buttonDisplay = (buttonText, processing, handler) => {
 
 function GoogleLoginForm(props) {
     const [processing, setProcessing] = useState(false);
-    const [error, setError] = useState([-1, ""]);
-    const alreadyLogged = useSelector((state) => {
-        return state.shared[sharedFields.LOGGED_IN];
-    });
+    const [res, setRes] = useState(["", -1]);
     const dispatch = useDispatch();
     const clickHandler = useCallback(
         (googleUser) => {
@@ -97,13 +88,12 @@ function GoogleLoginForm(props) {
                 googleUser,
                 props.endpoint,
                 setProcessing,
-                setError,
+                setRes,
                 dispatch
             );
         },
-        [props.endpoint, setProcessing, setError, dispatch]
+        [props.endpoint, setProcessing, setRes, dispatch]
     );
-
     const layoutStyle = {
         display: "flex",
         flexDirection: "column",
@@ -113,9 +103,12 @@ function GoogleLoginForm(props) {
 
     return (
         <div style={layoutStyle}>
-            {errorDisplay(error[0], error[1])}
-            {buttonDisplay(props.text, processing, clickHandler)}
-            {redirectLogged(alreadyLogged)}
+            <ResRender res={res} />
+            <GoogleButton
+                buttonText={props.text}
+                processing={processing}
+                handler={clickHandler}
+            />
         </div>
     );
 }

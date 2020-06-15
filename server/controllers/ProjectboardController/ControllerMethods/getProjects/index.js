@@ -20,15 +20,14 @@ async function getProjects(req, res, next) {
         req.body.dbSearch = req.body.dbSearch.map((proj) => {
             return proj.projInfo;
         });
-
     } catch (err) {
         setError(req, 500, err, "An internal error has occured.");
         return next(req.body.err);
     }
 
     req.body.res.status = 200;
-    req.body.res.data = { projects: req.body.dbSearch }
-    next()
+    req.body.res.data = { projects: req.body.dbSearch };
+    next();
 }
 
 export { getProjects };

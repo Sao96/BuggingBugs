@@ -24,7 +24,6 @@ async function initializePage(setApp) {
         redirect: "follow",
     }); //THEN get the info to build the cards
     const dbRes = await res.json();
-    console.log(res.loggedIn);
     const store = createStore(combinedReducer);
     store.dispatch({
         type: sharedActions.SET_LOGGED_IN,

@@ -38,6 +38,7 @@ app.use((req, res, next) => {
     req.body.err = {};
     req.body.res = {};
     req.body.userData = {};
+
     next();
 });
 
@@ -53,9 +54,12 @@ POSTRoutes.forEach((item) => {
     const [path, action] = item;
     app.post("/api" + path, action);
 });
-app.use((req, res) => {
+app.use((req, res, next) => {
+    if (!req.body.res.status) {
+        return next(req.body.err);
+    }
     console.log("SUCCESS", req.body.res);
-    //need to send an internal status & res if empty
+
     res.status(req.body.res.status).send(JSON.stringify(req.body.res.data));
 });
 app.use((err, req, res, next) => {
@@ -63,7 +67,7 @@ app.use((err, req, res, next) => {
     console.log("ERROR FOUND", err);
     if (!(req.body.err.status && req.body.err.restext)) {
         req.body.err.status = 500;
-        req.body.err.restxt = "An internal error has occured.";
+        req.body.err.restext = "An internal error has occured.";
     }
     res.status(req.body.err.status).send(JSON.stringify(req.body.err.restext));
 });

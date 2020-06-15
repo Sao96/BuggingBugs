@@ -4,6 +4,9 @@ const GETRoutes = [
     ["/getprojects", controller.authorizationController.checkLoggedIn],
     ["/getprojects", controller.projectboardController.getProjects],
 
+    ["/getinvites", controller.authorizationController.checkLoggedIn],
+    ["/getinvites", controller.projectboardController.getInvites],
+
     ["/loadproject", controller.authorizationController.checkLoggedIn],
     ["/loadproject", controller.tbController.getUsersInProj],
     ["/loadproject", controller.tbController.checkUsersInProj],
@@ -11,9 +14,6 @@ const GETRoutes = [
     ["/loadproject", controller.tbController.sendProjData],
 
     ["/amilogged", controller.authorizationController.amILogged],
-
-    // ["/getprojects", controller.authorizationController.checkLoggedIn],
-    // ["/getinvites", controller.userDataController.getInvites]
 ];
 const POSTRoutes = [
     ["/login", controller.authorizationController.verifyInfo],

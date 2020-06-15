@@ -1,6 +1,10 @@
 import a from "actions/dashboardactions.js";
-const initialDashboardState = {
-    // [a.MODAL_STATE]: 0,
+const dashboardInitialState = {
+    PROJECTS: [],
+    PROJECTS_MODIFIED: true,
+    INVITES_MODIFIED: false,
+    INVITES: [],
+    RES_STATUS: -1,
 };
 
-export default initialDashboardState;
+export { dashboardInitialState };

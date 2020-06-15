@@ -23,7 +23,6 @@ async function addUserToProject(req, res, next) {
     }
 
     req.body.res.status = 200;
-    req.body.res.data = {};
     next();
 }
 

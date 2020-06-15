@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import ProjectCard from "./components/ProjectCard/projectcard.jsx";
 import AddAttachmentButtonIcon from "svg/AddAttachment.svg";
+import { dashboardFields } from "fields/dashboardfields";
 import { domain } from "routes";
-const getProjects = async (setProjects) => {
+import { dashboardActions } from "actions/dashboardactions.js";
+
+const getProjects = async (dispatch) => {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
@@ -17,7 +21,11 @@ const getProjects = async (setProjects) => {
     }); //THEN get the info to build the cards
     const data = await res.json();
     if (res.status === 200) {
-        setProjects(data.projects);
+        dispatch({
+            type: dashboardActions.SET_PROJECTS,
+            projects: data.projects,
+        });
+        // setProjects(data.projects);
     } else if (res.status === 300) {
         window.location.href = data.url;
     } else {
@@ -26,10 +34,18 @@ const getProjects = async (setProjects) => {
 };
 
 function ProjectBoard(props) {
-    const [projects, setProjects] = useState([]);
+    const [projects, refreshNeeded] = useSelector((state) => {
+        return [
+            state.dashboard[dashboardFields.PROJECTS],
+            state.dashboard[dashboardFields.PROJECTS_MODIFIED],
+        ];
+    });
+    const dispatch = useDispatch();
     useEffect(() => {
-        getProjects(setProjects);
-    }, []);
+        getProjects(dispatch);
+    }, [refreshNeeded]);
+    useDispatch({ type: dashboardActions.SET_PROJECTS_MODIFIED });
+
     const projectCards = projects.map((proj) => {
         return <ProjectCard projectName={proj.name} pid={proj._id} />;
     });
@@ -45,15 +61,7 @@ function ProjectBoard(props) {
         flexWrap: "wrap",
         alignItems: "center",
     };
-    return (
-        <div style={mainStyle}>
-            {projectCards}
-            <AddAttachmentButtonIcon
-                style={addAttachmentButtonStyle}
-                onClick={props.launchModalHandler}
-            />
-        </div>
-    );
+    return <div style={mainStyle}>{projectCards}</div>;
 }
 
 export default ProjectBoard;

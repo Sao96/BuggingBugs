@@ -36,6 +36,8 @@ async function createProject(req, res, next) {
         return next(req.body.err);
     }
 
+    req.body.res.data = { message: "Group successfully created!" };
+
     next();
 }
 

@@ -18,7 +18,7 @@ const PushTicket = async (fieldData, setRes, pid) => {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
-    const endpoint = domain + "createticket?pid=" + pid; //subject to change
+    const endpoint = domain + "createticket?pid=" + pid;
     const res = await fetch(endpoint, {
         method: "POST",
         headers: headers,
@@ -71,7 +71,7 @@ function ModalCreateTicketForm(props) {
     const userMap = generateUserMap(props.users);
     const createClickHandler = useCallback(() => {
         PushTicket(fieldData, setRes, props.pid);
-    }, [props.fieldRefs]);
+    }, [fieldData]);
     const mainStyle = {
         display: "flex",
         flexDirection: "column",

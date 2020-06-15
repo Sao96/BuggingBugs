@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Modal from "util/modal.jsx";
 import { ModalTicketForm } from "./components/ModalTicketForm/";
 import { ModalCreateTicketForm } from "./components/ModalCreateTicketForm/";
+import { ModalCreateInviteForm } from "./components/ModalCreateInviteForm";
 import { ModalEditTicketForm } from "./components/ModalEditTicketForm/";
 import { sharedActions } from "actions/sharedactions.js";
 import { sharedFields } from "fields/sharedfields.js";
@@ -56,6 +57,9 @@ function TicketBoard(props) {
     const createTicketClickHandler = () => {
         dispatch({ type: sharedActions.PUSH_MODAL_STATE, modalState: 2 });
     };
+    const createInviteHandler = () => {
+        dispatch({ type: sharedActions.PUSH_MODAL_STATE, modalState: 4 });
+    };
     const currModalContext = () => {
         const currModalStack = selector("shared", sharedFields.MODAL_STACK);
         switch (currModalStack[currModalStack.length - 1]) {
@@ -66,12 +70,15 @@ function TicketBoard(props) {
             case 3:
                 return <ModalEditTicketForm users={users} pid={pid} />;
             case 4:
-            // return <ModalAddUserForm />
+                return <ModalCreateInviteForm pid={pid} />;
         }
     };
 
     const mainStyle = {
         color: "white",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
     };
     const buttonLayout = {
         display: "flex",
@@ -82,7 +89,7 @@ function TicketBoard(props) {
     };
 
     return (
-        <div style={mainStyle}>
+        <main style={mainStyle}>
             <div style={buttonLayout}>
                 <div style={buttonSpacing}>
                     <Button
@@ -92,12 +99,19 @@ function TicketBoard(props) {
                     />
                 </div>
                 <div style={buttonSpacing}>
+                    <Button
+                        text={"Invite User"}
+                        backgroundColor={"rgb(10, 20, 31)"}
+                        onClick={createInviteHandler}
+                    />
+                </div>
+                <div style={buttonSpacing}>
                     <Filter />
                 </div>
             </div>
             <TicketDisplayer tickets={tickets} users={users} pid={pid} />
             <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
-        </div>
+        </main>
     );
 }
 
