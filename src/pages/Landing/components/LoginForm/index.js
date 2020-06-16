@@ -1,7 +1,11 @@
-import React, { createRef, useCallback } from "react";
+import React, { createRef, useCallback, useState } from "react";
+import { Redirect } from "react-router";
 import Button from "util/Button.jsx";
 import { GoogleLoginForm } from "../GoogleAuthenticate";
 import { domain } from "routes";
+import { useDispatch } from "react-redux";
+import { ErrorBox } from "util/ErrorBox";
+import { sharedActions } from "actions/sharedactions";
 const formItemStyle = {
     marginBottom: "25px",
     display: "flex",
@@ -55,7 +59,26 @@ const PushLogin = async (regInfoRefs) => {
     });
 };
 
+const ResRender = (props) => {
+    const res = props.res;
+    const dispatch = props.dispatch;
+    const setError = props.setError;
+    switch (res[1]) {
+        case -1:
+            return <></>;
+        case 200:
+            dispatch({
+                type: sharedActions.SET_LOGGED_IN,
+                loggedIn: true,
+            });
+            return <Redirect to={"/dashboard"} />;
+        default:
+            return <ErrorBox text={res[0]} />;
+    }
+};
 const LoginForm = (props) => {
+    const [res, setRes] = useState(["", -1]);
+    const dispatch = useDispatch();
     const fieldRefs = {
         username: createRef(),
         password: createRef(),
@@ -75,7 +98,13 @@ const LoginForm = (props) => {
             <div style={{ fontSize: "30px", paddingBottom: "20px" }}>
                 LOGIN FORM
             </div>
-            <GoogleLoginForm text={"Login"} endpoint={"/api/login"} />
+            <ResRender res={res} dispatch={dispatch} />
+            <GoogleLoginForm
+                dispatch={props.dispatch}
+                text={"Login"}
+                endpoint={"/api/login"}
+                setRes={setRes}
+            />
             <div>{inputFields(fieldRefs)}</div>
             <Button text={"Login"} backgroundColor={"green"} />
         </div>

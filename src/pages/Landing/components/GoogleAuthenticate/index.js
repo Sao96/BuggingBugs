@@ -1,4 +1,4 @@
-import React, { createRef, useCallback, useState } from "react";
+import React, { createRef, useCallback, useState, useEffect } from "react";
 import { GoogleLogin } from "react-google-login";
 import { useHistory, Redirect } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -7,7 +7,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { sharedFields } from "fields/sharedfields";
 import { sharedActions } from "actions/sharedactions";
 
-const googleLoginHandler = async (googleUser, endpoint, setProcessing) => {
+const googleLoginHandler = async (
+    googleUser,
+    endpoint,
+    setProcessing,
+    setRes,
+    dispatch
+) => {
     setProcessing(true);
     const data = {
         type: "google",
@@ -29,26 +35,6 @@ const googleLoginHandler = async (googleUser, endpoint, setProcessing) => {
     const resStatus = res.status,
         resData = await res.json();
     setRes([resData, resStatus]);
-};
-
-const ResRender = (props) => {
-    const res = props.res;
-    switch (res[1]) {
-        case -1:
-            return <></>;
-        case 200:
-            dispatch({
-                type: sharedActions.SET_LOGGED_IN,
-                loggedIn: true,
-            });
-            return <></>;
-        default:
-            dispatch({
-                type: loginActions.SET_ERROR,
-                error: res[0].length ? res[0] : "An unknown error has occured.",
-            });
-            return <></>;
-    }
 };
 
 const GoogleButton = (props) => {
@@ -80,20 +66,14 @@ const GoogleButton = (props) => {
 
 function GoogleLoginForm(props) {
     const [processing, setProcessing] = useState(false);
-    const [res, setRes] = useState(["", -1]);
-    const dispatch = useDispatch();
-    const clickHandler = useCallback(
-        (googleUser) => {
-            googleLoginHandler(
-                googleUser,
-                props.endpoint,
-                setProcessing,
-                setRes,
-                dispatch
-            );
-        },
-        [props.endpoint, setProcessing, setRes, dispatch]
-    );
+    const clickHandler = useCallback((googleUser) => {
+        googleLoginHandler(
+            googleUser,
+            props.endpoint,
+            setProcessing,
+            props.setRes
+        );
+    }, []);
     const layoutStyle = {
         display: "flex",
         flexDirection: "column",
@@ -103,7 +83,6 @@ function GoogleLoginForm(props) {
 
     return (
         <div style={layoutStyle}>
-            <ResRender res={res} />
             <GoogleButton
                 buttonText={props.text}
                 processing={processing}
