@@ -32,6 +32,8 @@ function Modal(props) {
         marginTop: "50px",
         zIndex: "5000",
         position: "relative",
+        minWidth: "400px",
+        minHeight: "250px",
     };
     const dispatch = useDispatch();
     const clickHandler = (e) => {

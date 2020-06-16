@@ -4,6 +4,12 @@ import { ticketboardFields } from "fields/ticketboardfields.js";
 function ticketboardReducer(prevState = ticketboardInitialState, action) {
     let newState = { ...prevState };
     switch (action.type) {
+        case ticketboardActions.SET_USERS:
+            newState[ticketboardFields.USERS] = action.users;
+            break;
+        case ticketboardActions.SET_TICKETS:
+            newState[ticketboardFields.TICKETS] = action.tickets;
+            break;
         case ticketboardActions.SET_DISPLAY_SEARCH_FILTER:
             newState[ticketboardFields.DISPLAY_SEARCH_FILTER] = !newState[
                 ticketboardFields.DISPLAY_SEARCH_FILTER

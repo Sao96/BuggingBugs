@@ -1,5 +1,7 @@
 import { ticketboardFields } from "fields/ticketboardfields.js";
 const ticketboardInitialState = {
+    [ticketboardFields.USERS]: [],
+    [ticketboardFields.TICKETS]: [],
     [ticketboardFields.DISPLAY_SEARCH_FILTER]: false,
     [ticketboardFields.FILTER_TS_OPEN]: false,
     [ticketboardFields.FILTER_TS_IN_PROGRESS]: false,

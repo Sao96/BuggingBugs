@@ -6,14 +6,16 @@ import { ModalTicketForm } from "./components/ModalTicketForm/";
 import { ModalCreateTicketForm } from "./components/ModalCreateTicketForm/";
 import { ModalCreateInviteForm } from "./components/ModalCreateInviteForm";
 import { ModalEditTicketForm } from "./components/ModalEditTicketForm/";
+import { ModalSettingsForm } from "./components/ModalSettingsForm";
 import { sharedActions } from "actions/sharedactions.js";
 import { sharedFields } from "fields/sharedfields.js";
 import { Filter } from "./components/Filter/filter.jsx";
 import Button from "util/Button.jsx";
-
 import { domain } from "routes";
+import { ticketboardActions } from "actions/ticketboardactions";
+import { ticketboardFields } from "fields/ticketboardfields";
 
-const loadProject = async (setUsers, setTickets, pid) => {
+const loadProject = async (dispatch, pid) => {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
@@ -27,8 +29,9 @@ const loadProject = async (setUsers, setTickets, pid) => {
         redirect: "follow",
     }); //THEN get the info to build the cards
     const dbData = await res.json();
-    setUsers(dbData.users);
-    setTickets(dbData.tickets);
+    dispatch({ type: ticketboardActions.SET_USERS, users: dbData.users });
+    dispatch({ type: ticketboardActions.SET_TICKETS, tickets: dbData.tickets });
+    // setUsers(dbData.users);
 };
 
 function TicketBoard(props) {
@@ -41,11 +44,16 @@ function TicketBoard(props) {
             return state[key][field];
         });
     };
-    const [tickets, setTickets] = useState([]);
-    const [users, setUsers] = useState([]);
+    const users = useSelector((state) => {
+        return state.ticketboard[ticketboardFields.USERS];
+    });
+    const tickets = useSelector((state) => {
+        return state.ticketboard[ticketboardFields.TICKETS];
+    });
+    // const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        loadProject(setUsers, setTickets, pid);
+        loadProject(dispatch, pid);
         return () => {
             dispatch({ type: sharedActions.EMPTY_MODAL_STACK });
         };
@@ -60,6 +68,10 @@ function TicketBoard(props) {
     const createInviteHandler = () => {
         dispatch({ type: sharedActions.PUSH_MODAL_STATE, modalState: 4 });
     };
+    const launchSettingsHandler = () => {
+        dispatch({ type: sharedActions.PUSH_MODAL_STATE, modalState: 5 });
+    };
+
     const currModalContext = () => {
         const currModalStack = selector("shared", sharedFields.MODAL_STACK);
         switch (currModalStack[currModalStack.length - 1]) {
@@ -71,6 +83,8 @@ function TicketBoard(props) {
                 return <ModalEditTicketForm users={users} pid={pid} />;
             case 4:
                 return <ModalCreateInviteForm pid={pid} />;
+            case 5:
+                return <ModalSettingsForm />; //probably pass everything to render C:
         }
     };
 
@@ -91,6 +105,13 @@ function TicketBoard(props) {
     return (
         <main style={mainStyle}>
             <div style={buttonLayout}>
+                <div style={buttonSpacing}>
+                    <Button
+                        text={"Settings"}
+                        backgroundColor="rgb(0,20,150)"
+                        onClick={launchSettingsHandler}
+                    />
+                </div>
                 <div style={buttonSpacing}>
                     <Button
                         text={"Create Ticket"}
