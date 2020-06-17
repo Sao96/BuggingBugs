@@ -8,7 +8,10 @@ import { sendProjData } from "./ControllerMethods/sendProjData";
 import { updateTicket } from "./ControllerMethods/updateTicket";
 import { createInvite } from "./ControllerMethods/createInvite";
 import { checkPid } from "./ControllerMethods/checkPid";
-import { checkInviteExists } from "./ControllerMethods/checkInviteExists";
+import { checkAlreadyInvited } from "./ControllerMethods/checkAlreadyInvited";
+import { verifyIsLeader } from "./ControllerMethods/verifyIsLeader";
+import { removeUser } from "./ControllerMethods/removeUser";
+
 const ticketboardController = {
     validateTicketFields: validateTicketFields,
     validateInviteFields: validateInviteFields,
@@ -20,7 +23,10 @@ const ticketboardController = {
     updateTicket: updateTicket,
     checkPid: checkPid,
     createInvite: createInvite,
-    checkInviteExists: checkInviteExists,
+    checkAlreadyInvited: checkAlreadyInvited,
+    validateProjectName: validateProjectName,
+    verifyIsLeader: verifyIsLeader,
+    removeUser: removeUser,
 };
 
 export { ticketboardController };

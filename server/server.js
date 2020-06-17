@@ -1,5 +1,4 @@
 import express from "express";
-import {} from "./models/ticketmodel";
 import {} from "module-alias/register";
 import { GETRoutes, POSTRoutes } from "./routes/routes.js";
 import mongoose from "mongoose";
@@ -38,7 +37,6 @@ app.use((req, res, next) => {
     req.body.err = {};
     req.body.res = {};
     req.body.userData = {};
-
     next();
 });
 
@@ -58,7 +56,7 @@ app.use((req, res, next) => {
     if (!req.body.res.status) {
         return next(req.body.err);
     }
-    console.log("SUCCESS", req.body.res);
+    console.log(req.url, "SUCCESS", req.body.res);
 
     res.status(req.body.res.status).send(JSON.stringify(req.body.res.data));
 });

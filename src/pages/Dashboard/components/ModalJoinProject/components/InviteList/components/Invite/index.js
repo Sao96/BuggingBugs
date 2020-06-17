@@ -19,7 +19,7 @@ const processInvite = async (
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
     const data = { invId: invId };
-    const endpoint = domain + accept ? "acceptinvite" : "declineinvite";
+    const endpoint = domain + (accept ? "acceptinvite" : "declineinvite");
     setLoading(true);
     await fetch(endpoint, {
         method: "POST",
@@ -29,6 +29,7 @@ const processInvite = async (
         cache: "no-cache",
         body: JSON.stringify(data),
         redirect: "follow",
+        body: JSON.stringify(data),
     });
     for (let idx = 0; idx < invites.length; ++idx) {
         if (invites[idx].invId === invId) {
@@ -57,7 +58,7 @@ const ButtonsDisplay = (props) => {
             <div style={{ paddingRight: "10px" }}></div>
             <Button
                 text={"Decline"}
-                backgroundColor={"rgb(100,0,0)"}
+                backgroundColor={"rgb(150,0,0)"}
                 onClick={!boardLocked ? declineButtonHandler : () => {}}
             />
         </>

@@ -47,10 +47,43 @@ const POSTRoutes = [
     ["/createinvite", controller.tbController.validateInviteFields],
     ["/createinvite", controller.tbController.checkPid],
     ["/createinvite", controller.authorizationController.checkUidsExist],
-    ["/createinvite", controller.tbController.checkInviteExists],
+    ["/createinvite", controller.tbController.checkAlreadyInvited],
     ["/createinvite", controller.tbController.getUsersInProj],
     ["/createinvite", controller.tbController.checkUsersInProj],
     ["/createinvite", controller.tbController.createInvite],
+
+    ["/acceptinvite", controller.authorizationController.checkLoggedIn],
+    ["/acceptinvite", controller.projectboardController.checkInviteExists],
+    ["/acceptinvite", controller.projectboardController.addUserToProject],
+    ["/acceptinvite", controller.projectboardController.deleteInvite],
+
+    ["/renameproject", controller.authorizationController.checkLoggedIn],
+    ["/renameproject", controller.tbController.verifyProjectName],
+    ["/renameproject", controller.tbController.validatePid],
+    ["/renameproject", controller.tbController.verifyIsLeader],
+    ["/renameproject", controller.tbController.renameProject],
+
+    // ["/removeuser", controller.authorizationController.checkLoggedIn],
+    // ["/removeuser", controller.tbController.validatePid],
+    // ["/removeuser", controller.tbController.verifyIsLeader],
+    // ["/removeuser", controller.tbController.verifyToNotLeader],
+    // ["/removeuser", controller.tbController.removeUser],
+
+    // ["/promoteuser", controller.authorizationController.checkLoggedIn],
+    // ["/promoteuser", controller.tbController.validatePid],
+    // ["/promoteuser", controller.tbController.verifyIsLeader],
+    // ["/promoteuser", controller.tbController.verifyToNotLeader],
+    // ["/promoteuser", controller.tbController.promoteUser],
+
+    // ["/demoteself", controller.authorizationController.checkLoggedIn],
+    // ["/demoteself", controller.tbController.validatePid],
+    // ["/demoteself", controller.tbController.verifyIsLeader],
+    // ["/demoteself", controller.tbController.demoteSelf],
+
+    // ["/leaveproject", controller.authorizationController.checkLoggedIn],
+    // ["/leaveproject", controller.tbController.validatePid],
+    // ["/leaveproject", controller.tbController.verifyUserExists],
+    // ["/leaveproject", controller.tbController.leaveProject],
 ];
 
 export { GETRoutes, POSTRoutes };

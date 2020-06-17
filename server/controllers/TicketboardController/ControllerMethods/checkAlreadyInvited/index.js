@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 import { setError } from "~/util/setError";
 
 /**
- * @function checkInviteExists
+ * @function checkAlreadyInvited
  *
  * Checks to see if an invite to @req.body.to for @req.query.pid already exists
  * and sets an error, terminating the query if so
  */
-async function checkInviteExists(req, body, next) {
+async function checkAlreadyInvited(req, body, next) {
     try {
         const toUid = mongoose.Types.ObjectId(req.body.to);
         const pid = mongoose.Types.ObjectId(req.query.pid);
@@ -36,4 +36,4 @@ async function checkInviteExists(req, body, next) {
     next();
 }
 
-export { checkInviteExists };
+export { checkAlreadyInvited };

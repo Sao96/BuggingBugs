@@ -21,7 +21,6 @@ async function addUserToProject(req, res, next) {
         setError(req, 500, err, "An internal error has occured.");
         return next(req.body.err);
     }
-
     req.body.res.status = 200;
     next();
 }
