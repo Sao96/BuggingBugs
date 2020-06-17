@@ -53,6 +53,7 @@ function TicketBoard(props) {
     // const [users, setUsers] = useState([]);
 
     useEffect(() => {
+        dispatch({ type: ticketboardActions.SET_PID, pid: pid });
         loadProject(dispatch, pid);
         return () => {
             dispatch({ type: sharedActions.EMPTY_MODAL_STACK });

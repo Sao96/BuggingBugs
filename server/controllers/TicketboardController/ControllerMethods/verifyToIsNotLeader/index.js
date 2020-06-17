@@ -1,20 +1,13 @@
 import mongoose from "mongoose";
-import setError from "~/util/setError";
+import { setError } from "~/util/setError";
 
-/**
- * @function verifyIsLeader
- * Checks @db.UsersIn and looks for @req.body.uid to have an authlevel of 0
- * in a match of pid @req.query.pid
- *
- * Sets error if such condition doesn't exist.
- */
-async function verifyIsLeader(req, res, next) {
+async function verifyToIsNotLeader(req, res, next) {
     try {
-        const uid = mongoose.Types.ObjectId(req.body.userData.uid);
+        const to_uid = mongoose.Types.ObjectId(req.body.to);
         const pid = mongoose.Types.ObjectId(req.query.pid);
         const exists = await mongoose
             .model("UserIn")
-            .exists({ pid: pid, uid: uid, authLevel: 0 });
+            .exists({ pid: pid, uid: to_uid, authLevel: { $gt: 0 } });
         if (!exists) {
             setError(
                 req,
@@ -28,7 +21,8 @@ async function verifyIsLeader(req, res, next) {
         setError(req, 500, err, "An internal error has occured.");
         return next(req.body.next);
     }
+
     next();
 }
 
-export { verifyIsLeader };
+export { verifyToIsNotLeader };

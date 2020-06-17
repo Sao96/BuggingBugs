@@ -8,7 +8,7 @@ import { generateUserMap } from "util/generateUserMap";
 import { useSelector } from "react-redux";
 import { ticketboardFields } from "fields/ticketboardfields";
 
-async function PushUserRemove(toUid, setRes, pid) {
+async function PushUserRemove(toUid, pid, setRes) {
     const data = {
         to: toUid,
     };
@@ -16,7 +16,7 @@ async function PushUserRemove(toUid, setRes, pid) {
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
-    const endpoint = domain + "createinvite?pid=" + pid; //subject to change
+    const endpoint = domain + "removeuser?pid=" + pid; //subject to change
     const res = await fetch(endpoint, {
         method: "POST",
         headers: headers,
@@ -69,6 +69,9 @@ const createSelectFields = (users, userRef) => {
 
 function RemoveUser(props) {
     const [res, setRes] = useState([-1, ""]);
+    const pid = useSelector((state) => {
+        return state.ticketboard[ticketboardFields.PID];
+    });
     const originalUsers = useSelector((state) => {
         return state.ticketboard[ticketboardFields.USERS];
     });
@@ -77,7 +80,7 @@ function RemoveUser(props) {
     const userRef = createRef();
     const usersSelectInput = createSelectFields(userMap, userRef);
     const sendUserRemoval = useCallback(() => {
-        PushUserRemove(userRef.current.value, setRes, props.pid);
+        PushUserRemove(userRef.current.value, pid, setRes);
     }, [userRef]);
 
     const svgStyle = {

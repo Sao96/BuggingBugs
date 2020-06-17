@@ -1,19 +1,21 @@
 import React, { useCallback, useState, createRef } from "react";
+import { useSelector } from "react-redux";
 import { domain } from "routes";
 import { useHistory, Redirect } from "react-router";
 import { ErrorBox } from "util/ErrorBox";
 import EditProjectIcon from "svg/editproject.svg";
 import Button from "util/Button.jsx";
+import { ticketboardFields } from "fields/ticketboardfields";
 
-async function PushRename(toUid, setRes, pid) {
+async function PushRename(projName, pid, setRes) {
     const data = {
-        to: toUid,
+        projName: projName,
     };
-
+    console.log("I bleed it out", projName, pid);
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
-    const endpoint = domain + "createinvite?pid=" + pid; //subject to change
+    const endpoint = domain + "renameproject?pid=" + pid; //subject to change
     const res = await fetch(endpoint, {
         method: "POST",
         headers: headers,
@@ -47,10 +49,13 @@ const ResRender = (props) => {
 
 function RenameProject(props) {
     const [res, setRes] = useState([-1, ""]);
+    const pid = useSelector((state) => {
+        return state.ticketboard[ticketboardFields.PID];
+    });
     const newNameRef = createRef();
     const sendProjectNameChangeHandler = useCallback(() => {
-        PushRename(newNameRef.current.value, setRes, props.pid);
-    }, [newNameRef]);
+        PushRename(newNameRef.current.value, pid, setRes);
+    }, [newNameRef, pid]);
     const svgStyle = {
         height: "130px",
         width: "130px",

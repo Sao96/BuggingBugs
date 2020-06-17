@@ -58,7 +58,7 @@ const POSTRoutes = [
     ["/acceptinvite", controller.projectboardController.deleteInvite],
 
     ["/renameproject", controller.authorizationController.checkLoggedIn],
-    ["/renameproject", controller.tbController.verifyProjectName],
+    ["/renameproject", controller.tbController.validateProjectName],
     ["/renameproject", controller.tbController.checkPid],
     ["/renameproject", controller.tbController.verifyIsLeader],
     ["/renameproject", controller.tbController.renameProject],
@@ -66,13 +66,13 @@ const POSTRoutes = [
     ["/removeuser", controller.authorizationController.checkLoggedIn],
     ["/removeuser", controller.tbController.checkPid],
     ["/removeuser", controller.tbController.verifyIsLeader],
-    ["/removeuser", controller.tbController.verifyToNotLeader],
+    ["/removeuser", controller.tbController.verifyToIsNotLeader],
     ["/removeuser", controller.tbController.removeUser],
 
     ["/promoteuser", controller.authorizationController.checkLoggedIn],
     ["/promoteuser", controller.tbController.checkPid],
     ["/promoteuser", controller.tbController.verifyIsLeader],
-    ["/promoteuser", controller.tbController.verifyToNotLeader],
+    ["/promoteuser", controller.tbController.verifyToIsNotLeader],
     ["/promoteuser", controller.tbController.promoteUser],
 
     ["/demoteself", controller.authorizationController.checkLoggedIn],

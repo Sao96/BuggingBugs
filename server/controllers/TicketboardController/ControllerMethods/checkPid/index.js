@@ -10,6 +10,7 @@ import { setError } from "~/util/setError";
 async function checkPid(req, body, next) {
     if (!req.query.pid || !mongoose.Types.ObjectId.isValid(req.query.pid)) {
         setError(req, 400, "Invalid PID", "Invalid PID");
+        return next(req.body.err);
     }
 
     next();

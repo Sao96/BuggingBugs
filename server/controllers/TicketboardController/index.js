@@ -9,12 +9,15 @@ import { updateTicket } from "./ControllerMethods/updateTicket";
 import { createInvite } from "./ControllerMethods/createInvite";
 import { checkPid } from "./ControllerMethods/checkPid";
 import { checkAlreadyInvited } from "./ControllerMethods/checkAlreadyInvited";
+import { validateProjectName } from "./ControllerMethods/validateProjectName";
 import { verifyToIsNotLeader } from "./ControllerMethods/verifyToIsNotLeader";
 import { verifyIsLeader } from "./ControllerMethods/verifyIsLeader";
+import { renameProject } from "./ControllerMethods/renameProject";
 import { removeUser } from "./ControllerMethods/removeUser";
 import { promoteUser } from "./ControllerMethods/promoteUser";
-import { demoteSelf } from "./ControllerMethods/demoteSelf"
-import { leaveProject } from "./ControllerMethods/leaveProject"
+import { demoteSelf } from "./ControllerMethods/demoteSelf";
+import { verifyUserExists } from "./ControllerMethods/verifyUserExists";
+import { leaveProject } from "./ControllerMethods/leaveProject";
 
 const ticketboardController = {
     validateTicketFields: validateTicketFields,
@@ -31,10 +34,12 @@ const ticketboardController = {
     validateProjectName: validateProjectName,
     verifyToIsNotLeader: verifyToIsNotLeader,
     verifyIsLeader: verifyIsLeader,
+    renameProject: renameProject,
     removeUser: removeUser,
     promoteUser: promoteUser,
     demoteSelf: demoteSelf,
-    leaveProject: leaveProject
+    verifyUserExists: verifyUserExists,
+    leaveProject: leaveProject,
 };
 
 export { ticketboardController };
