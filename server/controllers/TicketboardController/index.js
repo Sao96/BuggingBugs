@@ -9,8 +9,12 @@ import { updateTicket } from "./ControllerMethods/updateTicket";
 import { createInvite } from "./ControllerMethods/createInvite";
 import { checkPid } from "./ControllerMethods/checkPid";
 import { checkAlreadyInvited } from "./ControllerMethods/checkAlreadyInvited";
+import { verifyToIsNotLeader } from "./ControllerMethods/verifyToIsNotLeader";
 import { verifyIsLeader } from "./ControllerMethods/verifyIsLeader";
 import { removeUser } from "./ControllerMethods/removeUser";
+import { promoteUser } from "./ControllerMethods/promoteUser";
+import { demoteSelf } from "./ControllerMethods/demoteSelf"
+import { leaveProject } from "./ControllerMethods/leaveProject"
 
 const ticketboardController = {
     validateTicketFields: validateTicketFields,
@@ -25,8 +29,12 @@ const ticketboardController = {
     createInvite: createInvite,
     checkAlreadyInvited: checkAlreadyInvited,
     validateProjectName: validateProjectName,
+    verifyToIsNotLeader: verifyToIsNotLeader,
     verifyIsLeader: verifyIsLeader,
     removeUser: removeUser,
+    promoteUser: promoteUser,
+    demoteSelf: demoteSelf,
+    leaveProject: leaveProject
 };
 
 export { ticketboardController };
