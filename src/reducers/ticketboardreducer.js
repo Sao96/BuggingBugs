@@ -4,6 +4,11 @@ import { ticketboardFields } from "fields/ticketboardfields.js";
 function ticketboardReducer(prevState = ticketboardInitialState, action) {
     let newState = { ...prevState };
     switch (action.type) {
+        case ticketboardActions.SET_REFRESH_NEEDED:
+            newState[ticketboardFields.REFRESH_NEEDED] = !newState[
+                ticketboardFields.REFRESH_NEEDED
+            ];
+            break;
         case ticketboardActions.SET_PID:
             newState[ticketboardFields.PID] = action.pid;
             break;
@@ -58,6 +63,9 @@ function ticketboardReducer(prevState = ticketboardInitialState, action) {
             newState[ticketboardFields.NEW_TICKET_FORM_INFO] = {
                 ...action.initVals,
             };
+            break;
+        case ticketboardActions.FLUSH_TICKETBOARD_STATE:
+            return ticketboardInitialState;
     }
     return newState;
 }

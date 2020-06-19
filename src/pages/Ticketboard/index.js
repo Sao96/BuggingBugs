@@ -27,14 +27,16 @@ const loadProject = async (dispatch, pid) => {
         mode: "cors",
         cache: "no-cache",
         redirect: "follow",
-    }); //THEN get the info to build the cards
+    });
     const dbData = await res.json();
     dispatch({ type: ticketboardActions.SET_USERS, users: dbData.users });
     dispatch({ type: ticketboardActions.SET_TICKETS, tickets: dbData.tickets });
-    // setUsers(dbData.users);
 };
 
 function TicketBoard(props) {
+    const refreshNeeded = useSelector((state) => {
+        return state.ticketboard[ticketboardFields.REFRESH_NEEDED];
+    });
     const modalRef = createRef();
     const dispatch = useDispatch();
     const query = new URLSearchParams(props.location.search);
@@ -50,19 +52,21 @@ function TicketBoard(props) {
     const tickets = useSelector((state) => {
         return state.ticketboard[ticketboardFields.TICKETS];
     });
-    // const [users, setUsers] = useState([]);
 
     useEffect(() => {
         dispatch({ type: ticketboardActions.SET_PID, pid: pid });
-        loadProject(dispatch, pid);
+        dispatch({ type: sharedActions.TOGGLE_NAV });
         return () => {
+            dispatch({ type: sharedActions.TOGGLE_NAV });
             dispatch({ type: sharedActions.EMPTY_MODAL_STACK });
+            dispatch({ type: ticketboardActions.FLUSH_TICKETBOARD_STATE });
         };
     }, []);
 
-    const ticketClickHandler = () => {
-        dispatch({ type: sharedActions.PUSH_MODAL_STATE, modalState: 1 });
-    };
+    useEffect(() => {
+        loadProject(dispatch, pid);
+    }, [refreshNeeded]);
+
     const createTicketClickHandler = () => {
         dispatch({ type: sharedActions.PUSH_MODAL_STATE, modalState: 2 });
     };

@@ -18,7 +18,7 @@ const getProjects = async (dispatch) => {
         mode: "cors",
         cache: "no-cache",
         redirect: "follow",
-    }); //THEN get the info to build the cards
+    });
     const data = await res.json();
     if (res.status === 200) {
         dispatch({
@@ -49,17 +49,13 @@ function ProjectBoard(props) {
     const projectCards = projects.map((proj) => {
         return <ProjectCard projectName={proj.name} pid={proj._id} />;
     });
-    const addAttachmentButtonStyle = {
-        height: "100px",
-        width: "100px",
-        fill: "white",
-        paddingLeft: "10px",
-        cursor: "pointer",
-    };
+
     const mainStyle = {
         display: "flex",
         flexWrap: "wrap",
-        alignItems: "center",
+        width: "100%",
+        justifyContent: "center",
+        // backgroundColor: "red",
     };
     return <div style={mainStyle}>{projectCards}</div>;
 }

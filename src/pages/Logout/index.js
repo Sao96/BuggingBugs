@@ -20,7 +20,7 @@ function DestroySession() {
 
 function Logout(props) {
     DestroySession();
-    return <Redirect to="/" />;
+    return <Redirect push to="/" />;
 }
 
 export { Logout };

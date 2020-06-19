@@ -42,7 +42,7 @@ const ResRender = (props) => {
         case 200:
             return <SuccessBox text={res[0].message} />;
         case 300:
-            return <Redirect to={"/login"} />;
+            return <Redirect push to={"/login"} />;
         case 400:
             return <ErrorBox text={res[0]} />;
         default:

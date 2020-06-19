@@ -1,9 +1,11 @@
 import React, { useState, useCallback, createRef } from "react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import DashboardIcon from "svg/dashboard.svg";
 import OpenTicketsIcon from "svg/opentickets.svg";
 import LogoutIcon from "svg/logout.svg";
 import { domain } from "routes";
+import { sharedFields } from "fields/sharedfields";
 
 const SizeSVG = (Comp) => {
     return <Comp style={{ width: "45px", height: "45px", fill: "white" }} />;
@@ -12,6 +14,9 @@ function Navbar(props) {
     const closedNavWidth = "70px";
     const openNavWidth = "200px";
     const transitionSpeed = "0.1s";
+    const showNav = useSelector((state) => {
+        return state.shared[sharedFields.SHOW_NAV];
+    });
     const [navOpen, setNavStatus] = useState(false);
 
     const mouseOverNavHandler = () => {
@@ -20,7 +25,8 @@ function Navbar(props) {
     const mouseOutNavHandler = () => {
         setNavStatus(false);
     };
-    const globalPaddingStyle = {
+    const containerStyle = {
+        display: showNav ? "" : "none",
         paddingRight: navOpen ? openNavWidth : closedNavWidth,
         transition: "padding-right " + transitionSpeed,
     };
@@ -85,7 +91,7 @@ function Navbar(props) {
     });
 
     return (
-        <div style={globalPaddingStyle}>
+        <div style={containerStyle}>
             <div
                 onMouseOver={mouseOverNavHandler}
                 onMouseOut={mouseOutNavHandler}

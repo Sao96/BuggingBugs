@@ -71,7 +71,7 @@ const ResRender = (props) => {
                 type: sharedActions.SET_LOGGED_IN,
                 loggedIn: true,
             });
-            return <Redirect to={"/dashboard"} />;
+            return <Redirect push to={"/dashboard"} />;
         default:
             return <ErrorBox text={res[0]} />;
     }
@@ -88,6 +88,7 @@ const LoginForm = (props) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        border: "solid 1px white",
     };
     const loginClickHandler = useCallback(() => {
         PushLogin(props.fieldRefs);

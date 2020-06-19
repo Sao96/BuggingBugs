@@ -1,5 +1,6 @@
 const ticketboardFields = {
     USERS: "USERS",
+    REFRESH_NEEDED: "REFRESH_NEEDED",
     PID: "PID",
     TICKETS: "TICKETS",
     DISPLAY_SEARCH_FILTER: "DISPLAY_SEARCH_FILTER",

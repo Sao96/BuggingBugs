@@ -47,7 +47,7 @@ const ResRender = (props) => {
         case 200:
             return <InviteList invites={res[0]} />;
         case 300:
-            return <Redirect to={"/login"} />;
+            return <Redirect push to={"/login"} />;
         case 400:
             return <ErrorBox text={res[1]} />;
         case 500:

@@ -43,7 +43,7 @@ async function initializePage(setApp) {
 }
 
 function App(props) {
-    const [app, setApp] = useState(<div></div>);
+    const [app, setApp] = useState(<></>);
     useEffect(() => {
         initializePage(setApp);
     }, []);

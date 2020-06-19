@@ -10,6 +10,7 @@ import ModalNewProject from "./components/ModalNewProject/modalnewproject.jsx";
 import ModalCreateProject from "./components/ModalCreateProject/modalcreateproject.jsx";
 import ModalJoinProject from "./components/ModalJoinProject/modaljoinproject.jsx";
 import Button from "util/Button.jsx";
+import { Navbar } from "util/navbar.jsx";
 
 function Dashboard(props) {
     const selector = (key, field) => {
@@ -19,7 +20,7 @@ function Dashboard(props) {
     };
     const alreadyLogged = selector("shared", sharedFields.LOGGED_IN);
     if (!alreadyLogged) {
-        return <Redirect to={"/login"} />;
+        return <Redirect push to={"/login"} />;
     }
     const dispatch = useDispatch();
     const modalRef = createRef();
@@ -29,7 +30,9 @@ function Dashboard(props) {
 
     const currModalContext = () => {
         useEffect(() => {
+            dispatch({ type: sharedActions.TOGGLE_NAV });
             return () => {
+                dispatch({ type: sharedActions.TOGGLE_NAV });
                 dispatch({ type: sharedActions.EMPTY_MODAL_STACK });
             };
         }, []);
@@ -46,14 +49,15 @@ function Dashboard(props) {
     const mainStyle = {
         color: "white",
         display: "flex",
-        flexWrap: "wrap",
-        alignItems: "flex-start",
-        justifyContent: "center",
         flexDirection: "column",
+        flexWrap: "wrap",
+        alignItems: "center",
+        // justifyContent: "center",
+        width: "100%",
     };
     return (
         <div>
-            <main style={mainStyle}>
+            <article style={mainStyle}>
                 <Button
                     text={"New Project"}
                     backgroundColor={"green"}
@@ -63,7 +67,7 @@ function Dashboard(props) {
                 <ProjectBoard launchModalHandler={launchModalHandler} />
 
                 <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
-            </main>
+            </article>
         </div>
     );
 }
