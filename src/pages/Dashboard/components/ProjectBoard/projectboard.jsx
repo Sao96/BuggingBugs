@@ -6,46 +6,8 @@ import { dashboardFields } from "fields/dashboardfields";
 import { domain } from "routes";
 import { dashboardActions } from "actions/dashboardactions.js";
 
-const getProjects = async (dispatch) => {
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    const endpoint = domain + "getprojects";
-    const res = await fetch(endpoint, {
-        method: "GET",
-        headers: headers,
-        credentials: "include",
-        mode: "cors",
-        cache: "no-cache",
-        redirect: "follow",
-    });
-    const data = await res.json();
-    if (res.status === 200) {
-        dispatch({
-            type: dashboardActions.SET_PROJECTS,
-            projects: data.projects,
-        });
-        // setProjects(data.projects);
-    } else if (res.status === 300) {
-        window.location.href = data.url;
-    } else {
-        window.location.href = "/";
-    }
-};
-
 function ProjectBoard(props) {
-    const [projects, refreshNeeded] = useSelector((state) => {
-        return [
-            state.dashboard[dashboardFields.PROJECTS],
-            state.dashboard[dashboardFields.PROJECTS_MODIFIED],
-        ];
-    });
-    const dispatch = useDispatch();
-    useEffect(() => {
-        getProjects(dispatch);
-    }, [refreshNeeded]);
-    useDispatch({ type: dashboardActions.SET_PROJECTS_MODIFIED });
-
+    const projects = props.projects;
     const projectCards = projects.map((proj) => {
         return <ProjectCard projectName={proj.name} pid={proj._id} />;
     });
@@ -53,9 +15,7 @@ function ProjectBoard(props) {
     const mainStyle = {
         display: "flex",
         flexWrap: "wrap",
-        width: "100%",
         justifyContent: "center",
-        // backgroundColor: "red",
     };
     return <div style={mainStyle}>{projectCards}</div>;
 }
