@@ -9,6 +9,7 @@ import Button from "util/Button.jsx";
 import { sharedActions } from "actions/sharedactions";
 import { ticketboardActions } from "../../../../actions/ticketboardactions";
 import { TicketInfoTable } from "./components/TicketInfoTable";
+import { TextButton } from "util/TextButton";
 
 const headerStyle = {
     color: "white",
@@ -27,6 +28,24 @@ const centerDiv = {
     justifyContent: "center",
 };
 
+const EditDeleteButtons = (props) => {
+    const containerStyle = {
+        display: "flex",
+        justifyContent: "space-between",
+        width: "50%",
+        position: "relative",
+        bottom: "15px",
+        fontSize: "18px",
+        fontFamily: "Didact Gothic",
+    };
+    return (
+        <main style={containerStyle}>
+            <TextButton text={"Edit"} handler={props.editHandler} />
+            <TextButton text={"Delete"} handler={props.deleteHandler} />
+        </main>
+    );
+};
+
 function ModalTicketForm(props) {
     const ticketInfo = useSelector((state) => {
         return state.ticketboard[ticketboardFields.DISP_TICKET_INFO];
@@ -39,9 +58,10 @@ function ModalTicketForm(props) {
         });
         dispatch({ type: sharedActions.PUSH_MODAL_STATE, modalState: 3 });
     };
+    const deleteTicketHandler = () => {};
 
     return (
-        <div
+        <article
             style={{
                 width: "700px",
                 display: "flex",
@@ -50,14 +70,18 @@ function ModalTicketForm(props) {
             }}
         >
             <TicketInfoTable ticketInfo={ticketInfo} />
+            <EditDeleteButtons
+                editHandler={editTicketHandler}
+                deleteHanlder={deleteTicketHandler}
+            />
             <div style={centerDiv}>
                 <Button
-                    text={"Edit Ticket"}
+                    text={"Close Ticket"}
                     backgroundColor={"green"}
                     onClick={editTicketHandler}
                 />{" "}
             </div>
-        </div>
+        </article>
     );
 }
 

@@ -10,5 +10,6 @@ var TicketSchema = new mongoose.Schema({
     tags: String,
     headline: String,
     summary: String,
+    status: Number,
 });
 mongoose.model("Ticket", TicketSchema, "Tickets");

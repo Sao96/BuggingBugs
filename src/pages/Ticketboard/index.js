@@ -14,6 +14,7 @@ import Button from "util/Button.jsx";
 import { domain } from "routes";
 import { ticketboardActions } from "actions/ticketboardactions";
 import { ticketboardFields } from "fields/ticketboardfields";
+import { Toolbar } from "./components/Toolbar";
 
 const loadProject = async (dispatch, pid) => {
     var headers = new Headers();
@@ -67,16 +68,6 @@ function TicketBoard(props) {
         loadProject(dispatch, pid);
     }, [refreshNeeded]);
 
-    const createTicketClickHandler = () => {
-        dispatch({ type: sharedActions.PUSH_MODAL_STATE, modalState: 2 });
-    };
-    const createInviteHandler = () => {
-        dispatch({ type: sharedActions.PUSH_MODAL_STATE, modalState: 4 });
-    };
-    const launchSettingsHandler = () => {
-        dispatch({ type: sharedActions.PUSH_MODAL_STATE, modalState: 5 });
-    };
-
     const currModalContext = () => {
         const currModalStack = selector("shared", sharedFields.MODAL_STACK);
         switch (currModalStack[currModalStack.length - 1]) {
@@ -98,6 +89,7 @@ function TicketBoard(props) {
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
+        width: "100%",
     };
     const buttonLayout = {
         display: "flex",
@@ -109,7 +101,9 @@ function TicketBoard(props) {
 
     return (
         <main style={mainStyle}>
-            <div style={buttonLayout}>
+            <Toolbar />
+
+            {/* <div style={buttonLayout}>
                 <div style={buttonSpacing}>
                     <Button
                         text={"Settings"}
@@ -134,7 +128,7 @@ function TicketBoard(props) {
                 <div style={buttonSpacing}>
                     <Filter />
                 </div>
-            </div>
+            </div> */}
             <TicketDisplayer tickets={tickets} users={users} pid={pid} />
             <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
         </main>

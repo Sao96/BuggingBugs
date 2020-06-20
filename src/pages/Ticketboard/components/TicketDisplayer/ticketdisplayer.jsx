@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { sharedActions } from "actions/sharedactions.js";
 import { sharedFields } from "fields/sharedfields.js";
 import { ticketboardFields } from "fields/ticketboardfields.js";
+import { TypeFilter } from "./components/TypeFilter";
 
 // const randomTickets = () => {
 //     let res = [...sample.premade];
@@ -52,19 +53,91 @@ import { ticketboardFields } from "fields/ticketboardfields.js";
 //     });
 // };
 
+// const getOpenTickets = ()
+
+/**
+ *
+ * @param {*} tickets a DB response of tickets
+ * @return a list of lists, where each list corresponds to the tickets of
+ * a certain status.
+ */
+const generateTicketCards = (tickets, usersMap) => {
+    const openTickets = [],
+        pendingTickets = [],
+        closedTickets = [];
+    for (let idx in tickets) {
+        const fromPfp = usersMap[tickets[idx].from].pfp;
+        const fromName = usersMap[tickets[idx].from].name;
+        const nextTicket = (
+            <Ticket {...tickets[idx]} pfp={fromPfp} fromName={fromName} />
+        );
+        switch (tickets[idx].status) {
+            case 0:
+                openTickets.push(nextTicket);
+                break;
+            case 1:
+                pendingTickets.push(nextTicket);
+                break;
+            case 2:
+                closedTickets.push(nextTicket);
+                break;
+            default:
+                openTickets.push(nextTicket);
+        }
+    }
+
+    return [openTickets, pendingTickets, closedTickets];
+};
+
 function TicketDisplayer(props) {
-    const ticketCards = props.tickets.map((ticketInfo) => {
-        const fromPfp = props.users[ticketInfo.from].pfp;
-        const fromName = props.users[ticketInfo.from].name;
-        return <Ticket {...ticketInfo} pfp={fromPfp} fromName={fromName} />;
-    });
+    const [activeSection, setActiveSection] = useState(0);
+    const [openTickets, pendingTickets, closedTickets] = generateTicketCards(
+        props.tickets,
+        props.users
+    );
+    const ticketTypes = [
+        ["Open", openTickets.length],
+        ["Pending", pendingTickets.length],
+        ["Closed", closedTickets.length],
+    ];
+    let selectedCards;
+    switch (activeSection) {
+        case 0:
+            selectedCards = openTickets;
+            break;
+        case 1:
+            selectedCards = pendingTickets;
+            break;
+        case 2:
+            selectedCards = closedTickets;
+            break;
+    }
     const mainStyle = {
         display: "flex",
         flexWrap: "wrap",
+        width: "100%",
         justifyContent: "center",
+        alignItems: "center",
+        marginTop: "30px",
     };
 
-    return <div style={mainStyle}>{ticketCards} </div>;
+    return (
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "100%",
+            }}
+        >
+            <TypeFilter
+                types={ticketTypes}
+                active={activeSection}
+                setState={setActiveSection}
+            />
+            <div style={mainStyle}>{selectedCards} </div>
+        </div>
+    );
 }
 
 export { TicketDisplayer };

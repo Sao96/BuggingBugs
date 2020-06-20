@@ -48,6 +48,7 @@ async function createTicket(req, res, next) {
             tags: req.body.tags,
             headline: req.body.headline,
             summary: req.body.summary,
+            status: 0,
         });
         await newTicket.save();
     } catch (err) {
