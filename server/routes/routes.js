@@ -35,9 +35,16 @@ const POSTRoutes = [
 
     ["/updateticket", controller.authorizationController.checkLoggedIn],
     ["/updateticket", controller.tbController.validateTicketFields],
+    ["/updateticket", controller.tbController.checkTicketExists],
     ["/updateticket", controller.tbController.getUsersInProj],
     ["/updateticket", controller.tbController.checkUsersInProj],
     ["/updateticket", controller.tbController.updateTicket],
+
+    ["/deleteticket", controller.authorizationController.checkLoggedIn],
+    ["/deleteticket", controller.tbController.checkPid],
+    ["/updateticket", controller.tbController.checkTicketExists],
+    ["/deleteticket", controller.tbController.verifyIsLeader],
+    ["/deleteticket", controller.tbController.deleteTicket],
 
     ["/createproject", controller.authorizationController.checkLoggedIn],
     ["/createproject", controller.projectboardController.createProject],

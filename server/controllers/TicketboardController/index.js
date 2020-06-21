@@ -6,6 +6,8 @@ import { checkUsersInProj } from "./ControllerMethods/checkUserInProj";
 import { getTicketsInProj } from "./ControllerMethods/getTicketsInProj";
 import { sendProjData } from "./ControllerMethods/sendProjData";
 import { updateTicket } from "./ControllerMethods/updateTicket";
+import { checkTicketExists } from "./ControllerMethods/checkTicketExists";
+import { deleteTicket } from "./ControllerMethods/deleteTicket";
 import { createInvite } from "./ControllerMethods/createInvite";
 import { checkPid } from "./ControllerMethods/checkPid";
 import { checkAlreadyInvited } from "./ControllerMethods/checkAlreadyInvited";
@@ -27,7 +29,9 @@ const ticketboardController = {
     checkUsersInProj: checkUsersInProj,
     getTicketsInProj: getTicketsInProj,
     sendProjData: sendProjData,
+    checkTicketExists: checkTicketExists,
     updateTicket: updateTicket,
+    deleteTicket: deleteTicket,
     checkPid: checkPid,
     createInvite: createInvite,
     checkAlreadyInvited: checkAlreadyInvited,
