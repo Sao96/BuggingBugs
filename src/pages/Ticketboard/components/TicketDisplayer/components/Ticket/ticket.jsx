@@ -144,7 +144,7 @@ export default function Ticket(props) {
             priorityColor = "rgb(0, 255, 22)"; //green
     }
 
-    const mainStyle = {
+    const containerStyle = {
         width: "360px",
         height: "230px",
         borderRadius: "10px",
@@ -159,6 +159,7 @@ export default function Ticket(props) {
         fontSize: "18px",
         position: "relative",
         cursor: "pointer",
+        userSelect: "none",
     };
 
     const dispatch = useDispatch();
@@ -181,7 +182,7 @@ export default function Ticket(props) {
         });
     };
     return (
-        <main style={mainStyle} onClick={launchModalHandler}>
+        <main style={containerStyle} onClick={launchModalHandler}>
             {PFPImage(props.pfp)}
             {Sender(props.fromName)}
             {Separator(priorityColor)}

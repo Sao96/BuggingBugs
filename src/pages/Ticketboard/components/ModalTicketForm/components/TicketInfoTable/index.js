@@ -7,7 +7,6 @@ function TicketInfoTable(props) {
         fontStyle: "",
         fontFamily: "Didact Gothic, Quattrocento Sans",
         color: "white",
-        marginBottom: "20px",
         boxShadow: "1px 1px 1px 0px rgba(0,0,0,0.75)",
     };
 

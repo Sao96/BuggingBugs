@@ -3,7 +3,6 @@ import { LandingNavbar } from "./components/LandingNavbar";
 import SimpleIcon from "svg/simple.svg";
 import CycleIcon from "svg/cycle.svg";
 import JuggleIcon from "svg/juggle.svg";
-
 const HookSection = () => {
     const TryAppButton = (props) => {
         const style = {

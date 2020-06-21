@@ -31,6 +31,7 @@ function TypeTab(props) {
         alignItems: "center",
         justifyContent: "center",
         cursor: "pointer",
+        userSelect: "none",
     };
     return (
         <div

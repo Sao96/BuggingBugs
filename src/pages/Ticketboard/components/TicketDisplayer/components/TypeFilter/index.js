@@ -27,6 +27,7 @@ function TypeFilter(props) {
         fontFamily: "Didact Gothic",
         color: "rgb(230,230,230)",
         paddingRight: "15px",
+        userSelect: "none",
     };
     return (
         <nav style={containerStyle}>

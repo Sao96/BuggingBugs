@@ -63,7 +63,7 @@ const ResRender = (props) => {
             useHistory().go();
             return <div></div>;
         case 300:
-            return <Redirect push to={"/login"} />;
+            return <Redirect to={"/login"} />;
         case 400:
             return <ErrorBox text={res[1]} />;
         case 500:
@@ -94,14 +94,22 @@ function ModalEditTicketForm(props) {
         PushTicketEdit(fieldData, setRes, props.pid, tid);
     }, [fieldData]);
 
+    const titleStyle = {
+        fontFamily: "Didact Gothic",
+        fontSize: "36px",
+        marginBottom: "35px",
+        color: "rgb(240, 240, 240)",
+    };
     const mainStyle = {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        margin: "0px 70px",
     };
 
     return (
         <div style={mainStyle}>
+            <header style={titleStyle}>Edit Ticket</header>
             <ResRender res={res} pid={props.pid} />
             <div>
                 {createSelectFields(fieldData, userMap)}

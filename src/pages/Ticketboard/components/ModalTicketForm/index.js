@@ -31,12 +31,11 @@ const centerDiv = {
 const EditDeleteButtons = (props) => {
     const containerStyle = {
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "space-around",
         width: "50%",
-        position: "relative",
-        bottom: "15px",
         fontSize: "18px",
         fontFamily: "Didact Gothic",
+        marginBottom: "2px",
     };
     return (
         <main style={containerStyle}>
@@ -63,7 +62,7 @@ function ModalTicketForm(props) {
     return (
         <article
             style={{
-                width: "700px",
+                width: "600px",
                 display: "flex",
                 alignItems: "center",
                 flexDirection: "column",
@@ -74,7 +73,13 @@ function ModalTicketForm(props) {
                 editHandler={editTicketHandler}
                 deleteHanlder={deleteTicketHandler}
             />
-            <div style={centerDiv}>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "20px",
+                }}
+            >
                 <Button
                     text={"Close Ticket"}
                     backgroundColor={"green"}

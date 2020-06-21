@@ -1,9 +1,11 @@
 //initial styles taken from w3schools modal example
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { sharedActions } from "actions/sharedactions.js";
 import { sharedFields } from "fields/sharedfields.js";
 import BackArrow from "svg/backarrow.svg";
+import { textHoverColor } from "util/ThemeColors";
+
 const selector = (field) => {
     return useSelector((state) => {
         return state.shared[field];
@@ -11,10 +13,11 @@ const selector = (field) => {
 };
 
 function Modal(props) {
+    const [hovered, setHovered] = useState(false);
     let overlayStyle = {
         display: selector(sharedFields.MODAL_STACK).length ? "flex" : "none",
         position: "fixed",
-        zIndex: "4000",
+        zIndex: "1",
         left: "0",
         top: "0",
         width: "100%",
@@ -30,7 +33,7 @@ function Modal(props) {
         border: "1px solid black",
         backgroundColor: "rgb(33, 59, 74)",
         marginTop: "50px",
-        zIndex: "5000",
+        zIndex: "2",
         position: "relative",
         minWidth: "400px",
         minHeight: "250px",
@@ -45,12 +48,12 @@ function Modal(props) {
         dispatch({ type: sharedActions.POP_MODAL_STATE });
     };
     const backArrowSvgStyle = {
-        height: "70px",
-        width: "70px",
-        fill: "rgb(200,200,200)",
+        height: "30px",
+        width: "30px",
+        fill: hovered ? textHoverColor : "rgb(200,200,200)",
         position: "absolute",
         cursor: "pointer",
-        zIndex: "5000",
+        zIndex: "2",
     };
 
     return (
@@ -59,8 +62,14 @@ function Modal(props) {
                 <BackArrow
                     style={backArrowSvgStyle}
                     onClick={backButtonHandler}
+                    onMouseOver={() => {
+                        setHovered(true);
+                    }}
+                    onMouseOut={() => {
+                        setHovered(false);
+                    }}
                 />
-                {props.children}
+                <main style={{ margin: "40px" }}>{props.children}</main>
             </div>
         </div>
     );

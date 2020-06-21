@@ -72,14 +72,22 @@ function ModalCreateTicketForm(props) {
     const createClickHandler = useCallback(() => {
         PushTicket(fieldData, setRes, props.pid);
     }, [fieldData]);
+    const titleStyle = {
+        fontFamily: "Didact Gothic",
+        fontSize: "36px",
+        marginBottom: "35px",
+        color: "rgb(240, 240, 240)",
+    };
     const mainStyle = {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        margin: "0px 70px",
     };
 
     return (
         <div style={mainStyle}>
+            <div style={titleStyle}>New Ticket</div>
             <ResRender res={res} pid={props.pid} />
             <div>
                 {createSelectFields(fieldData, userMap)}
