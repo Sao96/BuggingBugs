@@ -1,4 +1,4 @@
-import React, { createRef, useCallback, useState } from "react";
+import React, { useEffect, createRef, useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ticketboardFields } from "fields/ticketboardfields";
 import Button from "util/Button.jsx";
@@ -6,8 +6,18 @@ import { createSelectFields, createInputFields } from "../util/InputForm";
 import { domain } from "routes";
 import { Redirect, useHistory } from "react-router-dom";
 import { ErrorBox } from "util/ErrorBox";
+import { ModalTitle } from "util/ModalTitle";
+import { ticketboardActions } from "actions/ticketboardactions";
+import { sharedActions } from "actions/sharedactions";
 
-const PushTicketEdit = async (fieldData, setRes, pid, tid) => {
+const PushTicketEdit = async (
+    fieldData,
+    setRes,
+    pid,
+    tid,
+    setModified,
+    dispatch
+) => {
     const data = {};
     data.tid = tid;
     for (let field in fieldData) {
@@ -28,8 +38,19 @@ const PushTicketEdit = async (fieldData, setRes, pid, tid) => {
         cache: "no-cache",
         redirect: "follow",
         body: JSON.stringify(data),
-    }); //THEN get the info to build the cards
-    setRes([res.status, await res.text()]);
+    });
+    const resStatus = res.status,
+        resData = await res.json();
+    if (resStatus === 200) {
+        dispatch({
+            type: ticketboardActions.UPDATE_DISP_TICKET_INFO,
+            data: data,
+        });
+        setModified(true);
+        dispatch({ type: sharedActions.POP_MODAL_STATE });
+    } else {
+        setRes([resData, resStatus]);
+    }
 };
 
 //maps uid with name.
@@ -57,11 +78,7 @@ const createHTMLDate = (date) => {
 
 const ResRender = (props) => {
     const res = props.res;
-    const pid = props.pid;
     switch (res[0]) {
-        case 200:
-            useHistory().go();
-            return <div></div>;
         case 300:
             return <Redirect to={"/login"} />;
         case 400:
@@ -74,10 +91,19 @@ const ResRender = (props) => {
 };
 
 function ModalEditTicketForm(props) {
+    const dispatch = useDispatch();
+    const [modified, setModified] = useState(false);
+    const [res, setRes] = useState([-1, ""]);
     const currFieldVals = useSelector((state) => {
         return state.ticketboard[ticketboardFields.NEW_TICKET_FORM_INFO];
     });
-    const [res, setRes] = useState([-1, ""]);
+    useEffect(() => {
+        return () => {
+            if (modified) {
+                dispatch({ type: ticketboardActions.SET_REFRESH_NEEDED });
+            }
+        };
+    }, [modified]);
     const fieldData = {
         to: [createRef(), currFieldVals.to],
         priority: [createRef(), currFieldVals.priority],
@@ -91,15 +117,16 @@ function ModalEditTicketForm(props) {
 
     const userMap = generateUserMap(props.users);
     const createClickHandler = useCallback(() => {
-        PushTicketEdit(fieldData, setRes, props.pid, tid);
-    }, [fieldData]);
+        PushTicketEdit(
+            fieldData,
+            setRes,
+            props.pid,
+            tid,
+            setModified,
+            dispatch
+        );
+    }, [fieldData, dispatch, setModified]);
 
-    const titleStyle = {
-        fontFamily: "Didact Gothic",
-        fontSize: "36px",
-        marginBottom: "35px",
-        color: "rgb(240, 240, 240)",
-    };
     const mainStyle = {
         display: "flex",
         flexDirection: "column",
@@ -109,7 +136,7 @@ function ModalEditTicketForm(props) {
 
     return (
         <div style={mainStyle}>
-            <header style={titleStyle}>Edit Ticket</header>
+            <ModalTitle text={"Edit Ticket"} />
             <ResRender res={res} pid={props.pid} />
             <div>
                 {createSelectFields(fieldData, userMap)}

@@ -18,6 +18,20 @@ function ticketboardReducer(prevState = ticketboardInitialState, action) {
         case ticketboardActions.SET_TICKETS:
             newState[ticketboardFields.TICKETS] = action.tickets;
             break;
+        case ticketboardActions.SET_DISP_TICKET_INFO:
+            newState[ticketboardFields.DISP_TICKET_INFO] = {
+                ...action.ticketInfo,
+            };
+            break;
+        case ticketboardActions.SET_TICKET_MODIFIED:
+            newState[ticketboardFields.TICKET_MODIFIED] = true;
+            break;
+        case ticketboardActions.UPDATE_DISP_TICKET_INFO:
+            for (let field in action.data) {
+                newState[ticketboardFields.DISP_TICKET_INFO][field] =
+                    action.data[field];
+            }
+            break;
         case ticketboardActions.SET_DISPLAY_SEARCH_FILTER:
             newState[ticketboardFields.DISPLAY_SEARCH_FILTER] = !newState[
                 ticketboardFields.DISPLAY_SEARCH_FILTER
@@ -43,11 +57,6 @@ function ticketboardReducer(prevState = ticketboardInitialState, action) {
                 ticketboardFields.FILTER_TS_CLOSED
             ];
             break;
-        case ticketboardActions.SET_DISP_TICKET_INFO:
-            newState[ticketboardFields.DISP_TICKET_INFO] = {
-                ...action.ticketInfo,
-            };
-            break;
         case ticketboardActions.FLUSH_CREATE_FORM_INFO:
             newState[ticketboardFields.NEW_TICKET_FORM_INFO] = {
                 to: "",
@@ -66,6 +75,16 @@ function ticketboardReducer(prevState = ticketboardInitialState, action) {
             break;
         case ticketboardActions.FLUSH_TICKETBOARD_STATE:
             return ticketboardInitialState;
+        case ticketboardActions.FLUSH_DISP_TICKET_STATE:
+            newState[ticketboardFields.DISP_TICKET_INFO] = {
+                priority: "",
+                dueTime: "",
+                time: "",
+                tags: "",
+                environment: "",
+                summary: "",
+            };
+            break;
     }
     return newState;
 }

@@ -4,6 +4,7 @@ const ticketboardInitialState = {
     [ticketboardFields.USERS]: [],
     [ticketboardFields.TICKETS]: [],
     [ticketboardFields.DISPLAY_SEARCH_FILTER]: false,
+    [ticketboardFields.TICKET_MODIFIED]: false,
     [ticketboardFields.FILTER_TS_OPEN]: false,
     [ticketboardFields.FILTER_TS_IN_PROGRESS]: false,
     [ticketboardFields.FILTER_TS_PENDING_APPROVAL]: false,

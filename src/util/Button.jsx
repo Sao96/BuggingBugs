@@ -27,6 +27,7 @@ export default function Button(props) {
         fontSize: "18px",
         border: "solid 1px rgb(73, 99, 114)",
         cursor: "pointer",
+        userSelect: "none",
     };
     return (
         <div>

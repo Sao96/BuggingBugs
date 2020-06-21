@@ -15,8 +15,10 @@ import { domain } from "routes";
 import { ticketboardActions } from "actions/ticketboardactions";
 import { ticketboardFields } from "fields/ticketboardfields";
 import { Toolbar } from "./components/Toolbar";
+import ClipLoader from "react-spinners/ClipLoader";
 
-const loadProject = async (dispatch, pid) => {
+const loadProject = async (dispatch, pid, setTicketsLoading) => {
+    setTicketsLoading(true);
     var headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
@@ -32,12 +34,36 @@ const loadProject = async (dispatch, pid) => {
     const dbData = await res.json();
     dispatch({ type: ticketboardActions.SET_USERS, users: dbData.users });
     dispatch({ type: ticketboardActions.SET_TICKETS, tickets: dbData.tickets });
+    setTicketsLoading(false);
+};
+
+const TicketsLoadingDisplay = (props) => {
+    if (props.loading) {
+        const containerStyle = {
+            position: "fixed",
+            left: "50%",
+            top: "25%",
+            zIndex: 1,
+        };
+        return (
+            <div style={containerStyle}>
+                <ClipLoader
+                    size={150}
+                    color={"rgb(200,200,200)"}
+                    loading={true}
+                />
+            </div>
+        );
+    }
+
+    return <></>;
 };
 
 function TicketBoard(props) {
     const refreshNeeded = useSelector((state) => {
         return state.ticketboard[ticketboardFields.REFRESH_NEEDED];
     });
+    const [ticketsLoading, setTicketsLoading] = useState(true);
     const modalRef = createRef();
     const dispatch = useDispatch();
     const query = new URLSearchParams(props.location.search);
@@ -65,7 +91,7 @@ function TicketBoard(props) {
     }, []);
 
     useEffect(() => {
-        loadProject(dispatch, pid);
+        loadProject(dispatch, pid, setTicketsLoading);
     }, [refreshNeeded]);
 
     const currModalContext = () => {
@@ -91,44 +117,11 @@ function TicketBoard(props) {
         alignItems: "flex-start",
         width: "100%",
     };
-    const buttonLayout = {
-        display: "flex",
-        marginBottom: "5px",
-    };
-    const buttonSpacing = {
-        marginRight: "10px",
-    };
 
     return (
         <main style={mainStyle}>
             <Toolbar />
-
-            {/* <div style={buttonLayout}>
-                <div style={buttonSpacing}>
-                    <Button
-                        text={"Settings"}
-                        backgroundColor="rgb(0,20,150)"
-                        onClick={launchSettingsHandler}
-                    />
-                </div>
-                <div style={buttonSpacing}>
-                    <Button
-                        text={"Create Ticket"}
-                        backgroundColor="green"
-                        onClick={createTicketClickHandler}
-                    />
-                </div>
-                <div style={buttonSpacing}>
-                    <Button
-                        text={"Invite User"}
-                        backgroundColor={"rgb(10, 20, 31)"}
-                        onClick={createInviteHandler}
-                    />
-                </div>
-                <div style={buttonSpacing}>
-                    <Filter />
-                </div>
-            </div> */}
+            <TicketsLoadingDisplay loading={ticketsLoading} />
             <TicketDisplayer tickets={tickets} users={users} pid={pid} />
             <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
         </main>
