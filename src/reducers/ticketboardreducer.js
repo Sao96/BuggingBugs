@@ -4,19 +4,16 @@ import { ticketboardFields } from "fields/ticketboardfields.js";
 function ticketboardReducer(prevState = ticketboardInitialState, action) {
     let newState = { ...prevState };
     switch (action.type) {
+        case ticketboardActions.SET_TICKETBOARD_INFO:
+            newState[ticketboardFields.UID] = action.uid;
+            newState[ticketboardFields.USERS] = action.users;
+            newState[ticketboardFields.TICKETS] = action.tickets;
+            newState[ticketboardFields.AUTH_LEVEL] = action.authLevel;
+            break;
         case ticketboardActions.SET_REFRESH_NEEDED:
             newState[ticketboardFields.REFRESH_NEEDED] = !newState[
                 ticketboardFields.REFRESH_NEEDED
             ];
-            break;
-        case ticketboardActions.SET_PID:
-            newState[ticketboardFields.PID] = action.pid;
-            break;
-        case ticketboardActions.SET_USERS:
-            newState[ticketboardFields.USERS] = action.users;
-            break;
-        case ticketboardActions.SET_TICKETS:
-            newState[ticketboardFields.TICKETS] = action.tickets;
             break;
         case ticketboardActions.SET_DISP_TICKET_INFO:
             newState[ticketboardFields.DISP_TICKET_INFO] = {

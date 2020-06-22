@@ -172,6 +172,7 @@ export default function Ticket(props) {
         headline: props.headline,
         summary: props.summary,
         tid: props._id,
+        status: props.status,
     };
 
     const launchModalHandler = () => {

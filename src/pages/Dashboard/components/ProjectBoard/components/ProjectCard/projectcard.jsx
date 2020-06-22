@@ -44,7 +44,7 @@ export default function ProjectCard(props) {
 
     return (
         <div style={projectcardStyle} onClick={launchProject}>
-            <div style={titleStyle}>{props.projectName}</div>
+            <header style={titleStyle}>{props.projectName}</header>
             {Separator("rgb(71, 196, 255)")}
             <div style={{ paddingBottom: "10px" }}></div>
             <img

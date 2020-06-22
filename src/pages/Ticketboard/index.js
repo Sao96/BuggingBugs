@@ -32,8 +32,13 @@ const loadProject = async (dispatch, pid, setTicketsLoading) => {
         redirect: "follow",
     });
     const dbData = await res.json();
-    dispatch({ type: ticketboardActions.SET_USERS, users: dbData.users });
-    dispatch({ type: ticketboardActions.SET_TICKETS, tickets: dbData.tickets });
+    dispatch({
+        type: ticketboardActions.SET_TICKETBOARD_INFO,
+        uid: dbData.uid,
+        users: dbData.users,
+        tickets: dbData.tickets,
+        authLevel: dbData.authLevel,
+    });
     setTicketsLoading(false);
 };
 
@@ -73,11 +78,12 @@ function TicketBoard(props) {
             return state[key][field];
         });
     };
-    const users = useSelector((state) => {
-        return state.ticketboard[ticketboardFields.USERS];
-    });
-    const tickets = useSelector((state) => {
-        return state.ticketboard[ticketboardFields.TICKETS];
+    const [users, tickets, uid] = useSelector((state) => {
+        return [
+            state.ticketboard[ticketboardFields.USERS],
+            state.ticketboard[ticketboardFields.TICKETS],
+            state.ticketboard[ticketboardFields.UID],
+        ];
     });
 
     useEffect(() => {
@@ -122,7 +128,12 @@ function TicketBoard(props) {
         <main style={mainStyle}>
             <Toolbar />
             <TicketsLoadingDisplay loading={ticketsLoading} />
-            <TicketDisplayer tickets={tickets} users={users} pid={pid} />
+            <TicketDisplayer
+                tickets={tickets}
+                users={users}
+                pid={pid}
+                uid={uid}
+            />
             <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
         </main>
     );

@@ -61,12 +61,15 @@ import { TypeFilter } from "./components/TypeFilter";
  * @return a list of lists, where each list corresponds to the tickets of
  * a certain status.
  */
-const generateTicketCards = (tickets, usersMap) => {
+const generateTicketCards = (tickets, uid, usersMap) => {
     const openTickets = [],
         pendingTickets = [],
         closedTickets = [];
     for (let idx in tickets) {
-        const fromPfp = usersMap[tickets[idx].from].pfp;
+        const fromPfp =
+            tickets[idx].to === uid
+                ? usersMap[tickets[idx].from].pfp
+                : usersMap[tickets[idx].to].pfp;
         const fromName = usersMap[tickets[idx].from].name;
         const nextTicket = (
             <Ticket {...tickets[idx]} pfp={fromPfp} fromName={fromName} />
@@ -93,6 +96,7 @@ function TicketDisplayer(props) {
     const [activeSection, setActiveSection] = useState(0);
     const [openTickets, pendingTickets, closedTickets] = generateTicketCards(
         props.tickets,
+        props.uid,
         props.users
     );
     const ticketTypes = [

@@ -11,11 +11,9 @@ import ModalNewProject from "./components/ModalNewProject/modalnewproject.jsx";
 import ModalCreateProject from "./components/ModalCreateProject/modalcreateproject.jsx";
 import ModalJoinProject from "./components/ModalJoinProject/modaljoinproject.jsx";
 import Button from "util/Button.jsx";
-import { Navbar } from "util/navbar.jsx";
 import ClipLoader from "react-spinners/ClipLoader";
 import { ErrorBox } from "util/ErrorBox";
 import { domain } from "routes";
-import { Container } from "@material-ui/core";
 
 const selector = (key, field) => {
     return useSelector((state) => {

@@ -13,6 +13,7 @@ import { TextButton } from "util/TextButton";
 import { ModalTitle } from "util/ModalTitle";
 import { SuccessBox } from "util/SuccessBox";
 import { ErrorBox } from "util/ErrorBox";
+import { ticketStatusCodes } from "util/ticketStatusCodes";
 import { domain } from "routes";
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -41,7 +42,43 @@ async function PushTicketDelete(pid, tid, setRes, setLoading, dispatch) {
         dispatch({ type: sharedActions.EMPTY_MODAL_STACK });
     } else {
         setLoading(false);
-        setRes([resStatus, resData]);
+        setRes([resData, resStatus]);
+    }
+}
+async function PushTicketStatusChange(
+    newTicketStatus,
+    pid,
+    tid,
+    setRes,
+    setLoading,
+    dispatch
+) {
+    setLoading(true);
+    var headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+    const data = {
+        tid: tid,
+        newTicketStatus: newTicketStatus,
+    };
+    const endpoint = domain + "updateticketstatus?pid=" + pid; //subject to change
+    const res = await fetch(endpoint, {
+        method: "POST",
+        headers: headers,
+        credentials: "include",
+        mode: "cors",
+        cache: "no-cache",
+        redirect: "follow",
+        body: JSON.stringify(data),
+    });
+    const resStatus = res.status,
+        resData = await res.json();
+    if (resStatus === 200) {
+        dispatch({ type: ticketboardActions.SET_REFRESH_NEEDED });
+        dispatch({ type: sharedActions.EMPTY_MODAL_STACK });
+    } else {
+        setLoading(false);
+        setRes([resData, resStatus]);
     }
 }
 
@@ -69,7 +106,7 @@ const ResRender = (props) => {
             return <></>;
         case 400:
         case 500:
-            return <ErrorBox text={res[1]} />;
+            return <ErrorBox text={res[0]} />;
         default:
             return <ErrorBox text={"An unknown error has occured."} />;
     }
@@ -85,15 +122,89 @@ const RenderLoading = (props) => {
     return <></>;
 };
 
+const ChangeTicketStateButtonsLeader = (props) => {
+    const ticketStatus = props.ticketStatus;
+    const handlers = props.handlers;
+    let button1Data, button2Data;
+    switch (ticketStatus) {
+        case ticketStatusCodes["open"]:
+            button1Data = ["Close", "green", handlers["closed"]];
+            button2Data = null;
+            break;
+        case ticketStatusCodes["pending"]:
+            button1Data = ["Approve", "green", handlers["closed"]];
+            button2Data = ["Decline", "red", handlers["open"]];
+            break;
+        case ticketStatusCodes["closed"]:
+            button1Data = ["Reopen", "green", handlers["open"]];
+            button2Data = null;
+            break;
+    }
+    const button1 = (
+        <Button
+            text={button1Data[0]}
+            backgroundColor={button1Data[1]}
+            onClick={button1Data[2]}
+        />
+    );
+    const button2 = button2Data ? (
+        <Button
+            text={button2Data[0]}
+            backgroundColor={button2Data[1]}
+            onClick={button2Data[2]}
+        />
+    ) : (
+        <></>
+    );
+    return (
+        <div style={{ display: "flex" }}>
+            {button1}
+            <span style={{ paddingLeft: "15px" }} />
+            {button2}
+        </div>
+    );
+};
+const ChangeTicketStateButtonsRegular = (props) => {
+    const ticketStatus = props.ticketStatus;
+    const handlers = props.handlers;
+    let buttonData;
+    switch (ticketStatus) {
+        case ticketStatusCodes["open"]:
+            buttonData = ["Request Review", "green", handlers["pending"]];
+            break;
+        case ticketStatusCodes["pending"]:
+            buttonData = ["Cancel Review", "red", handlers["open"]];
+            break;
+        case ticketStatusCodes["closed"]:
+            const closedButtonStyle = {
+                display: "flex",
+                justifyContent: "center",
+                padding: "10px",
+                fontFamily: "Didact Gothic",
+                fontSize: "20px",
+            };
+            return <div style={closedButtonStyle}>Ticket is closed.</div>;
+    }
+
+    return (
+        <Button
+            text={buttonData[0]}
+            backgroundColor={buttonData[1]}
+            onClick={buttonData[2]}
+        />
+    );
+};
+
 function ModalTicketForm(props) {
     const dispatch = useDispatch();
     const [res, setRes] = useState(["", -1]);
     const [loading, setLoading] = useState(false);
-    const pid = useSelector((state) => {
-        return state.ticketboard[ticketboardFields.PID];
-    });
-    const ticketInfo = useSelector((state) => {
-        return state.ticketboard[ticketboardFields.DISP_TICKET_INFO];
+    const [pid, ticketInfo, authLevel] = useSelector((state) => {
+        return [
+            state.ticketboard[ticketboardFields.PID],
+            state.ticketboard[ticketboardFields.DISP_TICKET_INFO],
+            state.ticketboard[ticketboardFields.AUTH_LEVEL],
+        ];
     });
     const editTicketHandler = () => {
         dispatch({
@@ -105,6 +216,33 @@ function ModalTicketForm(props) {
     const deleteTicketHandler = useCallback(() => {
         PushTicketDelete(pid, ticketInfo.tid, setRes, setLoading, dispatch);
     }, [pid, ticketInfo.tid]);
+
+    let statusChangeRequestHandlers = {};
+    for (let [name, code] of Object.entries(ticketStatusCodes)) {
+        statusChangeRequestHandlers[name] = useCallback(() => {
+            PushTicketStatusChange(
+                code,
+                pid,
+                ticketInfo.tid,
+                setRes,
+                setLoading,
+                dispatch
+            );
+        }, [setRes, setLoading, dispatch]);
+    }
+
+    const changeStateButtons =
+        authLevel === 0 ? (
+            <ChangeTicketStateButtonsLeader
+                handlers={statusChangeRequestHandlers}
+                ticketStatus={ticketInfo.status}
+            />
+        ) : (
+            <ChangeTicketStateButtonsRegular
+                handlers={statusChangeRequestHandlers}
+                ticketStatus={ticketInfo.status}
+            />
+        );
 
     return (
         <article
@@ -130,11 +268,7 @@ function ModalTicketForm(props) {
                     marginTop: "20px",
                 }}
             >
-                <Button
-                    text={"Close Ticket"}
-                    backgroundColor={"green"}
-                    onClick={editTicketHandler}
-                />{" "}
+                {changeStateButtons}
             </div>
         </article>
     );
