@@ -184,8 +184,8 @@ export default function Ticket(props) {
     };
     return (
         <main style={containerStyle} onClick={launchModalHandler}>
-            {PFPImage(props.pfp)}
-            {Sender(props.fromName)}
+            {PFPImage(props.cardPfp)}
+            {Sender(props.cardName)}
             {Separator(priorityColor)}
             {HeadlineText(props.headline)}
             {StatusIcon(props.status, priorityColor)}

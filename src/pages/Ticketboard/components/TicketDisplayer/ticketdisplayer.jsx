@@ -61,20 +61,33 @@ import { TypeFilter } from "./components/TypeFilter";
  * @return a list of lists, where each list corresponds to the tickets of
  * a certain status.
  */
-const generateTicketCards = (tickets, uid, usersMap) => {
+const generateTicketCards = (tickets, authLevel, usersMap) => {
     const openTickets = [],
         pendingTickets = [],
         closedTickets = [];
     for (let idx in tickets) {
-        const fromPfp =
-            tickets[idx].to === uid
-                ? usersMap[tickets[idx].from].pfp
-                : usersMap[tickets[idx].to].pfp;
-        const fromName = usersMap[tickets[idx].from].name;
+        let ticket = tickets[idx];
+        let fromInfo = usersMap[ticket.from],
+            toInfo = usersMap[ticket.to],
+            cardPfp,
+            cardName;
+        if (authLevel === 0) {
+            cardPfp = toInfo.pfp;
+            cardName = toInfo.name;
+        } else {
+            cardPfp = fromInfo.pfp;
+            cardName = fromInfo.name;
+        }
         const nextTicket = (
-            <Ticket {...tickets[idx]} pfp={fromPfp} fromName={fromName} />
+            <Ticket
+                {...ticket}
+                cardPfp={cardPfp}
+                fromPfp={fromInfo.pfp}
+                fromName={fromInfo.name}
+                cardName={cardName}
+            />
         );
-        switch (tickets[idx].status) {
+        switch (ticket.status) {
             case 0:
                 openTickets.push(nextTicket);
                 break;
@@ -96,7 +109,7 @@ function TicketDisplayer(props) {
     const [activeSection, setActiveSection] = useState(0);
     const [openTickets, pendingTickets, closedTickets] = generateTicketCards(
         props.tickets,
-        props.uid,
+        props.authLevel,
         props.users
     );
     const ticketTypes = [

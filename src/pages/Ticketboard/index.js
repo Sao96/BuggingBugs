@@ -78,11 +78,11 @@ function TicketBoard(props) {
             return state[key][field];
         });
     };
-    const [users, tickets, uid] = useSelector((state) => {
+    const [users, tickets, authLevel] = useSelector((state) => {
         return [
             state.ticketboard[ticketboardFields.USERS],
             state.ticketboard[ticketboardFields.TICKETS],
-            state.ticketboard[ticketboardFields.UID],
+            state.ticketboard[ticketboardFields.AUTH_LEVEL],
         ];
     });
 
@@ -132,7 +132,7 @@ function TicketBoard(props) {
                 tickets={tickets}
                 users={users}
                 pid={pid}
-                uid={uid}
+                authLevel={authLevel}
             />
             <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
         </main>
