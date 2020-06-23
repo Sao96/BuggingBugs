@@ -120,7 +120,6 @@ const DueDate = (date) => {
 };
 
 export default function Ticket(props) {
-    console.log(props);
     let bgColor, priorityText, priorityColor;
     let borderColor = "black";
     switch (props.priority) {

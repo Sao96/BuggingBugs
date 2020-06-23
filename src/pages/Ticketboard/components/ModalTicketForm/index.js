@@ -83,7 +83,6 @@ async function PushTicketStatusChange(
 }
 
 const FromSection = (props) => {
-    console.log("da propz", props);
     const containerStyle = {
         display: "flex",
         flexFlow: "column wrap",
@@ -238,7 +237,6 @@ function ModalTicketForm(props) {
             state.ticketboard[ticketboardFields.AUTH_LEVEL],
         ];
     });
-    console.log(ticketInfo);
     const editTicketHandler = () => {
         dispatch({
             type: ticketboardActions.SET_CREATE_FORM_INFO,

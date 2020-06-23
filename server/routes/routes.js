@@ -8,8 +8,9 @@ const GETRoutes = [
     ["/getinvites", controller.projectboardController.getInvites],
 
     ["/loadproject", controller.authorizationController.checkLoggedIn],
+    ["/loadproject", controller.tbController.checkPid],
+    ["/loadproject", controller.tbController.verifyUserExists],
     ["/loadproject", controller.tbController.getUsersInProj],
-    ["/loadproject", controller.tbController.checkUsersInProj],
     ["/loadproject", controller.tbController.getTicketsInProj],
     ["/loadproject", controller.tbController.sendProjData],
 
@@ -40,9 +41,16 @@ const POSTRoutes = [
     ["/updateticket", controller.tbController.checkUsersInProj],
     ["/updateticket", controller.tbController.updateTicket],
 
+    ["/updateticketstatus", controller.authorizationController.checkLoggedIn],
+    ["/updateticketstatus", controller.tbController.checkPid],
+    ["/updateticketstatus", controller.tbController.verifyUserExists],
+    ["/updateticketstatus", controller.tbController.checkTicketExists],
+    ["/updateticketstatus", controller.tbController.validateTicketStatusUpdate],
+    ["/updateticketstatus", controller.tbController.updateTicketStatus],
+
     ["/deleteticket", controller.authorizationController.checkLoggedIn],
     ["/deleteticket", controller.tbController.checkPid],
-    ["/updateticket", controller.tbController.checkTicketExists],
+    ["/deleteticket", controller.tbController.checkTicketExists],
     ["/deleteticket", controller.tbController.verifyIsLeader],
     ["/deleteticket", controller.tbController.deleteTicket],
 

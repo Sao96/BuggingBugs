@@ -9,8 +9,6 @@ import { ModalEditTicketForm } from "./components/ModalEditTicketForm/";
 import { ModalSettingsForm } from "./components/ModalSettingsForm";
 import { sharedActions } from "actions/sharedactions.js";
 import { sharedFields } from "fields/sharedfields.js";
-import { Filter } from "./components/Filter/filter.jsx";
-import Button from "util/Button.jsx";
 import { domain } from "routes";
 import { ticketboardActions } from "actions/ticketboardactions";
 import { ticketboardFields } from "fields/ticketboardfields";
@@ -112,7 +110,7 @@ function TicketBoard(props) {
             case 4:
                 return <ModalCreateInviteForm pid={pid} />;
             case 5:
-                return <ModalSettingsForm />; //probably pass everything to render C:
+                return <ModalSettingsForm />;
         }
     };
 

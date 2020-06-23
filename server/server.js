@@ -51,6 +51,7 @@ GETRoutes.forEach((item) => {
 });
 POSTRoutes.forEach((item) => {
     const [path, action] = item;
+    // console.log(item);
     app.post("/api" + path, action);
 });
 app.use((req, res, next) => {

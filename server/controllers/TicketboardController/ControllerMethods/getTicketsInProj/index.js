@@ -16,7 +16,7 @@ async function getTicketsInProj(req, res, next) {
         const ticketsSearch = {
             pid: mongoose.Types.ObjectId(req.query.pid),
         };
-        if (usersFound[targetIds[uid]].authLevel === 1) {
+        if (req.body.userData.authLevel === 1) {
             ticketsSearch.to = mongoose.Types.ObjectId(uid);
         }
         const Tickets = mongoose.model("Ticket");

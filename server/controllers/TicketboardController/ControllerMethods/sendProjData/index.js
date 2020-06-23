@@ -8,6 +8,7 @@ const createUserInfoTable = (users) => {
     });
     return userInfoTable;
 };
+
 /**
  * @function sendProjData
  * Expects @req.body.usersFound and @req.body.ticketsFound to be lists of users
@@ -20,6 +21,8 @@ async function sendProjData(req, res, next) {
     const projData = {
         users: createUserInfoTable(req.body.usersFound),
         tickets: req.body.ticketsFound,
+        authLevel: req.body.userData.authLevel,
+        uid: req.body.userData.uid,
     };
     req.body.res.status = 200;
     req.body.res.data = { ...projData };

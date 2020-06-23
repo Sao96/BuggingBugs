@@ -5,10 +5,10 @@ async function verifyUserExists(req, res, next) {
     try {
         const uid = mongoose.Types.ObjectId(req.body.userData.uid);
         const pid = mongoose.Types.ObjectId(req.query.pid);
-        const exists = await mongoose
+        const dbResult = await mongoose
             .model("UserIn")
-            .exists({ pid: pid, uid: uid });
-        if (!exists) {
+            .find({ pid: pid, uid: uid });
+        if (dbResult.length === 0) {
             setError(
                 req,
                 400,
@@ -17,6 +17,7 @@ async function verifyUserExists(req, res, next) {
             );
             return next(req.body.err);
         }
+        req.body.userData.authLevel = dbResult[0].authLevel;
     } catch (err) {
         setError(req, 500, err, "An internal error has occured.");
         return next(req.body.next);

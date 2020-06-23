@@ -20,6 +20,8 @@ import { promoteUser } from "./ControllerMethods/promoteUser";
 import { demoteSelf } from "./ControllerMethods/demoteSelf";
 import { verifyUserExists } from "./ControllerMethods/verifyUserExists";
 import { leaveProject } from "./ControllerMethods/leaveProject";
+import { validateTicketStatusUpdate } from "./ControllerMethods/validateTicketStatusUpdate";
+import { updateTicketStatus } from "./ControllerMethods/updateTicketStatus";
 
 const ticketboardController = {
     validateTicketFields: validateTicketFields,
@@ -44,6 +46,8 @@ const ticketboardController = {
     demoteSelf: demoteSelf,
     verifyUserExists: verifyUserExists,
     leaveProject: leaveProject,
+    validateTicketStatusUpdate: validateTicketStatusUpdate,
+    updateTicketStatus: updateTicketStatus,
 };
 
 export { ticketboardController };

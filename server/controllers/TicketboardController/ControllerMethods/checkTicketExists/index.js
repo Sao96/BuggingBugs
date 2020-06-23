@@ -10,17 +10,17 @@ import { setError } from "~/util/setError";
  * and sets @req.body.targetIds to the client sending and the recipient
  */
 async function checkTicketExists(req, res, next) {
-    const ObjectId = mongoose.Types.ObjectId;
-    if (!ObjectId.isValid(req.body.tid)) {
+    if (!mongoose.Types.ObjectId.isValid(req.body.tid)) {
         setError(req, 400, "Invalid or missing TID", "Invalid or missing TID");
         return next(req.body.err);
     }
-    req.body.tid = ObjectId(req.body.tid);
     try {
-        const found = mongoose
+        const tid = mongoose.Types.ObjectId(req.body.tid);
+        const pid = mongoose.Types.ObjectId(req.query.pid);
+        req.body.ticket = await mongoose
             .model("Ticket")
-            .exists({ _id: req.body.tid, pid: req.body.pid });
-        if (!found) {
+            .findOne({ _id: tid, pid: pid });
+        if (req.body.ticket.length === 0) {
             setError(
                 req,
                 400,
