@@ -82,6 +82,38 @@ async function PushTicketStatusChange(
     }
 }
 
+const FromSection = (props) => {
+    console.log("da propz", props);
+    const containerStyle = {
+        display: "flex",
+        flexFlow: "column wrap",
+        alignItems: "center",
+    };
+
+    return (
+        <section style={containerStyle}>
+            <img
+                style={{
+                    height: "130px",
+                    width: "130px",
+                    border: "1px solid black",
+                    borderRadius: "100%",
+                }}
+                src={props.fromPfp}
+            />
+            <div
+                style={{
+                    fontFamily: "Didact Gothic",
+                    marginBottom: "40px",
+                }}
+            >
+                From:{" "}
+                <span style={{ paddingLeft: "5px" }}> {props.fromName} </span>
+            </div>
+        </section>
+    );
+};
+
 const EditDeleteButtons = (props) => {
     const containerStyle = {
         display: "flex",
@@ -206,6 +238,7 @@ function ModalTicketForm(props) {
             state.ticketboard[ticketboardFields.AUTH_LEVEL],
         ];
     });
+    console.log(ticketInfo);
     const editTicketHandler = () => {
         dispatch({
             type: ticketboardActions.SET_CREATE_FORM_INFO,
@@ -255,6 +288,11 @@ function ModalTicketForm(props) {
         >
             <ResRender res={res} />
             <ModalTitle text={"View Ticket"} />
+            <FromSection
+                fromPfp={ticketInfo.fromPfp}
+                fromName={ticketInfo.fromName}
+            />
+
             <TicketInfoTable ticketInfo={ticketInfo} />
             <RenderLoading loading={loading} />
             <EditDeleteButtons

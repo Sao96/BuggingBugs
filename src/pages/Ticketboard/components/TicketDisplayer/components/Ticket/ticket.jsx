@@ -120,6 +120,7 @@ const DueDate = (date) => {
 };
 
 export default function Ticket(props) {
+    console.log(props);
     let bgColor, priorityText, priorityColor;
     let borderColor = "black";
     switch (props.priority) {
@@ -164,6 +165,8 @@ export default function Ticket(props) {
 
     const dispatch = useDispatch();
     const ticketModalInfo = {
+        fromPfp: props.fromPfp,
+        fromName: props.fromName,
         to: props.to,
         priority: priorityText,
         due: new Date(props.due).toString(),

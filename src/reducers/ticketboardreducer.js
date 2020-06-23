@@ -4,6 +4,9 @@ import { ticketboardFields } from "fields/ticketboardfields.js";
 function ticketboardReducer(prevState = ticketboardInitialState, action) {
     let newState = { ...prevState };
     switch (action.type) {
+        case ticketboardActions.SET_PID:
+            newState[ticketboardFields.PID] = action.pid;
+            break;
         case ticketboardActions.SET_TICKETBOARD_INFO:
             newState[ticketboardFields.UID] = action.uid;
             newState[ticketboardFields.USERS] = action.users;
