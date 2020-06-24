@@ -10,7 +10,6 @@ import { setError } from "~/util/setError";
  * subject to the found subject of the google token, and finally returns true.
  */
 async function googleVerifier(req) {
-    console.log(req.body.token);
     if (!req.body.token || typeof req.body.token !== "string") {
         setError(req, 400, "Bad google token.", "Bad google token.");
         return false;

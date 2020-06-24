@@ -193,6 +193,29 @@ test(
 );
 
 test(
+    "Bad Google token fails",
+    async () => {
+        let reqData = {
+            type: "google",
+            token: 12345,
+        };
+        let res = await fetch(testEndpoint, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            credentials: "include",
+            mode: "cors",
+            cache: "no-cache",
+            body: JSON.stringify(reqData),
+        });
+        expect(res.status).toBe(400);
+    },
+    TIMEOUT
+);
+
+test(
     "Registered google user succeeds",
     async () => {
         let reqData = {
