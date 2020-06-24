@@ -111,6 +111,7 @@ test(
     },
     TIMEOUT
 );
+
 test(
     "Check if user 2 got all invites.",
     async () => {
