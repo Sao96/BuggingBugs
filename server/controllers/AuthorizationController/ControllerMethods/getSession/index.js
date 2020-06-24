@@ -8,7 +8,6 @@ function getSession(req, res, next) {
     req.session.uid = req.body.userData.uid;
     req.body.res.status = 200;
     req.body.res.data = {};
-
     next();
 }
 

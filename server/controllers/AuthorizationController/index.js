@@ -1,4 +1,5 @@
 import { verifyInfo } from "./ControllerMethods/verifyInfo";
+import { verifyLoginInfo } from "./ControllerMethods/verifyLoginInfo";
 import { userExists } from "./ControllerMethods/userExists";
 import { authenticateUser } from "./ControllerMethods/authenticateUser";
 import { createUser } from "./ControllerMethods/createUser";
@@ -10,6 +11,7 @@ import { checkUidsExist } from "./ControllerMethods/checkUidsExist";
 
 const authorizationController = {
     verifyInfo: verifyInfo,
+    verifyLoginInfo: verifyLoginInfo,
     userExists: userExists,
     authenticateUser: authenticateUser,
     createUser: createUser,

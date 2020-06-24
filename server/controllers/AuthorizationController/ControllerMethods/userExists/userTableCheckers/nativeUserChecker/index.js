@@ -8,13 +8,12 @@ import { setError } from "~/util/setError";
  * On success sets @req.body.dbSearch to what @db.NativeUsers finds.
  */
 async function nativeUserChecker(req) {
-    const filter = {
-        email: req.body.userData.email,
-    };
     try {
-        req.body.dbSearch = await mongoose.model("NativeUser").find(filter);
+        req.body.dbSearch = await mongoose
+            .model("NativeUser")
+            .find({ email: req.body.email });
     } catch (err) {
-        setError(500, err, "An internal error has occured.");
+        setError(req, 500, err, "An internal error has occured.");
         return false;
     }
 

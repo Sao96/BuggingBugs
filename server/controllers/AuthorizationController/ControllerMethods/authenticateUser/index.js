@@ -12,6 +12,7 @@ import { setError } from "~/util/setError";
 function authenticateUser(req, res, next) {
     if (req.body.dbSearch.length === 0) {
         setError(
+            req,
             400,
             "User does not exist in Database",
             "No user found with these credentials."
@@ -38,7 +39,6 @@ function authenticateUser(req, res, next) {
             );
             return next(req.body.err.what);
     }
-
     next();
 }
 

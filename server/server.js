@@ -38,6 +38,7 @@ app.use((req, res, next) => {
     req.body.res = {};
     req.body.userData = {};
     // req.session.uid = "5ed77d10e7913f43baa85a2f";
+    console.log(req.url);
     next();
 });
 
@@ -51,14 +52,13 @@ GETRoutes.forEach((item) => {
 });
 POSTRoutes.forEach((item) => {
     const [path, action] = item;
-    // console.log(item);
     app.post("/api" + path, action);
 });
 app.use((req, res, next) => {
     if (!req.body.res.status) {
         return next(req.body.err);
     }
-    // console.log(req.url, "SUCCESS", req.body.res);
+    console.log(req.url, "SUCCESS", req.body.res);
 
     res.status(req.body.res.status).send(JSON.stringify(req.body.res.data));
 });

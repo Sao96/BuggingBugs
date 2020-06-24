@@ -7,7 +7,7 @@ import { setError } from "~/util/setError";
  * Checks to see if an invite to @req.body.to for @req.query.pid already exists
  * and sets an error, terminating the query if so
  */
-async function checkAlreadyInvited(req, body, next) {
+async function checkAlreadyInvited(req, res, next) {
     try {
         const toUid = mongoose.Types.ObjectId(req.body.to);
         const pid = mongoose.Types.ObjectId(req.query.pid);
@@ -17,6 +17,7 @@ async function checkAlreadyInvited(req, body, next) {
         if (exists) {
             setError(
                 req,
+                checkAlreadyInvited.name,
                 400,
                 "An invite to user already exists.",
                 "An invite to user already exists."
@@ -26,6 +27,7 @@ async function checkAlreadyInvited(req, body, next) {
     } catch (err) {
         setError(
             req,
+            checkAlreadyInvited.name,
             500,
             "An internal error has occured.",
             "An internal error has occured."
@@ -37,3 +39,5 @@ async function checkAlreadyInvited(req, body, next) {
 }
 
 export { checkAlreadyInvited };
+
+// create an invite,

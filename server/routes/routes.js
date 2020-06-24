@@ -17,7 +17,7 @@ const GETRoutes = [
     ["/amilogged", controller.authorizationController.amILogged],
 ];
 const POSTRoutes = [
-    ["/login", controller.authorizationController.verifyInfo],
+    ["/login", controller.authorizationController.verifyLoginInfo],
     ["/login", controller.authorizationController.userExists],
     ["/login", controller.authorizationController.authenticateUser],
     ["/login", controller.authorizationController.getSession],
