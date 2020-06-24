@@ -4,10 +4,12 @@ import fetch from "node-fetch";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import {} from "models";
+import { createTestProjects } from "createTestProjects";
 
 dotenv.config();
 const TIMEOUT = 20000;
 const testEndpoint = domain + "getprojects";
+const testUid1 = process.env.TESTUID1;
 
 function checkTargetsFound(projects, targets) {
     const targetSet = new Set();
@@ -55,36 +57,17 @@ let targets;
 test(
     "Create test projects to get.",
     async () => {
-        try {
-            targets = await mongoose.model("Project").insertMany([
-                { name: "test1", expireOn: new Date() },
-                { name: "test2", expireOn: new Date() },
-            ]);
-            await mongoose.model("UserIn").insertMany([
-                {
-                    uid: process.env.TESTUID,
-                    pid: targets[0]._id,
-                    expireOn: new Date(),
-                },
-                {
-                    uid: process.env.TESTUID,
-                    pid: targets[1]._id,
-                    expireOn: new Date(),
-                },
-            ]);
-        } catch (err) {
-            fail(err);
-        }
+        targets = await createTestProjects(testUid1, ["test1", "test2"]);
     },
     TIMEOUT
 );
 
-let sessionCookie;
+let sessionCookie1;
 test(
     "Login & Get Session",
     async () => {
         const loginInfo = {
-            email: process.env.TESTEMAIL,
+            email: process.env.TESTEMAIL1,
             password: process.env.TESTPASSWORD,
             type: "native",
         };
@@ -101,7 +84,7 @@ test(
             cache: "no-cache",
             body: JSON.stringify(loginInfo),
         });
-        sessionCookie = loginRes.headers.get("set-cookie");
+        sessionCookie1 = loginRes.headers.get("set-cookie");
         expect(loginRes.status).toBe(200);
     },
     TIMEOUT
@@ -114,7 +97,7 @@ test(
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                Cookie: sessionCookie,
+                Cookie: sessionCookie1,
             },
             credentials: "include",
             mode: "cors",
@@ -127,6 +110,14 @@ test(
         expect(checkTargetsFound(projects, targets)).toBe(true);
         await mongoose.connection.close();
     },
-
     TIMEOUT
 );
+
+(async () => {
+    if (
+        mongoose.connection.readyState === 1 ||
+        mongoose.connection.readyState === 2
+    ) {
+        await mongoose.connection.close();
+    }
+})();

@@ -27,6 +27,7 @@ async function getInvites(req, res, next) {
         ]);
         req.body.dbSearch = req.body.dbSearch.map((proj) => {
             proj.projInfo.invId = proj._id;
+            proj.projInfo.pid = proj.projInfo._id;
             return proj.projInfo;
         });
     } catch (err) {
