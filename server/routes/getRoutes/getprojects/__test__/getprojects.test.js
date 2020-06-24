@@ -33,7 +33,7 @@ test(
 test(
     "Not logged in & Redirected.",
     async () => {
-        var headers = new Headers();
+        const headers = new Headers();
         headers.append("Content-Type", "application/json");
         headers.append("Accept", "application/json");
         const endpoint = domain + "getprojects";
@@ -72,15 +72,17 @@ test("Create test projects to get.", async () => {
         fail(err);
     }
 });
+
+let sessionCookie;
 test(
-    "Login & Get Projects",
+    "Login & Get Session",
     async () => {
         const loginInfo = {
             email: process.env.TESTEMAIL,
             password: process.env.TESTPASSWORD,
             type: "native",
         };
-        var headers = new Headers();
+        const headers = new Headers();
         headers.append("Content-Type", "application/json");
         headers.append("Accept", "application/json");
         const loginEndpoint = domain + "login";
@@ -93,10 +95,15 @@ test(
             cache: "no-cache",
             body: JSON.stringify(loginInfo),
         });
-        const sessionCookie = loginRes.headers.get("set-cookie");
+        sessionCookie = loginRes.headers.get("set-cookie");
         expect(loginRes.status).toBe(200);
-
-        headers = new Headers();
+    },
+    TIMEOUT
+);
+test(
+    "Get Projects",
+    async () => {
+        const headers = new Headers();
         headers.append("Content-Type", "application/json");
         headers.append("Accept", "application/json");
         headers.append("Cookie", sessionCookie);
