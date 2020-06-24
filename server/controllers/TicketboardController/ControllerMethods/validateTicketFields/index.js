@@ -1,8 +1,5 @@
 import { setError } from "~/util/setError";
-
-const validTo = (to) => {
-    return true;
-};
+import mongoose from "mongoose";
 
 const validDue = (due) => {
     const dateRegex = /^(((?:(?:1[6-9]|[2-9]\d)?\d{2})(-)(?:(?:(?:0?[13578]|1[02])(-)31)|(?:(?:0?[1,3-9]|1[0-2])(-)(?:29|30))))|(((?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))(-)(?:0?2(-)29))|((?:(?:(?:1[6-9]|[2-9]\d)?\d{2})(-)(?:(?:0?[1-9])|(?:1[0-2]))(-)(?:0[1-9]|1\d|2[0-8]))))$/;
@@ -37,7 +34,7 @@ async function validateTicketFields(req, res, next) {
     // if (!req.session.uid) {
     //     res.status(300).redirect("/login");
     // }
-    if (!validTo(req.body.to)) {
+    if (!mongoose.Types.ObjectId.isValid(req.body.to)) {
         setError(req, 400, "Invalid Recipient.", "Invalid Recipient.");
     } else if (!validDue(req.body.due)) {
         setError(req, 400, "Invalid Due Time.", "Invalid Due Time.");
@@ -48,7 +45,7 @@ async function validateTicketFields(req, res, next) {
     } else if (!validHeadline(req.body.headline)) {
         setError(req, 400, "Invalid Headline.", "Invalid Headline.");
     } else if (!validSummary(req.body.summary)) {
-        setError(req, 400, "Invalid Recipient.", "Invalid Summary.");
+        setError(req, 400, "Invalid Summary.", "Invalid Summary.");
     }
 
     if (req.body.err.status) {

@@ -21,7 +21,12 @@ async function createTestProjects(uid, projectsNames) {
         targets = await mongoose.model("Project").insertMany(data);
         await mongoose.model("UserIn").insertMany(
             targets.map((target) => {
-                return { uid: uid, pid: target._id, expireOn: new Date() };
+                return {
+                    uid: uid,
+                    pid: target._id,
+                    authLevel: 0,
+                    expireOn: new Date(),
+                };
             })
         );
     } catch (err) {

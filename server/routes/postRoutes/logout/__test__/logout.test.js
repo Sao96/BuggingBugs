@@ -17,7 +17,6 @@ test(
         const res = await fetchRequest(amiloggedEndpoint, "GET");
         expect(res.status).toBe(200);
         const amILoggedRes = await res.json();
-        console.log("concernfroge", res, amILoggedRes);
         expect(amILoggedRes.loggedIn).toBe(false);
     },
     TIMEOUT
