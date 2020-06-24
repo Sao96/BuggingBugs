@@ -19,7 +19,8 @@ async function checkTicketExists(req, res, next) {
         const pid = mongoose.Types.ObjectId(req.query.pid);
         req.body.ticket = await mongoose
             .model("Ticket")
-            .findOne({ _id: tid, pid: pid });
+            .find({ _id: tid, pid: pid });
+
         if (req.body.ticket.length === 0) {
             setError(
                 req,

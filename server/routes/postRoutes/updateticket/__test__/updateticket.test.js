@@ -6,11 +6,12 @@ import mongoose, { mongo } from "mongoose";
 import {} from "models";
 import { createTestProjects } from "createTestProjects";
 import { addUserToTestProject } from "addUserToTestProject";
+import { createTestTicket } from "createTestTicket";
 
 dotenv.config();
 const TIMEOUT = 20000;
 const loginEndpoint = domain + "login";
-const createTicketEndpoint = domain + "createticket";
+const updateTicketEndpoint = domain + "updateticket";
 const testEmail1 = process.env.TESTEMAIL1,
     testEmail2 = process.env.TESTEMAIL2;
 const testUid1 = process.env.TESTUID1,
@@ -27,6 +28,7 @@ const validTicket = {
     tags: "React, Javascript",
     headline: "A brand new test ticket",
     summary: "Here is a brand new ticket to test with.",
+    status: 0,
 };
 Object.freeze(validTicket);
 
@@ -45,7 +47,7 @@ test(
 test(
     "Redirected when not logged in.",
     async () => {
-        const res = await fetchRequest(createTicketEndpoint, "POST");
+        const res = await fetchRequest(updateTicketEndpoint, "POST");
         expect(res.status).toBe(300);
     },
     TIMEOUT
@@ -69,7 +71,7 @@ test(
 
 let sessionCookie2;
 test(
-    "Login & Get Session for user1",
+    "Login & Get Session for user2",
     async () => {
         const loginInfo = {
             email: testEmail2,
@@ -87,7 +89,7 @@ let createdProjects;
 test(
     "Create test project from user 1.",
     async () => {
-        const newProjects = ["test1"];
+        const newProjects = ["test1", "test2"];
         createdProjects = await createTestProjects(testUid1, newProjects);
     },
     TIMEOUT
@@ -101,15 +103,27 @@ test(
     TIMEOUT
 );
 
+let targetTicket;
 test(
-    "Cannot enter an invalid to UID",
+    "Create a test ticket from user1 to user2 in test project1",
+    async () => {
+        targetTicket = await createTestTicket(
+            testUid1,
+            testUid2,
+            createdProjects[0]._id
+        );
+    },
+    TIMEOUT
+);
+
+test(
+    "Detect an invalid TID",
     async () => {
         let ticketInfo = { ...validTicket };
-        ticketInfo.pid = createdProjects[0];
+        ticketInfo.tid = 123;
 
-        ticketInfo.to = 43;
-        const res = await fetchRequest(
-            createTicketEndpoint,
+        let res = await fetchRequest(
+            updateTicketEndpoint + "?pid=" + createdProjects[1]._id,
             "POST",
             ticketInfo,
             sessionCookie1
@@ -120,14 +134,13 @@ test(
 );
 
 test(
-    "Cannot enter an invalid due date",
+    "Detect non-existent ticket in test project2",
     async () => {
         let ticketInfo = { ...validTicket };
-        ticketInfo.pid = createdProjects[0];
+        ticketInfo.tid = targetTicket[0]._id;
 
-        ticketInfo.due = "05-02-2014";
-        const res = await fetchRequest(
-            createTicketEndpoint,
+        let res = await fetchRequest(
+            updateTicketEndpoint + "?pid=" + createdProjects[1]._id,
             "POST",
             ticketInfo,
             sessionCookie1
@@ -138,84 +151,14 @@ test(
 );
 
 test(
-    "Cannot enter an invalid environment",
-    async () => {
-        let ticketInfo = { ...validTicket };
-        ticketInfo.pid = createdProjects[0];
-
-        ticketInfo.environment = 53;
-        const res = await fetchRequest(
-            createTicketEndpoint,
-            "POST",
-            ticketInfo,
-            sessionCookie1
-        );
-        expect(res.status).toBe(400);
-    },
-    TIMEOUT
-);
-
-test(
-    "Cannot enter invalid tags",
-    async () => {
-        let ticketInfo = { ...validTicket };
-        ticketInfo.pid = createdProjects[0];
-
-        ticketInfo.tags = 53;
-        const res = await fetchRequest(
-            createTicketEndpoint,
-            "POST",
-            ticketInfo,
-            sessionCookie1
-        );
-        expect(res.status).toBe(400);
-    },
-    TIMEOUT
-);
-
-test(
-    "Cannot enter an invalid headline",
-    async () => {
-        let ticketInfo = { ...validTicket };
-        ticketInfo.pid = createdProjects[0];
-
-        ticketInfo.headline = 53;
-        const res = await fetchRequest(
-            createTicketEndpoint,
-            "POST",
-            ticketInfo,
-            sessionCookie1
-        );
-        expect(res.status).toBe(400);
-    },
-    TIMEOUT
-);
-
-test(
-    "Cannot enter an invalid summary",
-    async () => {
-        let ticketInfo = { ...validTicket };
-        ticketInfo.pid = createdProjects[0];
-
-        ticketInfo.headline = 53;
-        const res = await fetchRequest(
-            createTicketEndpoint,
-            "POST",
-            ticketInfo,
-            sessionCookie1
-        );
-        expect(res.status).toBe(400);
-    },
-    TIMEOUT
-);
-
-test(
-    "Can create a valid ticket",
+    "Can update a valid ticket",
     async () => {
         let ticketInfo = { ...validTicket };
         ticketInfo.pid = createdProjects[0]._id;
+        ticketInfo.tid = targetTicket[0]._id;
+
         const res = await fetchRequest(
-            createTicketEndpoint + "?pid=" + ticketInfo.pid,
+            updateTicketEndpoint + "?pid=" + ticketInfo.pid,
             "POST",
             ticketInfo,
             sessionCookie1
@@ -226,13 +169,14 @@ test(
 );
 
 test(
-    "Non-leader cannot create a ticket",
+    "Non-leader cannot update a ticket",
     async () => {
         let ticketInfo = { ...validTicket };
         ticketInfo.pid = createdProjects[0]._id;
+        ticketInfo.tid = targetTicket[0]._id;
         [ticketInfo.from, ticketInfo.to] = [ticketInfo.to, ticketInfo.from];
         const res = await fetchRequest(
-            createTicketEndpoint + "?pid=" + ticketInfo.pid,
+            updateTicketEndpoint + "?pid=" + ticketInfo.pid,
             "POST",
             ticketInfo,
             sessionCookie2
