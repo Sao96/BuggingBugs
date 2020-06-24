@@ -1,8 +1,9 @@
 module.exports = {
     moduleDirectories: [
         ".",
-        "node_modules",
         "<rootDir>/util/testing/dbTestController",
+        "<rootDir>/util/testing",
+        "node_modules",
         "src",
     ],
     moduleNameMapper: {

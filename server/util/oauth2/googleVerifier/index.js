@@ -25,6 +25,9 @@ async function googleVerifier(req) {
             setError(req, 409, err, "Cannot validate google token.");
             return false;
         });
+    if (req.body.err.status) {
+        return false;
+    }
     const payload = ticket.getPayload();
     req.body.googleInfo = {
         sub: payload.sub,

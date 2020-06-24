@@ -1,6 +1,6 @@
 import "babel-polyfill";
 import { domain } from "domain.js";
-import fetch from "node-fetch";
+import { fetchRequest } from "fetchRequest";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import {} from "models";
@@ -8,7 +8,8 @@ import { createTestProjects } from "createTestProjects";
 
 dotenv.config();
 const TIMEOUT = 20000;
-const testEndpoint = domain + "getprojects";
+const getprojectsEndpoint = domain + "getprojects";
+const loginEndpoint = domain + "login";
 const testUid1 = process.env.TESTUID1;
 
 function checkTargetsFound(projects, targets) {
@@ -38,16 +39,7 @@ test(
 test(
     "Redirected when not logged in.",
     async () => {
-        const res = await fetch(testEndpoint, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            credentials: "include",
-            mode: "cors",
-            cache: "no-cache",
-        });
+        const res = await fetchRequest(getprojectsEndpoint, "GET");
         expect(res.status).toBe(300);
     },
     TIMEOUT
@@ -71,19 +63,7 @@ test(
             password: process.env.TESTPASSWORD,
             type: "native",
         };
-
-        const loginEndpoint = domain + "login";
-        const loginRes = await fetch(loginEndpoint, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            credentials: "include",
-            mode: "cors",
-            cache: "no-cache",
-            body: JSON.stringify(loginInfo),
-        });
+        const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
         sessionCookie1 = loginRes.headers.get("set-cookie");
         expect(loginRes.status).toBe(200);
     },
@@ -92,22 +72,18 @@ test(
 test(
     "Get Projects",
     async () => {
-        const getProjectsRes = await fetch(testEndpoint, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-                Cookie: sessionCookie1,
-            },
-            credentials: "include",
-            mode: "cors",
-            cache: "no-cache",
-        });
+        const getProjectsRes = await fetchRequest(
+            getprojectsEndpoint,
+            "GET",
+            null,
+            sessionCookie1
+        );
         expect(getProjectsRes.status).toBe(200);
         const getProjectsResData = await getProjectsRes.json();
         const projects = getProjectsResData.projects;
         expect(Array.isArray(projects)).toEqual(true);
         expect(checkTargetsFound(projects, targets)).toBe(true);
+
         await mongoose.connection.close();
     },
     TIMEOUT

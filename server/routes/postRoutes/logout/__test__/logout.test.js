@@ -1,6 +1,6 @@
 import "babel-polyfill";
 import { domain } from "domain.js";
-import fetch from "node-fetch";
+import { fetchRequest } from "fetchRequest";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -10,21 +10,14 @@ const TIMEOUT = 20000;
 const logoutEndpoint = domain + "logout";
 const amiloggedEndpoint = domain + "amilogged";
 const loginEndpoint = domain + "login";
+
 test(
     "Get a false response when not logged in",
     async () => {
-        const res = await fetch(amiloggedEndpoint, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            credentials: "include",
-            mode: "cors",
-            cache: "no-cache",
-        });
+        const res = await fetchRequest(amiloggedEndpoint, "GET");
         expect(res.status).toBe(200);
         const amILoggedRes = await res.json();
+        console.log("concernfroge", res, amILoggedRes);
         expect(amILoggedRes.loggedIn).toBe(false);
     },
     TIMEOUT
@@ -39,18 +32,7 @@ test(
             password: testPassword,
             type: "native",
         };
-
-        const loginRes = await fetch(loginEndpoint, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            credentials: "include",
-            mode: "cors",
-            cache: "no-cache",
-            body: JSON.stringify(loginInfo),
-        });
+        const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
         sessionCookie1 = loginRes.headers.get("set-cookie");
         expect(loginRes.status).toBe(200);
     },
@@ -58,19 +40,14 @@ test(
 );
 
 test(
-    "Get a true response when not logged in",
+    "Get a true response when logged in",
     async () => {
-        const res = await fetch(amiloggedEndpoint, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-                Cookie: sessionCookie1,
-            },
-            credentials: "include",
-            mode: "cors",
-            cache: "no-cache",
-        });
+        const res = await fetchRequest(
+            amiloggedEndpoint,
+            "GET",
+            null,
+            sessionCookie1
+        );
         expect(res.status).toBe(200);
         const amILoggedRes = await res.json();
         expect(amILoggedRes.loggedIn).toBe(true);
@@ -81,35 +58,26 @@ test(
 test(
     "Request logout to server",
     async () => {
-        const logoutRes = await fetch(logoutEndpoint, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-                Cookie: sessionCookie1,
-            },
-            credentials: "include",
-            mode: "cors",
-            cache: "no-cache",
-        });
+        const logoutRes = await fetchRequest(
+            logoutEndpoint,
+            "POST",
+            null,
+            sessionCookie1
+        );
         expect(logoutRes.status).toBe(200);
     },
     TIMEOUT
 );
 
 test(
-    "Get a false response when not logged in",
+    "Get a false response when not logged in with cookie",
     async () => {
-        const res = await fetch(amiloggedEndpoint, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            credentials: "include",
-            mode: "cors",
-            cache: "no-cache",
-        });
+        const res = await fetchRequest(
+            amiloggedEndpoint,
+            "GET",
+            null,
+            sessionCookie1
+        );
         expect(res.status).toBe(200);
         const amILoggedRes = await res.json();
         expect(amILoggedRes.loggedIn).toBe(false);

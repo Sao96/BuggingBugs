@@ -1,6 +1,6 @@
 import "babel-polyfill";
 import { domain } from "domain.js";
-import fetch from "node-fetch";
+import { fetchRequest } from "fetchRequest";
 import dotenv from "dotenv";
 import mongoose, { mongo } from "mongoose";
 import {} from "models";
@@ -10,7 +10,8 @@ import { createTestInvites } from "createTestInvites";
 
 dotenv.config();
 const TIMEOUT = 20000;
-const testEndpoint = domain + "getinvites";
+const getinvitesEndpoint = domain + "getinvites";
+const loginEndpoint = domain + "login";
 const testUid1 = process.env.TESTUID1;
 const testUid2 = process.env.TESTUID2;
 
@@ -41,16 +42,7 @@ test(
 test(
     "Redirected when not logged in.",
     async () => {
-        const res = await fetch(testEndpoint, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            credentials: "include",
-            mode: "cors",
-            cache: "no-cache",
-        });
+        const res = await fetchRequest(getinvitesEndpoint, "GET");
         expect(res.status).toBe(300);
     },
     TIMEOUT
@@ -65,19 +57,7 @@ test(
             password: process.env.TESTPASSWORD,
             type: "native",
         };
-
-        const loginEndpoint = domain + "login";
-        const loginRes = await fetch(loginEndpoint, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            credentials: "include",
-            mode: "cors",
-            cache: "no-cache",
-            body: JSON.stringify(loginInfo),
-        });
+        const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
         sessionCookie2 = loginRes.headers.get("set-cookie");
         expect(loginRes.status).toBe(200);
     },
@@ -95,17 +75,12 @@ test(
 test(
     "Check if user2 gets a result of no invites.",
     async () => {
-        const getInvitesRes = await fetch(testEndpoint, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-                Cookie: sessionCookie2,
-            },
-            credentials: "include",
-            mode: "cors",
-            cache: "no-cache",
-        });
+        const getInvitesRes = await fetchRequest(
+            getinvitesEndpoint,
+            "GET",
+            null,
+            sessionCookie2
+        );
         expect(getInvitesRes.status).toBe(200);
         const foundInvites = (await getInvitesRes.json()).invites;
         expect(Array.isArray(foundInvites) && foundInvites.length === 0).toBe(
@@ -139,17 +114,12 @@ test(
 test(
     "Check if user 2 got all invites.",
     async () => {
-        const getInvitesRes = await fetch(testEndpoint, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-                Cookie: sessionCookie2,
-            },
-            credentials: "include",
-            mode: "cors",
-            cache: "no-cache",
-        });
+        const getInvitesRes = await fetchRequest(
+            getinvitesEndpoint,
+            "GET",
+            null,
+            sessionCookie2
+        );
         expect(getInvitesRes.status).toBe(200);
         const foundInvites = (await getInvitesRes.json()).invites;
         expect(
