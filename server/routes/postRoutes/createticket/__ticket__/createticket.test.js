@@ -238,6 +238,40 @@ test(
             sessionCookie2
         );
         expect(res.status).toBe(400);
+    },
+    TIMEOUT
+);
+
+test(
+    "From recipient must be in group",
+    async () => {
+        let ticketInfo = { ...validTicket };
+        ticketInfo.pid = createdProjects[0]._id;
+        ticketInfo.to = mongoose.Types.ObjectId();
+        const res = await fetchRequest(
+            createTicketEndpoint + "?pid=" + mongoose.Types.ObjectId(),
+            "POST",
+            ticketInfo,
+            sessionCookie2
+        );
+        expect(res.status).toBe(400);
+    },
+    TIMEOUT
+);
+
+test(
+    "To recipient must be in group",
+    async () => {
+        let ticketInfo = { ...validTicket };
+        ticketInfo.pid = createdProjects[0]._id;
+        ticketInfo.to = mongoose.Types.ObjectId();
+        const res = await fetchRequest(
+            createTicketEndpoint + "?pid=" + ticketInfo.pid,
+            "POST",
+            ticketInfo,
+            sessionCookie2
+        );
+        expect(res.status).toBe(400);
 
         await mongoose.connection.close();
     },

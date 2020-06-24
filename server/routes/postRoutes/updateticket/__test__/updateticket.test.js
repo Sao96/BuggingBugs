@@ -9,7 +9,7 @@ import { addUserToTestProject } from "addUserToTestProject";
 import { createTestTicket } from "createTestTicket";
 
 dotenv.config();
-const TIMEOUT = 20000;
+const TIMEOUT = 40000;
 const loginEndpoint = domain + "login";
 const updateTicketEndpoint = domain + "updateticket";
 const testEmail1 = process.env.TESTEMAIL1,
@@ -95,14 +95,6 @@ test(
     TIMEOUT
 );
 
-test(
-    "Add user2 as a regular member to test project",
-    async () => {
-        await addUserToTestProject(testUid2, createdProjects[0]._id, 1);
-    },
-    TIMEOUT
-);
-
 let targetTicket;
 test(
     "Create a test ticket from user1 to user2 in test project1",
@@ -112,6 +104,30 @@ test(
             testUid2,
             createdProjects[0]._id
         );
+    },
+    TIMEOUT
+);
+test(
+    "To recipient must be in group",
+    async () => {
+        let ticketInfo = { ...validTicket };
+        ticketInfo.pid = createdProjects[0]._id;
+        ticketInfo.tid = targetTicket[0]._id;
+        ticketInfo.to = mongoose.Types.ObjectId();
+        const res = await fetchRequest(
+            updateTicketEndpoint + "?pid=" + ticketInfo.pid,
+            "POST",
+            ticketInfo,
+            sessionCookie1
+        );
+        expect(res.status).toBe(400);
+    },
+    TIMEOUT
+);
+test(
+    "Add user2 as a regular member to test project",
+    async () => {
+        await addUserToTestProject(testUid2, createdProjects[0]._id, 1);
     },
     TIMEOUT
 );
@@ -175,6 +191,26 @@ test(
         ticketInfo.pid = createdProjects[0]._id;
         ticketInfo.tid = targetTicket[0]._id;
         [ticketInfo.from, ticketInfo.to] = [ticketInfo.to, ticketInfo.from];
+        const res = await fetchRequest(
+            updateTicketEndpoint + "?pid=" + ticketInfo.pid,
+            "POST",
+            ticketInfo,
+            sessionCookie2
+        );
+        expect(res.status).toBe(400);
+
+        await mongoose.connection.close();
+    },
+    TIMEOUT
+);
+
+test(
+    "From recipient must be in group",
+    async () => {
+        let ticketInfo = { ...validTicket };
+        ticketInfo.pid = mongoose.Types.ObjectId();
+        ticketInfo.tid = targetTicket[0]._id;
+        ticketInfo.to = mongoose.Types.ObjectId();
         const res = await fetchRequest(
             updateTicketEndpoint + "?pid=" + ticketInfo.pid,
             "POST",
