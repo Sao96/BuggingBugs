@@ -3,4 +3,5 @@ module.exports = {
     moduleNameMapper: {
         models: "<rootDir>/models",
     },
+    testEnvironment: "node",
 };

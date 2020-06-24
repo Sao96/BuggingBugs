@@ -1,4 +1,3 @@
-// import {} from "module-alias/register";
 import "babel-polyfill";
 import { domain } from "domain.js";
 import fetch from "node-fetch";
@@ -8,6 +7,7 @@ import {} from "models";
 
 dotenv.config();
 const TIMEOUT = 20000;
+const testEndpoint = domain + "getprojects";
 
 function checkTargetsFound(projects, targets) {
     const targetSet = new Set();
@@ -24,22 +24,24 @@ function checkTargetsFound(projects, targets) {
 test(
     "Connect to DB",
     async () => {
-        await mongoose.connect(process.env.DBURL);
+        await mongoose.connect(process.env.DBURL, {
+            useUnifiedTopology: true,
+            useNewUrlParser: true,
+        });
         expect(true).toBe(true);
     },
     TIMEOUT
 );
 
 test(
-    "Not logged in & Redirected.",
+    "Redirected when not logged in.",
     async () => {
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        headers.append("Accept", "application/json");
-        const endpoint = domain + "getprojects";
-        const res = await fetch(endpoint, {
+        const res = await fetch(testEndpoint, {
             method: "GET",
-            headers: headers,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
             credentials: "include",
             mode: "cors",
             cache: "no-cache",
@@ -50,28 +52,32 @@ test(
 );
 
 let targets;
-test("Create test projects to get.", async () => {
-    try {
-        targets = await mongoose.model("Project").insertMany([
-            { name: "test1", expireOn: new Date() },
-            { name: "test2", expireOn: new Date() },
-        ]);
-        await mongoose.model("UserIn").insertMany([
-            {
-                uid: process.env.TESTUID,
-                pid: targets[0]._id,
-                expireOn: new Date(),
-            },
-            {
-                uid: process.env.TESTUID,
-                pid: targets[1]._id,
-                expireOn: new Date(),
-            },
-        ]);
-    } catch (err) {
-        fail(err);
-    }
-});
+test(
+    "Create test projects to get.",
+    async () => {
+        try {
+            targets = await mongoose.model("Project").insertMany([
+                { name: "test1", expireOn: new Date() },
+                { name: "test2", expireOn: new Date() },
+            ]);
+            await mongoose.model("UserIn").insertMany([
+                {
+                    uid: process.env.TESTUID,
+                    pid: targets[0]._id,
+                    expireOn: new Date(),
+                },
+                {
+                    uid: process.env.TESTUID,
+                    pid: targets[1]._id,
+                    expireOn: new Date(),
+                },
+            ]);
+        } catch (err) {
+            fail(err);
+        }
+    },
+    TIMEOUT
+);
 
 let sessionCookie;
 test(
@@ -82,14 +88,14 @@ test(
             password: process.env.TESTPASSWORD,
             type: "native",
         };
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        headers.append("Accept", "application/json");
-        const loginEndpoint = domain + "login";
 
+        const loginEndpoint = domain + "login";
         const loginRes = await fetch(loginEndpoint, {
             method: "POST",
-            headers: headers,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
             credentials: "include",
             mode: "cors",
             cache: "no-cache",
@@ -103,14 +109,13 @@ test(
 test(
     "Get Projects",
     async () => {
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        headers.append("Accept", "application/json");
-        headers.append("Cookie", sessionCookie);
-        const getProjectsEndpoint = domain + "getprojects";
-        const getProjectsRes = await fetch(getProjectsEndpoint, {
+        const getProjectsRes = await fetch(testEndpoint, {
             method: "GET",
-            headers: headers,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Cookie: sessionCookie,
+            },
             credentials: "include",
             mode: "cors",
             cache: "no-cache",
