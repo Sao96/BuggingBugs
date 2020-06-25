@@ -3,7 +3,7 @@ import { domain } from "domain.js";
 import { fetchRequest } from "fetchRequest";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import {} from "models";
+import { } from "models";
 import { createTestProjects } from "createTestProjects";
 import { createTestTicket } from "createTestTicket";
 import { addUserToTestProject } from "addUserToTestProject";
@@ -165,7 +165,7 @@ test("Check if ticket is found", async () => {
     const tickets = (await res.json()).tickets;
     expect(
         tickets.length === 1 &&
-            String(tickets[0]._id) === String(createdTicket[0]._id)
+        String(tickets[0]._id) === String(createdTicket[0]._id)
     );
 });
 
