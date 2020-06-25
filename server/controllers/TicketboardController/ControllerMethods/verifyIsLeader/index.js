@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import setError from "~/util/setError";
+import { setError } from "~/util/setError";
 
 /**
  * @function verifyIsLeader
