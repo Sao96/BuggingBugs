@@ -6,18 +6,19 @@ import mongoose, { Mongoose } from "mongoose";
 import {} from "models";
 import { deleteTestProjects } from "deleteTestProjects";
 import { createTestProjects } from "createTestProjects";
-import { deleteTestInvites } from "deleteTestInvites";
+import { addUserToTestProject } from "addUserToTestProject";
 
 dotenv.config();
 const TIMEOUT = 30000;
 const loginEndpoint = domain + "login";
-const getInvitesEndpoint = domain + "getinvites";
-const createInviteEndpoint = domain + "createinvite";
+const renameProjectEndpoint = domain + "renameproject";
+const getProjectsEndpoint = domain + "getprojects";
 const testEmail1 = process.env.TESTEMAIL1,
     testEmail2 = process.env.TESTEMAIL2;
 const testUid1 = process.env.TESTUID1,
     testUid2 = process.env.TESTUID2;
 const testPassword = process.env.TESTPASSWORD;
+const renameName = "Renamed";
 
 test(
     "Connect to DB",
@@ -34,7 +35,7 @@ test(
 test(
     "Redirected when not logged in.",
     async () => {
-        const res = await fetchRequest(createInviteEndpoint, "POST");
+        const res = await fetchRequest(renameProjectEndpoint, "POST");
         expect(res.status).toBe(300);
     },
     TIMEOUT
@@ -73,9 +74,9 @@ test(
 );
 
 test(
-    "Delete any existing invites for user2",
+    "Delete user1's test projects",
     async () => {
-        await deleteTestInvites(testUid2);
+        await deleteTestProjects(testUid1);
     },
     TIMEOUT
 );
@@ -89,22 +90,31 @@ test(
     },
     TIMEOUT
 );
+test(
+    "Add user2 into test project.",
+    async () => {
+        await addUserToTestProject(testUid2, createdProjects[0]._id, 1);
+    },
+    TIMEOUT
+);
 
 test(
-    "Invalid to recipient fails (Value, non-existent)",
+    "Reject invalid project name",
     async () => {
-        let reqData = { to: 321 };
+        const reqData = {
+            projName: 123,
+        };
         let res = await fetchRequest(
-            createInviteEndpoint + "?pid=" + createdProjects[0]._id,
+            renameProjectEndpoint,
             "POST",
             reqData,
             sessionCookie1
         );
         expect(res.status).toBe(400);
 
-        reqData.to = mongoose.Types.ObjectId();
+        reqData.projName = "";
         res = await fetchRequest(
-            createInviteEndpoint + "?pid=" + createdProjects[0]._id,
+            renameProjectEndpoint,
             "POST",
             reqData,
             sessionCookie1
@@ -115,83 +125,49 @@ test(
 );
 
 test(
-    "Invalid pid fails",
+    "Non-leader cannot update name",
     async () => {
-        let reqData = { to: testUid2 };
-        let res = await fetchRequest(
-            createInviteEndpoint + "?pid=" + "[123",
+        let reqData = { projName: renameName };
+        const res = await fetchRequest(
+            renameProjectEndpoint + "?pid=" + createdProjects[0]._id,
             "POST",
             reqData,
-            sessionCookie1
-        );
-        expect(res.status).toBe(400);
-
-        res = await fetchRequest(
-            createInviteEndpoint + "?pid=" + mongoose.Types.ObjectId(),
-            "POST",
-            reqData,
-            sessionCookie1
-        );
-        expect(res.status).toBe(400);
-    },
-    TIMEOUT
-);
-
-test(
-    "Invalid to recipient fails (Value, non-existent)",
-    async () => {
-        let reqData = { to: 321 };
-        let res = await fetchRequest(
-            createInviteEndpoint + "?pid=" + createdProjects[0]._id,
-            "POST",
-            reqData,
-            sessionCookie1
-        );
-        expect(res.status).toBe(400);
-
-        reqData.to = mongoose.Types.ObjectId();
-        res = await fetchRequest(
-            createInviteEndpoint + "?pid=" + createdProjects[0]._id,
-            "POST",
-            reqData,
-            sessionCookie1
-        );
-        expect(res.status).toBe(400);
-    },
-    TIMEOUT
-);
-
-test(
-    "user1q successfully invites user2 to testproject",
-    async () => {
-        let reqData = { to: testUid2 };
-        let res = await fetchRequest(
-            createInviteEndpoint + "?pid=" + createdProjects[0]._id,
-            "POST",
-            reqData,
-            sessionCookie1
-        );
-        expect(res.status).toBe(200);
-    },
-    TIMEOUT
-);
-
-test(
-    "User2 finds invite",
-    async () => {
-        let reqData = { to: testUid2 };
-        let res = await fetchRequest(
-            getInvitesEndpoint,
-            "GET",
-            null,
             sessionCookie2
         );
+        expect(res.status).toBe(400);
+    },
+    TIMEOUT
+);
+
+test(
+    "Rename test project",
+    async () => {
+        let reqData = { projName: renameName };
+        const res = await fetchRequest(
+            renameProjectEndpoint + "?pid=" + createdProjects[0]._id,
+            "POST",
+            reqData,
+            sessionCookie1
+        );
         expect(res.status).toBe(200);
-        const invites = (await res.json()).invites;
-        expect(
-            invites.length === 1 &&
-                String(invites[0].pid) === String(createdProjects[0]._id)
-        ).toBe(true);
+    },
+    TIMEOUT
+);
+
+test(
+    "Check renamed projected exists",
+    async () => {
+        const res = await fetchRequest(
+            getProjectsEndpoint,
+            "GET",
+            null,
+            sessionCookie1
+        );
+        expect(res.status).toBe(200);
+        const projects = (await res.json()).projects;
+        expect(projects.length === 1 && projects[0].name === renameName).toBe(
+            true
+        );
 
         await mongoose.connection.close();
     },
