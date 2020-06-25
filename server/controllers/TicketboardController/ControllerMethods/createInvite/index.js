@@ -47,7 +47,6 @@ async function createInvite(req, res, next) {
             pid: pid,
             uid: to_uid,
         });
-
         await newProjectInvite.save();
     } catch (err) {
         setError(req, 500, err, "An internal error has occured.");

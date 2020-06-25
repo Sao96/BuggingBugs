@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import { setError } from "~/util/setError";
 /**
  * @function checkUidsExist
