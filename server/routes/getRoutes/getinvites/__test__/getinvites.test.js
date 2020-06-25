@@ -9,7 +9,7 @@ import { deleteTestInvites } from "deleteTestInvites";
 import { createTestInvites } from "createTestInvites";
 
 dotenv.config();
-const TIMEOUT = 20000;
+const TIMEOUT = 30000;
 const getinvitesEndpoint = domain + "getinvites";
 const loginEndpoint = domain + "login";
 const testUid1 = process.env.TESTUID1;

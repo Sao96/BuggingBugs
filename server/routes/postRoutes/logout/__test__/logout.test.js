@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const testEmail1 = process.env.TESTEMAIL1;
 const testPassword = process.env.TESTPASSWORD;
-const TIMEOUT = 20000;
+const TIMEOUT = 30000;
 const logoutEndpoint = domain + "logout";
 const amiloggedEndpoint = domain + "amilogged";
 const loginEndpoint = domain + "login";

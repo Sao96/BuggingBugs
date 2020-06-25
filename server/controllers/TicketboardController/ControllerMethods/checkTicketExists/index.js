@@ -30,6 +30,7 @@ async function checkTicketExists(req, res, next) {
             );
             return next(req.body.err);
         }
+        req.body.ticket = req.body.ticket[0];
     } catch (err) {
         setError(req, 500, err, "An internal error has occured");
         return next(req.body.err);

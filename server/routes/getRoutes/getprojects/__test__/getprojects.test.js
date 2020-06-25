@@ -7,7 +7,7 @@ import {} from "models";
 import { createTestProjects } from "createTestProjects";
 
 dotenv.config();
-const TIMEOUT = 20000;
+const TIMEOUT = 30000;
 const getprojectsEndpoint = domain + "getprojects";
 const loginEndpoint = domain + "login";
 const testUid1 = process.env.TESTUID1;

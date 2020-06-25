@@ -8,7 +8,7 @@ dotenv.config();
 const testEmail1 = process.env.TESTEMAIL1;
 const testPassword = process.env.TESTPASSWORD;
 const googleFailToken = process.env.GOOGLEINVALIDTOKEN;
-const TIMEOUT = 20000;
+const TIMEOUT = 30000;
 const loginEndpoint = domain + "login";
 
 test(

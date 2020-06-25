@@ -9,6 +9,10 @@ import { setError } from "~/util/setError";
  * looking for all of the user info of users in a specific project.
  */
 async function getUsersInProj(req, res, next) {
+    if (!mongoose.Types.ObjectId.isValid(req.query.pid)) {
+        setError(req, 400, "Invalid PID", "Invalid PID");
+        return next(req.body.err);
+    }
     const pid = mongoose.Types.ObjectId(req.query.pid);
     if (!req.body.err.status) {
         try {

@@ -9,7 +9,7 @@ import fetch from "node-fetch";
 
 dotenv.config();
 const registerEmail = process.env.REGISTERTESTEMAIL;
-const TIMEOUT = 20000;
+const TIMEOUT = 30000;
 const registerEndpoint = domain + "register";
 const validNativeSample = {
     type: "native",

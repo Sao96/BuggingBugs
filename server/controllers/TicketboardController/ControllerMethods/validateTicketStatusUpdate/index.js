@@ -5,7 +5,7 @@ import { setError } from "~/util/setError";
  * Verifies the leader is going not going into a status 1
  * nor changing it into a status that it's already in.
  */
-async function leaderUpdateValid(req) {
+function leaderUpdateValid(req) {
     switch (req.body.newTicketStatus) {
         case 0:
             if (req.body.ticket.status === 0) {

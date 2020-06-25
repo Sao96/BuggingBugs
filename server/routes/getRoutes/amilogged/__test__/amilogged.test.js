@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import {} from "models";
 
 dotenv.config();
-const TIMEOUT = 20000;
+const TIMEOUT = 30000;
 const amiloggedEndpoint = domain + "amilogged";
 const loginEndpoint = domain + "login";
 const testemail1 = process.env.TESTEMAIL1;

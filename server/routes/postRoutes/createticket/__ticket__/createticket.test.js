@@ -8,7 +8,7 @@ import { createTestProjects } from "createTestProjects";
 import { addUserToTestProject } from "addUserToTestProject";
 
 dotenv.config();
-const TIMEOUT = 20000;
+const TIMEOUT = 30000;
 const loginEndpoint = domain + "login";
 const createTicketEndpoint = domain + "createticket";
 const testEmail1 = process.env.TESTEMAIL1,
