@@ -12,11 +12,11 @@ function TicketInfoTable(props) {
 
     const ticketInfo = props.ticketInfo;
     let tableData = [
-        ["Priority", ticketInfo.priority],
-        ["Due", ticketInfo.due.toString()],
-        ["Tags", ticketInfo.tags],
-        ["Environment", ticketInfo.environment],
-        ["Summary", ticketInfo.summary],
+        ["Priority", ticketInfo.priority, "red"],
+        ["Due", ticketInfo.due.toString(), "white"],
+        ["Tags", ticketInfo.tags, "white"],
+        ["Environment", ticketInfo.environment, "white"],
+        ["Summary", ticketInfo.summary, "white"],
     ];
 
     const even = { backgroundColor: "rgb(70,100,120, 0.7)" };
@@ -35,7 +35,7 @@ function TicketInfoTable(props) {
                     }}
                 >
                     {" "}
-                    {data[1]}
+                    <span style={{ color: data[2] }}>{data[1]}</span>
                 </td>
             </tr>
         );

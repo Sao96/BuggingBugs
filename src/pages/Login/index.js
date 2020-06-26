@@ -11,16 +11,23 @@ import { SubmitButton } from "util/Authentication/FormComponents/SubmitButton";
 import { Logo } from "util/Authentication/FormComponents/Logo";
 
 const PushLogin = async (regInfoRefs) => {
-    const data = {};
+    const data = { type: "native" };
+    console.log(regInfoRefs);
     for (let field in regInfoRefs) {
         if (regInfoRefs[field].current) {
             data[field] = regInfoRefs[field].current.value;
         }
     }
     const endpoint = domain + "login";
+    var headers = new Headers();
+
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
     const res = await fetch(endpoint, {
         method: "POST",
-        mode: "no-cors",
+        headers: headers,
+        credentials: "include",
+        mode: "cors",
         cache: "no-cache",
         redirect: "follow",
         body: JSON.stringify(data),
@@ -46,10 +53,15 @@ const ResRender = (props) => {
 };
 
 const Login = (props) => {
+    const dispatch = useDispatch();
+    const fieldRefs = {
+        email: createRef(),
+        password: createRef(),
+    };
     const [res, setRes] = useState(["", -1]);
     const [goToRegister, setGoToReigster] = useState(false);
     const loginClickHandler = useCallback(() => {
-        PushLogin(props.fieldRefs);
+        PushLogin(fieldRefs);
     }, [fieldRefs]);
     const registerClickHandler = useCallback(() => {
         setGoToReigster(true);
@@ -59,13 +71,8 @@ const Login = (props) => {
         return <Redirect push to={"/register"} />;
     }
 
-    const dispatch = useDispatch();
-    const fieldRefs = {
-        username: createRef(),
-        password: createRef(),
-    };
     const inputFields = [
-        ["Email", "text", fieldRefs.username],
+        ["Email", "text", fieldRefs.email],
         ["Password", "password", fieldRefs.password],
     ];
 

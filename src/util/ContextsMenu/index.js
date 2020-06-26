@@ -28,7 +28,9 @@ function ContextsMenu(props) {
                 active={active}
                 setActive={setActive}
             />
-            <div style={contextDisplayStyle}>{contexts[active][1]}</div>
+            <div style={contextDisplayStyle}>
+                <div style={{ paddingTop: "40px" }}>{contexts[active][1]}</div>
+            </div>
         </div>
     );
 }

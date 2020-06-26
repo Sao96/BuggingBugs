@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
+import { textHoverColor } from "util/ThemeColors";
 
 const LoginButton = (props) => {
     const [hovered, setHovered] = useState(false);
@@ -9,18 +10,21 @@ const LoginButton = (props) => {
     const onMouseLeaveHandler = () => {
         setHovered(false);
     };
+    const buttonText = "Login";
+    const containerStyle = {
+        fontSize: "16px",
+        color: hovered ? textHoverColor : "white",
+        userSelect: "none",
+        cursor: "pointer",
+    };
     return (
         <span
-            style={{
-                fontSize: "16px",
-                color: hovered ? "rgb(187, 235, 252)" : "white",
-                cursor: "pointer",
-            }}
+            style={containerStyle}
             onMouseEnter={onMouseEnterHandler}
             onMouseLeave={onMouseLeaveHandler}
             onClick={props.handler}
         >
-            Login
+            {buttonText}
         </span>
     );
 };
@@ -33,22 +37,23 @@ const RegisterButton = (props) => {
     const onMouseLeaveHandler = () => {
         setHovered(false);
     };
+    const buttonText = "Register";
+    const containerStyle = {
+        padding: "3.5px 5px",
+        fontSize: "16px",
+        border: hovered ? "0.5px solid " + textHoverColor : "0.5px solid white",
+        color: hovered ? textHoverColor : "white",
+        cursor: "pointer",
+        userSelect: "none",
+    };
     return (
         <span
-            style={{
-                padding: "3.5px 5px",
-                fontSize: "16px",
-                border: hovered
-                    ? "0.5px solid rgb(187, 235, 252)"
-                    : "0.5px solid white",
-                color: hovered ? "rgb(187, 235, 252)" : "white",
-                cursor: "pointer",
-            }}
+            style={containerStyle}
             onMouseEnter={onMouseEnterHandler}
             onMouseLeave={onMouseLeaveHandler}
             onClick={props.handler}
         >
-            Register
+            {buttonText}
         </span>
     );
 };
@@ -58,7 +63,14 @@ function LandingNavbar(props) {
     if (redirectUrl !== "") {
         return <Redirect push to={redirectUrl} />;
     }
-    const mainStyle = {
+    const loginHandler = () => {
+        setRedirect("/login");
+    };
+    const registerHandler = () => {
+        setRedirect("/register");
+    };
+    const headerText = "BuggingBugs";
+    const containerStyle = {
         fontFamily: "Montserrat",
         fontWeight: "400",
         color: "white",
@@ -68,21 +80,12 @@ function LandingNavbar(props) {
     };
 
     return (
-        <nav style={mainStyle}>
-            <header>BuggingBugs</header>
-            {/* <div style={{ paddingRight: "400px" }}></div> */}
+        <nav style={containerStyle}>
+            <header>{headerText}</header>
             <section style={{ paddingLeft: "500px" }}>
-                <LoginButton
-                    handler={() => {
-                        setRedirect("/login");
-                    }}
-                />
+                <LoginButton handler={loginHandler} />
                 <span style={{ paddingRight: "20px" }}></span>
-                <RegisterButton
-                    handler={() => {
-                        setRedirect("/register");
-                    }}
-                />
+                <RegisterButton handler={registerHandler} />
             </section>
         </nav>
     );

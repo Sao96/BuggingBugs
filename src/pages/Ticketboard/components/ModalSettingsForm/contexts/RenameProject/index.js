@@ -77,6 +77,7 @@ function RenameProject(props) {
             <div style={{ marginTop: "10px", marginBottom: "10px" }}>
                 <input ref={newNameRef} type="text"></input>
             </div>
+            <span style={{ marginTop: "15px" }}></span>
             <Button
                 onClick={sendProjectNameChangeHandler}
                 text={"Rename"}

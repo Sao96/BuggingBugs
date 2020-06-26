@@ -4,7 +4,7 @@ function NavList(props) {
     const navStyle = {
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
+        alignItems: "flex-start",
         // justifyContent: "space-between",
         height: "100%",
         backgroundColor: "rgb(10,25,45)",

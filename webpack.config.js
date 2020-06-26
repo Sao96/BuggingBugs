@@ -34,6 +34,7 @@ module.exports = {
             reducers: path.resolve("./src/reducers/"),
             initialstates: path.resolve("./src/initialstates/"),
             fields: path.resolve("./src/fields/"),
+            img: path.resolve("./src/img"),
         },
     },
     module: {

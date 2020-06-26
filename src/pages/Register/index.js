@@ -11,16 +11,21 @@ import { SubmitButton } from "util/Authentication/FormComponents/SubmitButton";
 import { Logo } from "util/Authentication/FormComponents/Logo";
 
 const PushRegister = async (regInfoRefs) => {
-    const data = {};
+    const data = { type: "native" };
     for (let field in regInfoRefs) {
         if (regInfoRefs[field].current) {
             data[field] = regInfoRefs[field].current.value;
         }
     }
-    const endpoint = domain + "login";
+    var headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Accept", "application/json");
+    const endpoint = domain + "register";
     const res = await fetch(endpoint, {
         method: "POST",
-        mode: "no-cors",
+        headers: headers,
+        credentials: "include",
+        mode: "cors",
         cache: "no-cache",
         redirect: "follow",
         body: JSON.stringify(data),
