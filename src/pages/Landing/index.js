@@ -1,68 +1,8 @@
 import React, { useEffect, createRef, useCallback } from "react";
-import { LandingNavbar } from "./components/LandingNavbar";
 import SimpleIcon from "svg/simple.svg";
 import CycleIcon from "svg/cycle.svg";
 import JuggleIcon from "svg/juggle.svg";
-const HookSection = () => {
-    const TryAppButton = (props) => {
-        const style = {
-            padding: "5px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "green",
-            fontFamily: "Montserrat",
-            fontWeight: "300",
-            color: "white",
-            fontSize: "22.5px",
-            width: "135px",
-            height: "22.5px",
-            border: "1px rgb(0,100,10) solid",
-        };
-        return <div style={style}>Try it out!</div>;
-    };
-    const hookStyle = {
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        paddingBottom: "30px",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "black",
-        fontFamily: " PT Sans, Noto Sans JP",
-        background: "#43c6ac",
-        background: "-webkit-linear-gradient(to right, #43c6ac, #191654)",
-        background: "linear-gradient(to right, #43c6ac, #191654)",
-    };
-    const mainHeaderStyle = {
-        color: "white",
-        fontSize: "45px",
-        marginTop: "0px",
-        marginBottom: "0px",
-        fontFamily: "Montserrat",
-        fontWeight: "200",
-        position: "relative",
-        paddingTop: "90px",
-        paddingBottom: "90px",
-    };
-
-    return (
-        <section style={hookStyle}>
-            <LandingNavbar />
-            <img
-                style={{
-                    width: "450px",
-                    height: "165px",
-                    position: "relative",
-                    top: "40px",
-                }}
-                src="https://media.discordapp.net/attachments/704894643317243997/723136903070875658/buggingbugW3x.png"
-            />
-            <h1 style={mainHeaderStyle}>A bug tracking solution.</h1>
-            <TryAppButton />
-        </section>
-    );
-};
+import { HookSection } from "./components/HookSection"
 
 function FeatureListing(props) {
     const Svg = props.svg;
@@ -100,7 +40,7 @@ function FeatureListing(props) {
     );
 }
 
-const MainSection = (props) => {
+const InfoSection = (props) => {
     const svgStyle = {
         height: "150px",
         width: "150px",
@@ -176,21 +116,28 @@ function Landing(props) {
         };
     }, []);
 
+    const containerStyle = { width: "100%", position: "absolute" }
+    const mainStyle = {
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+    }
+    const sectionStyle = {
+        width: "100%"
+    }
     return (
-        <div style={{ width: "100%", position: "absolute" }}>
-            <article
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "100%",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <HookSection />
-                <MainSection />
-            </article>
-        </div>
+        <div style={containerStyle}>
+            <main style={mainStyle}>
+                <section style={sectionStyle}>
+                    <HookSection />
+                </section>
+                <section>
+                    <InfoSection />
+                </section>
+            </main>
+        </div >
     );
 }
 
