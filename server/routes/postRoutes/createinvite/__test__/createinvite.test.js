@@ -10,7 +10,7 @@ import {
 } from "mongooseConnection";
 import mongoose from "mongoose";
 import { createTestProjects } from "createTestProjects";
-import { deleteTestInvites } from "deleteTestInvites";
+import { matchDbResults } from "matchDbResults";
 
 let createdProjects;
 
@@ -38,14 +38,6 @@ test(
     async () => {
         const res = await fetchRequest(ep.createinvite, "POST");
         expect(res.status).toBe(300);
-    },
-    DEFAULT_TIMEOUT
-);
-
-test(
-    "Delete any existing invites for user2",
-    async () => {
-        await deleteTestInvites(testUser2.uid);
     },
     DEFAULT_TIMEOUT
 );
@@ -132,10 +124,7 @@ test(
         );
         expect(res.status).toBe(200);
         const foundInvites = (await res.json()).invites;
-        expect(
-            foundInvites.length === 1 &&
-                String(foundInvites[0].pid) === String(createdProjects[0]._id)
-        ).toBe(true);
+        expect(matchDbResults(foundInvites, createdProjects, "pid", "_id").length === createdProjects.length)
     },
     DEFAULT_TIMEOUT
 );

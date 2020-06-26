@@ -8,23 +8,12 @@ import {
     createMongooseConnection,
     endMongooseConnection,
 } from "mongooseConnection";
+import { matchDbResults } from "matchDbResults"
 import { createTestProjects } from "createTestProjects";
 import { deleteTestInvites } from "deleteTestInvites";
 import { createTestInvites } from "createTestInvites";
 
 let createdProjects, createdInvites;
-
-function checkCreatedInvitesFound(foundInvites, expectedInvites) {
-    const createdInvitesSet = new Set();
-    expectedInvites.forEach((target) => {
-        createdInvitesSet.add(String(target.pid));
-    });
-    let matched = foundInvites.reduce((total, result) => {
-        return total + createdInvitesSet.has(String(result.pid));
-    }, 0);
-
-    return matched === expectedInvites.length;
-}
 
 test(
     "Connect to DB",
@@ -110,10 +99,7 @@ test(
         );
         expect(getInvitesRes.status).toBe(200);
         const foundInvites = (await getInvitesRes.json()).invites;
-        expect(
-            Array.isArray(foundInvites) &&
-                checkCreatedInvitesFound(foundInvites, createdInvites)
-        ).toBe(true);
+        expect(matchDbResults(foundInvites, createdInvites, "pid", "pid").length).toBe(createdInvites.length)
     },
     DEFAULT_TIMEOUT
 );

@@ -9,18 +9,7 @@ import {
     endMongooseConnection,
 } from "mongooseConnection";
 import { createTestProjects } from "createTestProjects";
-
-function checkProjectsFound(foundProjects, expectedProjects) {
-    const createdProjectsSet = new Set();
-    expectedProjects.forEach((target) => {
-        createdProjectsSet.add(String(target._id));
-    });
-    let matched = foundProjects.reduce((total, result) => {
-        return total + createdProjectsSet.has(String(result._id));
-    }, 0);
-
-    return matched === expectedProjects.length;
-}
+import { matchDbResults } from "../../../../util/testing/matchDbResults";
 
 let createdProjects;
 
@@ -71,12 +60,8 @@ test(
             testUser1.session
         );
         expect(getProjectsRes.status).toBe(200);
-        const getProjectsResData = await getProjectsRes.json();
-        const foundProjects = getProjectsResData.projects;
-        expect(
-            Array.isArray(foundProjects) &&
-                checkProjectsFound(foundProjects, createdProjects)
-        ).toEqual(true);
+        const foundProjects = (await getProjectsRes.json()).projects;
+        expect(matchDbResults(foundProjects, createdProjects, "_id", "_id").length === createdProjects.length);
     },
     DEFAULT_TIMEOUT
 );

@@ -47,14 +47,14 @@ async function createInvite(req, res, next) {
             pid: pid,
             uid: to_uid,
         });
-        await newProjectInvite.save();
+        req.body.invInfo = await newProjectInvite.save();
     } catch (err) {
         setError(req, 500, err, "An internal error has occured.");
         return next(req.body.err);
     }
 
     req.body.res.status = 200;
-    req.body.res.data = { message: "User successfully invited." };
+    req.body.res.data = { message: "User successfully invited.", invInfo: req.body.invInfo };
     next();
 }
 

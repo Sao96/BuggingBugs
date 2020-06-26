@@ -8,7 +8,7 @@ import {
 } from "mongooseConnection";
 import { deleteTestUser } from "deleteTestUser";
 
-const registerEmail = process.env.REGISTERTESTEMAIL;
+const registerEmail = "registertest@buggingbugs.bug";
 const validNativeSample = {
     type: "native",
     email: registerEmail,

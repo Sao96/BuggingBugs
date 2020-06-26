@@ -23,9 +23,9 @@ const validTicket = {
     headline: "A brand new test ticket",
     summary: "Here is a brand new ticket to test with.",
 };
-let createdProjects;
-
 Object.freeze(validTicket);
+
+let createdProjects;
 
 test(
     "Connect to DB",

@@ -28,15 +28,18 @@ async function createProject(req, res, next) {
         const newProject = new Project({
             name: req.body.projectName,
         });
-        const newProj = await newProject.save();
-        req.body.projectId = newProj._id;
+        req.body.newProjData = await newProject.save();
+        req.body.projectId = req.body.newProjData._id;
         req.body.projUserLevel = 0;
     } catch (err) {
         setError(req, 500, err, "An internal error has occured");
         return next(req.body.err);
     }
 
-    req.body.res.data = { message: "Group successfully created!" };
+    req.body.res.data = {
+        message: "Group successfully created!",
+        projInfo: req.body.newProjData
+    };
 
     next();
 }

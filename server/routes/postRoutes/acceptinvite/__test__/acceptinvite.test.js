@@ -10,11 +10,11 @@ import {
 } from "mongooseConnection";
 import mongoose from "mongoose";
 import { createTestProjects } from "createTestProjects";
-import { deleteTestInvites } from "deleteTestInvites";
 import { userExistsInTestProject } from "userExistsInTestProject";
+import { matchDbResults } from "matchDbResults";
 
 let createdProjects;
-let createdInvite;
+let createdInvites;
 
 test(
     "Connect to DB",
@@ -45,14 +45,6 @@ test(
 );
 
 test(
-    "Delete any existing invites for user2",
-    async () => {
-        await deleteTestInvites(testUser2.uid);
-    },
-    DEFAULT_TIMEOUT
-);
-
-test(
     "Create test project from user1.",
     async () => {
         const newProjects = ["test1"];
@@ -72,6 +64,7 @@ test(
             testUser1.session
         );
         expect(res.status).toBe(200);
+        createdInvites = [(await res.json()).invInfo];
     },
     DEFAULT_TIMEOUT
 );
@@ -88,10 +81,8 @@ test(
         expect(res.status).toBe(200);
         const foundInvites = (await res.json()).invites;
         expect(
-            foundInvites.length === 1 &&
-                String(foundInvites[0].pid) === String(createdProjects[0]._id)
+            matchDbResults(foundInvites, createdInvites, "invId", "_id").length === createdInvites.length
         ).toBe(true);
-        createdInvite = foundInvites[0];
     },
     DEFAULT_TIMEOUT
 );
@@ -123,7 +114,7 @@ test(
 test(
     "User2 accepts a valid invite",
     async () => {
-        let reqData = { invId: createdInvite.invId };
+        let reqData = { invId: createdInvites[0]._id };
         let res = await fetchRequest(
             ep.acceptinvite,
             "POST",
@@ -146,9 +137,7 @@ test(
         );
         expect(res.status).toBe(200);
         const foundInvites = (await res.json()).invites;
-        expect(Array.isArray(foundInvites) && foundInvites.length === 0).toBe(
-            true
-        );
+        expect(matchDbResults(foundInvites, createdInvites, "pid", "_id").length).toBe(0)
     },
     DEFAULT_TIMEOUT
 );
