@@ -10,9 +10,10 @@ import {
 } from "mongooseConnection";
 import mongoose from "mongoose";
 import { createTestProjects } from "createTestProjects";
-import { deleteTestInvites } from "deleteTestInvites";
+import { addUserToTestProject } from "addUserToTestProject";
 
 let createdProjects;
+const mockUid = mongoose.Types.ObjectId();
 
 test(
     "Connect to DB",
@@ -34,51 +35,35 @@ test(
 );
 
 test(
-    "Redirected from endpoint when not logged in",
+    "Redirected when not logged in.",
     async () => {
-        const res = await fetchRequest(ep.createinvite, "POST");
+        const res = await fetchRequest(ep.promoteuser, "POST");
         expect(res.status).toBe(300);
     },
     DEFAULT_TIMEOUT
 );
 
 test(
-    "Delete any existing invites for user2",
+    "Create test projects from user 1.",
     async () => {
-        await deleteTestInvites(testUser2.uid);
-    },
-    DEFAULT_TIMEOUT
-);
-
-test(
-    "Create test project from user1.",
-    async () => {
-        const newProjects = ["test1"];
+        const newProjects = ["test1", "test2"];
         createdProjects = await createTestProjects(testUser1.uid, newProjects);
     },
     DEFAULT_TIMEOUT
 );
 
 test(
-    "Invalid to recipient fails (Value, non-existent)",
+    "Add user2 to project as a member",
     async () => {
-        let reqData = { to: 321 };
-        let res = await fetchRequest(
-            ep.createinvite + "?pid=" + createdProjects[0]._id,
-            "POST",
-            reqData,
-            testUser1.session
-        );
-        expect(res.status).toBe(400);
+        await addUserToTestProject(testUser2.uid, createdProjects[0]._id, 1);
+    },
+    DEFAULT_TIMEOUT
+);
 
-        reqData.to = mongoose.Types.ObjectId();
-        res = await fetchRequest(
-            ep.createinvite + "?pid=" + createdProjects[0]._id,
-            "POST",
-            reqData,
-            testUser1.session
-        );
-        expect(res.status).toBe(400);
+test(
+    "Add a mock user to group",
+    async () => {
+        await addUserToTestProject(mockUid, createdProjects[0]._id, 1);
     },
     DEFAULT_TIMEOUT
 );
@@ -88,7 +73,7 @@ test(
     async () => {
         let reqData = { to: testUser2.uid };
         let res = await fetchRequest(
-            ep.createinvite + "?pid=" + "[123",
+            ep.promoteuser + "?pid=" + "[123",
             "POST",
             reqData,
             testUser1.session
@@ -96,7 +81,7 @@ test(
         expect(res.status).toBe(400);
 
         res = await fetchRequest(
-            ep.createinvite + "?pid=" + mongoose.Types.ObjectId(),
+            ep.promoteuser + "?pid=" + mongoose.Types.ObjectId(),
             "POST",
             reqData,
             testUser1.session
@@ -107,11 +92,43 @@ test(
 );
 
 test(
-    "User1 successfully invites user2 to test project",
+    "Try to promote someone not in group",
     async () => {
-        let reqData = { to: testUser2.uid };
-        let res = await fetchRequest(
-            ep.createinvite + "?pid=" + createdProjects[0]._id,
+        const reqData = { to: mongoose.Types.ObjectId() };
+        const res = await fetchRequest(
+            ep.promoteuser + "?pid=" + createdProjects[0]._id,
+            "POST",
+            reqData,
+            testUser1.session
+        );
+        expect(res.status).toBe(400);
+    },
+
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Non-leader cannot promote another user",
+    async () => {
+        const reqData = { to: mockUid };
+        const res = await fetchRequest(
+            ep.promoteuser + "?pid=" + createdProjects[0]._id,
+            "POST",
+            reqData,
+            testUser2.session
+        );
+        expect(res.status).toBe(400);
+    },
+
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Successfully promote a regular user as a leader",
+    async () => {
+        const reqData = { to: testUser2.uid };
+        const res = await fetchRequest(
+            ep.promoteuser + "?pid=" + createdProjects[0]._id,
             "POST",
             reqData,
             testUser1.session
@@ -122,20 +139,16 @@ test(
 );
 
 test(
-    "User2 finds the invite",
+    "Leader cannot promote another leader",
     async () => {
-        let res = await fetchRequest(
-            ep.getinvites,
-            "GET",
-            null,
-            testUser2.session
+        const reqData = { to: testUser2.uid };
+        const res = await fetchRequest(
+            ep.promoteuser + "?pid=" + createdProjects[0]._id,
+            "POST",
+            reqData,
+            testUser1.session
         );
-        expect(res.status).toBe(200);
-        const foundInvites = (await res.json()).invites;
-        expect(
-            foundInvites.length === 1 &&
-                String(foundInvites[0].pid) === String(createdProjects[0]._id)
-        ).toBe(true);
+        expect(res.status).toBe(400);
     },
     DEFAULT_TIMEOUT
 );

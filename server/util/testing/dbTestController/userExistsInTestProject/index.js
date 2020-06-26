@@ -13,12 +13,12 @@ async function userExistsInTestProject(uid, pid) {
             uid: mongoose.Types.ObjectId(uid),
             pid: mongoose.Types.ObjectId(pid),
         };
-        res = await mongoose.model("UserIn").exists(dbSearch);
+        res = await mongoose.model("UserIn").find(dbSearch);
     } catch (err) {
         fail(err);
     }
 
-    return res;
+    return res.length ? res : null;
 }
 
 export { userExistsInTestProject };

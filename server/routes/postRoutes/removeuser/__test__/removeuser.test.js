@@ -1,84 +1,179 @@
 import "babel-polyfill";
-import { domain } from "domain.js";
 import { fetchRequest } from "fetchRequest";
-import dotenv from "dotenv";
-import mongoose, { Mongoose } from "mongoose";
-import {} from "models";
-import { deleteTestProjects } from "deleteTestProjects";
+import { DEFAULT_TIMEOUT } from "timeouts";
+import { endpoints as ep } from "endpointUrls";
+import { createNativeTestSession } from "createNativeTestSession";
+import { testUser1, testUser2 } from "testUsers";
+import {
+    createMongooseConnection,
+    endMongooseConnection,
+} from "mongooseConnection";
+import mongoose from "mongoose";
+import { userExistsInTestProject } from "userExistsInTestProject";
 import { createTestProjects } from "createTestProjects";
 import { addUserToTestProject } from "addUserToTestProject";
 
-dotenv.config();
-const TIMEOUT = 30000;
-const loginEndpoint = domain + "login";
-const renameProjectEndpoint = domain + "renameproject";
-const getProjectsEndpoint = domain + "getprojects";
-const removeUserEndpoint = domain + "removeuser";
-const testEmail1 = process.env.TESTEMAIL1,
-    testEmail2 = process.env.TESTEMAIL2;
-const testUid1 = process.env.TESTUID1,
-    testUid2 = process.env.TESTUID2;
-const testPassword = process.env.TESTPASSWORD;
+let createdProjects;
+const fakeUserUid = mongoose.Types.ObjectId();
 
 test(
     "Connect to DB",
     async () => {
-        await mongoose.connect(process.env.DBURL, {
-            useUnifiedTopology: true,
-            useNewUrlParser: true,
-        });
-        expect(true).toBe(true);
+        expect(await createMongooseConnection()).toBe(true);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-// test(
-//     "Redirected when not logged in.",
-//     async () => {
-//         const res = await fetchRequest(removeUserEndpoint, "POST");
-//         expect(res.status).toBe(300);
-//     },
-//     TIMEOUT
-// );
+test(
+    "Successful user1, user2 login",
+    async () => {
+        testUser1.session = await createNativeTestSession(testUser1);
+        expect(testUser1.session !== null).toBe(true);
+        testUser2.session = await createNativeTestSession(testUser2);
+        expect(testUser2.session !== null).toBe(true);
+    },
+    DEFAULT_TIMEOUT
+);
 
-// let sessionCookie1;
-// test(
-//     "Login & Get Session for user1",
-//     async () => {
-//         const loginInfo = {
-//             email: testEmail1,
-//             password: testPassword,
-//             type: "native",
-//         };
-//         const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
-//         sessionCookie1 = loginRes.headers.get("set-cookie");
-//         expect(loginRes.status).toBe(200);
-//     },
-//     TIMEOUT
-// );
+test(
+    "Redirected from endpoint when not logged in",
+    async () => {
+        const res = await fetchRequest(ep.removeuser, "POST");
+        expect(res.status).toBe(300);
+    },
+    DEFAULT_TIMEOUT
+);
 
-// let sessionCookie2;
-// test(
-//     "Login & Get Session for user2",
-//     async () => {
-//         const loginInfo = {
-//             email: testEmail2,
-//             password: testPassword,
-//             type: "native",
-//         };
-//         const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
-//         sessionCookie2 = loginRes.headers.get("set-cookie");
-//         expect(loginRes.status).toBe(200);
-//     },
-//     TIMEOUT
-// );
+test(
+    "Create test project from user1.",
+    async () => {
+        const newProjects = ["test1"];
+        createdProjects = await createTestProjects(testUser1.uid, newProjects);
+    },
+    DEFAULT_TIMEOUT
+);
 
-// let createdProjects;
-// test(
-//     "Create test project from user1.",
-//     async () => {
-//         const newProjects = ["test1"];
-//         createdProjects = await createTestProjects(testUid1, newProjects);
-//     },
-//     TIMEOUT
-// );
+test(
+    "Add user2 to project as a member",
+    async () => {
+        await addUserToTestProject(testUser2.uid, createdProjects[0]._id, 1);
+    },
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Add fake user to project as a member",
+    async () => {
+        await addUserToTestProject(fakeUserUid, createdProjects[0]._id, 1);
+    },
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Check if user2 is in project",
+    async () => {
+        expect(
+            Array.isArray(
+                await userExistsInTestProject(
+                    testUser2.uid,
+                    createdProjects[0]._id
+                )
+            )
+        ).toBe(true);
+    },
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Invalid pid fails",
+    async () => {
+        let reqData = { to: testUser2.uid };
+        let res = await fetchRequest(
+            ep.removeuser + "?pid=" + "[123",
+            "POST",
+            reqData,
+            testUser1.session
+        );
+        expect(res.status).toBe(400);
+
+        res = await fetchRequest(
+            ep.removeuser + "?pid=" + mongoose.Types.ObjectId(),
+            "POST",
+            reqData,
+            testUser1.session
+        );
+        expect(res.status).toBe(400);
+    },
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Non-leader cannot remove another user.",
+    async () => {
+        let reqData = { to: fakeUserUid };
+        let res = await fetchRequest(
+            ep.removeuser + "?pid=" + createdProjects[0]._id,
+            "POST",
+            reqData,
+            testUser2.session
+        );
+        expect(res.status).toBe(400);
+    },
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Leader can remove a valid entry",
+    async () => {
+        let reqData = { to: testUser2.uid };
+        let res = await fetchRequest(
+            ep.removeuser + "?pid=" + createdProjects[0]._id,
+            "POST",
+            reqData,
+            testUser1.session
+        );
+        expect(res.status).toBe(200);
+    },
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Check if user2 is not in project",
+    async () => {
+        expect(
+            await userExistsInTestProject(testUser2.uid, createdProjects[0]._id)
+        ).toBe(null);
+    },
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Add user2 to project as a leader",
+    async () => {
+        await addUserToTestProject(testUser2.uid, createdProjects[0]._id, 0);
+    },
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Leader cannot remove another leader",
+    async () => {
+        let reqData = { to: testUser2.uid };
+        let res = await fetchRequest(
+            ep.removeuser + "?pid=" + createdProjects[0]._id,
+            "POST",
+            reqData,
+            testUser1.session
+        );
+        expect(res.status).toBe(400);
+    },
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Disconnect from DB",
+    async () => {
+        expect(await endMongooseConnection()).toBe(true);
+    },
+    DEFAULT_TIMEOUT
+);

@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 /**
  * @function addUserToTestProject
- * Assumes a mongoose connection has already been created.
  * Creates BuggingBugs temp projects that are set to expire.
  *
  * @param {String | ObjectId} uid: The uid to add.

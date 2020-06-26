@@ -1,106 +1,77 @@
 import "babel-polyfill";
-import { domain } from "domain.js";
 import { fetchRequest } from "fetchRequest";
-import dotenv from "dotenv";
+import { DEFAULT_TIMEOUT } from "timeouts";
+import { endpoints as ep } from "endpointUrls";
+import { createNativeTestSession } from "createNativeTestSession";
+import { testUser1, testUser2 } from "testUsers";
+import {
+    createMongooseConnection,
+    endMongooseConnection,
+} from "mongooseConnection";
 import mongoose from "mongoose";
-import { } from "models";
 import { createTestProjects } from "createTestProjects";
 import { createTestTicket } from "createTestTicket";
 import { addUserToTestProject } from "addUserToTestProject";
 
-dotenv.config();
-const TIMEOUT = 30000;
-const loginEndpoint = domain + "login";
-const loadProjectEndpoint = domain + "loadproject";
-const deleteTicketEndpoint = domain + "deleteticket";
-const testEmail1 = process.env.TESTEMAIL1,
-    testEmail2 = process.env.TESTEMAIL2;
-const testUid1 = process.env.TESTUID1,
-    testUid2 = process.env.TESTUID2;
-const testPassword = process.env.TESTPASSWORD;
+let createdProjects, createdTicket;
 
 test(
     "Connect to DB",
     async () => {
-        await mongoose.connect(process.env.DBURL, {
-            useUnifiedTopology: true,
-            useNewUrlParser: true,
-        });
-        expect(true).toBe(true);
+        expect(await createMongooseConnection()).toBe(true);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Successful user1, user2 login",
+    async () => {
+        testUser1.session = await createNativeTestSession(testUser1);
+        expect(testUser1.session !== null).toBe(true);
+        testUser2.session = await createNativeTestSession(testUser2);
+        expect(testUser2.session !== null).toBe(true);
+    },
+    DEFAULT_TIMEOUT
 );
 
 test(
     "Redirected when not logged in.",
     async () => {
-        const res = await fetchRequest(deleteTicketEndpoint, "POST");
+        const res = await fetchRequest(ep.deleteticket, "POST");
         expect(res.status).toBe(300);
     },
-    TIMEOUT
-);
-
-let sessionCookie1;
-test(
-    "Login & Get Session for user1",
-    async () => {
-        const loginInfo = {
-            email: testEmail1,
-            password: testPassword,
-            type: "native",
-        };
-        const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
-        sessionCookie1 = loginRes.headers.get("set-cookie");
-        expect(loginRes.status).toBe(200);
-    },
-    TIMEOUT
-);
-let sessionCookie2;
-test(
-    "Login & Get Session for user1",
-    async () => {
-        const loginInfo = {
-            email: testEmail2,
-            password: testPassword,
-            type: "native",
-        };
-        const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
-        sessionCookie2 = loginRes.headers.get("set-cookie");
-        expect(loginRes.status).toBe(200);
-    },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
     "Check rejection on invalid PID",
     async () => {
         let res = await fetchRequest(
-            deleteTicketEndpoint + "?pid=",
+            ep.deleteticket + "?pid=",
             "POST",
             null,
-            sessionCookie1
+            testUser1.session
         );
         expect(res.status).toBe(400);
 
         res = await fetchRequest(
-            deleteTicketEndpoint + "?pid=[123",
+            ep.deleteticket + "?pid=[123",
             "POST",
             null,
-            sessionCookie1
+            testUser1.session
         );
         expect(res.status).toBe(400);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-let createdProjects;
 test(
     "Create test project from user1.",
     async () => {
         const newProjects = ["test1"];
-        createdProjects = await createTestProjects(testUid1, newProjects);
+        createdProjects = await createTestProjects(testUser1.uid, newProjects);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
@@ -108,14 +79,14 @@ test(
     async () => {
         const reqData = { tid: [123] };
         let res = await fetchRequest(
-            deleteTicketEndpoint + "?pid=" + createdProjects[0]._id,
+            ep.deleteticket + "?pid=" + createdProjects[0]._id,
             "POST",
             reqData,
-            sessionCookie1
+            testUser1.session
         );
         expect(res.status).toBe(400);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
@@ -123,49 +94,48 @@ test(
     async () => {
         const reqData = { tid: mongoose.Types.ObjectId() };
         let res = await fetchRequest(
-            deleteTicketEndpoint + "?pid=" + createdProjects[0]._id,
+            ep.deleteticket + "?pid=" + createdProjects[0]._id,
             "POST",
             reqData,
-            sessionCookie1
+            testUser1.session
         );
         expect(res.status).toBe(400);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
     "Add user2 as a regular member to test project",
     async () => {
-        await addUserToTestProject(testUid2, createdProjects[0]._id, 1);
+        await addUserToTestProject(testUser2.uid, createdProjects[0]._id, 1);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-let createdTicket;
 test(
     "Create a valid ticket",
     async () => {
         createdTicket = await createTestTicket(
-            testUid1,
-            testUid2,
+            testUser1.uid,
+            testUser2.uid,
             createdProjects[0]._id
         );
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test("Check if ticket is found", async () => {
     const res = await fetchRequest(
-        loadProjectEndpoint + "?pid=" + createdProjects[0]._id,
+        ep.loadproject + "?pid=" + createdProjects[0]._id,
         "GET",
         null,
-        sessionCookie2
+        testUser2.session
     );
     expect(res.status).toBe(200);
     const tickets = (await res.json()).tickets;
     expect(
         tickets.length === 1 &&
-        String(tickets[0]._id) === String(createdTicket[0]._id)
+            String(tickets[0]._id) === String(createdTicket[0]._id)
     );
 });
 
@@ -174,14 +144,14 @@ test(
     async () => {
         const reqData = { tid: createdTicket[0]._id };
         let res = await fetchRequest(
-            deleteTicketEndpoint + "?pid=" + createdProjects[0]._id,
+            ep.deleteticket + "?pid=" + createdProjects[0]._id,
             "POST",
             reqData,
-            sessionCookie2
+            testUser2.session
         );
         expect(res.status).toBe(400);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
@@ -189,35 +159,32 @@ test(
     async () => {
         const reqData = { tid: createdTicket[0]._id };
         let res = await fetchRequest(
-            deleteTicketEndpoint + "?pid=" + createdProjects[0]._id,
+            ep.deleteticket + "?pid=" + createdProjects[0]._id,
             "POST",
             reqData,
-            sessionCookie1
+            testUser1.session
         );
         expect(res.status).toBe(200);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test("Check if ticket is gone", async () => {
     const res = await fetchRequest(
-        loadProjectEndpoint + "?pid=" + createdProjects[0]._id,
+        ep.loadproject + "?pid=" + createdProjects[0]._id,
         "GET",
         null,
-        sessionCookie2
+        testUser2.session
     );
     expect(res.status).toBe(200);
     const tickets = (await res.json()).tickets;
     expect(tickets.length === 0);
-
-    await mongoose.connection.close();
 });
 
-(async () => {
-    if (
-        mongoose.connection.readyState === 1 ||
-        mongoose.connection.readyState === 2
-    ) {
-        await mongoose.connection.close();
-    }
-})();
+test(
+    "Disconnect from DB",
+    async () => {
+        expect(await endMongooseConnection()).toBe(true);
+    },
+    DEFAULT_TIMEOUT
+);

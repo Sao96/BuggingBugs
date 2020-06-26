@@ -1,130 +1,99 @@
 import "babel-polyfill";
-import { domain } from "domain.js";
 import { fetchRequest } from "fetchRequest";
-import dotenv from "dotenv";
-import mongoose, { Mongoose } from "mongoose";
-import {} from "models";
+import { DEFAULT_TIMEOUT } from "timeouts";
+import { endpoints as ep } from "endpointUrls";
+import { createNativeTestSession } from "createNativeTestSession";
+import { testUser1, testUser2 } from "testUsers";
+import {
+    createMongooseConnection,
+    endMongooseConnection,
+} from "mongooseConnection";
+import mongoose from "mongoose";
 import { createTestProjects } from "createTestProjects";
 import { deleteTestInvites } from "deleteTestInvites";
 import { userExistsInTestProject } from "userExistsInTestProject";
 
-dotenv.config();
-const TIMEOUT = 30000;
-const loginEndpoint = domain + "login";
-const getInvitesEndpoint = domain + "getinvites";
-const createInviteEndpoint = domain + "createinvite";
-const acceptInviteEndpoint = domain + "acceptinvite";
-const testEmail1 = process.env.TESTEMAIL1,
-    testEmail2 = process.env.TESTEMAIL2;
-const testUid1 = process.env.TESTUID1,
-    testUid2 = process.env.TESTUID2;
-const testPassword = process.env.TESTPASSWORD;
+let createdProjects;
+let createdInvite;
 
 test(
     "Connect to DB",
     async () => {
-        await mongoose.connect(process.env.DBURL, {
-            useUnifiedTopology: true,
-            useNewUrlParser: true,
-        });
-        expect(true).toBe(true);
+        expect(await createMongooseConnection()).toBe(true);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
-    "Redirected when not logged in.",
+    "Successful user1, user2 login",
     async () => {
-        const res = await fetchRequest(acceptInviteEndpoint, "POST");
+        testUser1.session = await createNativeTestSession(testUser1);
+        expect(testUser1.session !== null).toBe(true);
+        testUser2.session = await createNativeTestSession(testUser2);
+        expect(testUser2.session !== null).toBe(true);
+    },
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Redirected from endpoint when not logged in",
+    async () => {
+        const res = await fetchRequest(ep.acceptinvite, "POST");
         expect(res.status).toBe(300);
     },
-    TIMEOUT
-);
-
-let sessionCookie1;
-test(
-    "Login & Get Session for user1",
-    async () => {
-        const loginInfo = {
-            email: testEmail1,
-            password: testPassword,
-            type: "native",
-        };
-        const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
-        sessionCookie1 = loginRes.headers.get("set-cookie");
-        expect(loginRes.status).toBe(200);
-    },
-    TIMEOUT
-);
-let sessionCookie2;
-test(
-    "Login & Get Session for user2",
-    async () => {
-        const loginInfo = {
-            email: testEmail2,
-            password: testPassword,
-            type: "native",
-        };
-        const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
-        sessionCookie2 = loginRes.headers.get("set-cookie");
-        expect(loginRes.status).toBe(200);
-    },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
     "Delete any existing invites for user2",
     async () => {
-        await deleteTestInvites(testUid2);
+        await deleteTestInvites(testUser2.uid);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-let createdProjects;
 test(
     "Create test project from user1.",
     async () => {
         const newProjects = ["test1"];
-        createdProjects = await createTestProjects(testUid1, newProjects);
+        createdProjects = await createTestProjects(testUser1.uid, newProjects);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
-    "User1 successfully invites user2 to testproject",
+    "User1 successfully invites user2 to test project",
     async () => {
-        let reqData = { to: testUid2 };
+        let reqData = { to: testUser2.uid };
         let res = await fetchRequest(
-            createInviteEndpoint + "?pid=" + createdProjects[0]._id,
+            ep.createinvite + "?pid=" + createdProjects[0]._id,
             "POST",
             reqData,
-            sessionCookie1
+            testUser1.session
         );
         expect(res.status).toBe(200);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-let createdInvite;
 test(
-    "User2 finds invite",
+    "User2 finds the invite",
     async () => {
-        let reqData = { to: testUid2 };
         let res = await fetchRequest(
-            getInvitesEndpoint,
+            ep.getinvites,
             "GET",
             null,
-            sessionCookie2
+            testUser2.session
         );
         expect(res.status).toBe(200);
-        const invites = (await res.json()).invites;
+        const foundInvites = (await res.json()).invites;
         expect(
-            invites.length === 1 &&
-                String(invites[0].pid) === String(createdProjects[0]._id)
+            foundInvites.length === 1 &&
+                String(foundInvites[0].pid) === String(createdProjects[0]._id)
         ).toBe(true);
-        createdInvite = invites[0];
+        createdInvite = foundInvites[0];
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
@@ -132,23 +101,23 @@ test(
     async () => {
         let reqData = { invId: 123 };
         let res = await fetchRequest(
-            acceptInviteEndpoint,
+            ep.acceptinvite,
             "POST",
             reqData,
-            sessionCookie2
+            testUser2.session
         );
         expect(res.status).toBe(400);
 
         reqData.invId = mongoose.Types.ObjectId();
         res = await fetchRequest(
-            acceptInviteEndpoint,
+            ep.acceptinvite,
             "POST",
             reqData,
-            sessionCookie2
+            testUser2.session
         );
         expect(res.status).toBe(400);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
@@ -156,48 +125,53 @@ test(
     async () => {
         let reqData = { invId: createdInvite.invId };
         let res = await fetchRequest(
-            acceptInviteEndpoint,
+            ep.acceptinvite,
             "POST",
             reqData,
-            sessionCookie2
+            testUser2.session
         );
         expect(res.status).toBe(200);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
     "User2 has no remaining invites",
     async () => {
-        let reqData = { to: testUid2 };
         let res = await fetchRequest(
-            getInvitesEndpoint,
+            ep.getinvites,
             "GET",
             null,
-            sessionCookie2
+            testUser2.session
         );
         expect(res.status).toBe(200);
-        const invites = (await res.json()).invites;
-        expect(invites.length).toBe(0);
+        const foundInvites = (await res.json()).invites;
+        expect(Array.isArray(foundInvites) && foundInvites.length === 0).toBe(
+            true
+        );
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
     "User2 found in test project.",
     async () => {
         expect(
-            await userExistsInTestProject(testUid2, createdProjects[0]._id)
+            Array.isArray(
+                await userExistsInTestProject(
+                    testUser2.uid,
+                    createdProjects[0]._id
+                )
+            )
         ).toBe(true);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-(async () => {
-    if (
-        mongoose.connection.readyState === 1 ||
-        mongoose.connection.readyState === 2
-    ) {
-        await mongoose.connection.close();
-    }
-})();
+test(
+    "Disconnect from DB",
+    async () => {
+        expect(await endMongooseConnection()).toBe(true);
+    },
+    DEFAULT_TIMEOUT
+);

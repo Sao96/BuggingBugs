@@ -6,7 +6,7 @@ import { setError } from "~/util/setError";
  * Removes from @db.UsersIn the pid matching @req.query.pid and the * uid of @req.body.to.
  */
 async function removeUser(req, res, next) {
-    if (string(req.body.userData.uid) === string(req.body.to)) {
+    if (String(req.body.userData.uid) === String(req.body.to)) {
         setError(
             400,
             "Cannot remove self through remove user.",

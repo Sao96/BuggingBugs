@@ -3,12 +3,11 @@ import { fetchRequest } from "fetchRequest";
 import { DEFAULT_TIMEOUT } from "timeouts";
 import { endpoints as ep } from "endpointUrls";
 import { createNativeTestSession } from "createNativeTestSession";
-import { testUser1, testUser2 } from "testUsers";
+import { testUser1 } from "testUsers";
 import {
     createMongooseConnection,
     endMongooseConnection,
 } from "mongooseConnection";
-import { deleteTestProjects } from "deleteTestProjects";
 import { createTestProjects } from "createTestProjects";
 
 function checkProjectsFound(foundProjects, expectedProjects) {
@@ -47,14 +46,6 @@ test(
     async () => {
         const res = await fetchRequest(ep.getprojects, "GET");
         expect(res.status).toBe(300);
-    },
-    DEFAULT_TIMEOUT
-);
-
-test(
-    "Delete all existing projects from user1",
-    async () => {
-        await deleteTestProjects(testUser1.uid);
     },
     DEFAULT_TIMEOUT
 );

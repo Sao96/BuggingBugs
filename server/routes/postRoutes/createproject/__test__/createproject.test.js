@@ -1,82 +1,97 @@
 import "babel-polyfill";
-import { domain } from "domain.js";
 import { fetchRequest } from "fetchRequest";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
-import { } from "models";
-import { deleteTestProjects } from "deleteTestProjects";
+import { DEFAULT_TIMEOUT } from "timeouts";
+import { endpoints as ep } from "endpointUrls";
+import { createNativeTestSession } from "createNativeTestSession";
+import { testUser1 } from "testUsers";
+import {
+    createMongooseConnection,
+    endMongooseConnection,
+} from "mongooseConnection";
 
-dotenv.config();
-const TIMEOUT = 30000;
-const loginEndpoint = domain + "login";
-const getProjectsEndpoint = domain + "getprojects";
-const createProjectEndpoint = domain + "createproject";
-const testEmail1 = process.env.TESTEMAIL1
-const testUid1 = process.env.TESTUID1
-const testPassword = process.env.TESTPASSWORD;
+const testName = "test name";
 
 test(
     "Connect to DB",
     async () => {
-        await mongoose.connect(process.env.DBURL, {
-            useUnifiedTopology: true,
-            useNewUrlParser: true,
-        });
-        expect(true).toBe(true);
+        expect(await createMongooseConnection()).toBe(true);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-test(
-    "Redirected when not logged in.",
-    async () => {
-        const res = await fetchRequest(createProjectEndpoint, "POST");
-        expect(res.status).toBe(300);
-    },
-    TIMEOUT
-);
+// test(
+//     "Successful user1 login",
+//     async () => {
+//         testUser1.session = await createNativeTestSession(testUser1);
+//         expect(testUser1.session !== null).toBe(true);
+//     },
+//     DEFAULT_TIMEOUT
+// );
 
-let sessionCookie1;
-test(
-    "Login & Get Session for user1",
-    async () => {
-        const loginInfo = {
-            email: testEmail1,
-            password: testPassword,
-            type: "native",
-        };
-        const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
-        sessionCookie1 = loginRes.headers.get("set-cookie");
-        expect(loginRes.status).toBe(200);
-    },
-    TIMEOUT
-);
+// test(
+//     "Create group of invalid name",
+//     async () => {
+//         const reqData = { projectName: 123 };
+//         let res = await fetchRequest(
+//             ep.createproject,
+//             "POST",
+//             reqData,
+//             testUser1.session
+//         );
+//         expect(res.status).toBe(400);
 
-test("Create group of invalid name", async () => {
-    const reqData = { projectName: 123 }
-    let res = await fetchRequest(createProjectEndpoint, "POST", reqData, sessionCookie1)
-    expect(res.status).toBe(400)
+//         reqData.projectName = "";
+//         res = await fetchRequest(
+//             ep.createproject,
+//             "POST",
+//             reqData,
+//             testUser1.session
+//         );
+//         expect(res.status).toBe(400);
+//     },
+//     DEFAULT_TIMEOUT
+// );
 
-    reqData.projectName = "";
-    res = await fetchRequest(createProjectEndpoint, "POST", reqData, sessionCookie1)
-    expect(res.status).toBe(400)
-}, TIMEOUT)
+// test(
+//     "Create group of a valid name",
+//     async () => {
+//         const reqData = { projectName: testName };
+//         let res = await fetchRequest(
+//             ep.createproject,
+//             "POST",
+//             reqData,
+//             testUser1.session
+//         );
+//         expect(res.status).toBe(200);
+//     },
+//     DEFAULT_TIMEOUT
+// );
 
-test("Delete any existing groups for user1", async () => {
-    await deleteTestProjects(testUid1);
-}, TIMEOUT)
+// test(
+//     "Check created group exists",
+//     async () => {
+//         let res = await fetchRequest(
+//             ep.getprojects,
+//             "GET",
+//             null,
+//             testUser1.session
+//         );
+//         expect(res.status).toBe(200);
+//         const projects = (await res.json()).projects;
+//         const found = projects.find((proj) => {return proj._id === createproject})
+//         const found = expect(
+//             Array.isArray(foundGroups) &&
+//                 foundGroups.length === 1 &&
+//                 foundGroups[0].name === testName
+//         ).toBe(true);
+//     },
+//     DEFAULT_TIMEOUT
+// );
 
-const testName = "test name"
-test("Create group of a valid name", async () => {
-    const reqData = { projectName: testName };
-    let res = await fetchRequest(createProjectEndpoint, "POST", reqData, sessionCookie1);
-    expect(res.status).toBe(200);
-}, TIMEOUT)
-
-test("Check created group exists", async () => {
-    let res = await fetchRequest(getProjectsEndpoint, "GET", null, sessionCookie1);
-    expect(res.status).toBe(200);
-    const groups = (await res.json())
-    expect(groups.length === 1 && groups[0].name === testName)
-}, TIMEOUT)
-
+// test(
+//     "Disconnect from DB",
+//     async () => {
+//         expect(await endMongooseConnection()).toBe(true);
+//     },
+//     DEFAULT_TIMEOUT
+// );

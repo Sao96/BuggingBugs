@@ -1,27 +1,23 @@
 import "babel-polyfill";
-import { domain } from "domain.js";
 import { fetchRequest } from "fetchRequest";
-import dotenv from "dotenv";
-import mongoose, { mongo } from "mongoose";
-import {} from "models";
+import { DEFAULT_TIMEOUT } from "timeouts";
+import { endpoints as ep } from "endpointUrls";
+import { createNativeTestSession } from "createNativeTestSession";
+import { testUser1, testUser2 } from "testUsers";
+import {
+    createMongooseConnection,
+    endMongooseConnection,
+} from "mongooseConnection";
+import mongoose from "mongoose";
 import { createTestProjects } from "createTestProjects";
 import { addUserToTestProject } from "addUserToTestProject";
 import { createTestTicket } from "createTestTicket";
 
-dotenv.config();
-const TIMEOUT = 40000;
-const loginEndpoint = domain + "login";
-const updateTicketEndpoint = domain + "updateticket";
-const testEmail1 = process.env.TESTEMAIL1,
-    testEmail2 = process.env.TESTEMAIL2;
-const testUid1 = process.env.TESTUID1,
-    testUid2 = process.env.TESTUID2;
-const testPassword = process.env.TESTPASSWORD;
+let createdProjects, targetTicket;
 
-//missing a pid, to be added mid test
 const validTicket = {
-    from: mongoose.Types.ObjectId(testUid1),
-    to: mongoose.Types.ObjectId(testUid2),
+    from: mongoose.Types.ObjectId(testUser1.uid),
+    to: mongoose.Types.ObjectId(testUser2.uid),
     priority: 1,
     due: "2021-06-06",
     environment: "Windows 10; React",
@@ -35,77 +31,50 @@ Object.freeze(validTicket);
 test(
     "Connect to DB",
     async () => {
-        await mongoose.connect(process.env.DBURL, {
-            useUnifiedTopology: true,
-            useNewUrlParser: true,
-        });
-        expect(true).toBe(true);
+        expect(await createMongooseConnection()).toBe(true);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Successful user1, user2 login",
+    async () => {
+        testUser1.session = await createNativeTestSession(testUser1);
+        expect(testUser1.session !== null).toBe(true);
+        testUser2.session = await createNativeTestSession(testUser2);
+        expect(testUser2.session !== null).toBe(true);
+    },
+    DEFAULT_TIMEOUT
 );
 
 test(
     "Redirected when not logged in.",
     async () => {
-        const res = await fetchRequest(updateTicketEndpoint, "POST");
+        const res = await fetchRequest(ep.updateticket, "POST");
         expect(res.status).toBe(300);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-let sessionCookie1;
-test(
-    "Login & Get Session for user1",
-    async () => {
-        const loginInfo = {
-            email: testEmail1,
-            password: testPassword,
-            type: "native",
-        };
-        const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
-        sessionCookie1 = loginRes.headers.get("set-cookie");
-        expect(loginRes.status).toBe(200);
-    },
-    TIMEOUT
-);
-
-let sessionCookie2;
-test(
-    "Login & Get Session for user2",
-    async () => {
-        const loginInfo = {
-            email: testEmail2,
-            password: testPassword,
-            type: "native",
-        };
-        const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
-        sessionCookie2 = loginRes.headers.get("set-cookie");
-        expect(loginRes.status).toBe(200);
-    },
-    TIMEOUT
-);
-
-let createdProjects;
 test(
     "Create test project from user 1.",
     async () => {
         const newProjects = ["test1", "test2"];
-        createdProjects = await createTestProjects(testUid1, newProjects);
+        createdProjects = await createTestProjects(testUser1.uid, newProjects);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-let targetTicket;
 test(
     "Create a test ticket from user1 to user2 in test project1",
     async () => {
         targetTicket = await createTestTicket(
-            testUid1,
-            testUid2,
+            testUser1.uid,
+            testUser2.uid,
             createdProjects[0]._id
         );
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 test(
     "To recipient must be in group",
@@ -115,21 +84,21 @@ test(
         ticketInfo.tid = targetTicket[0]._id;
         ticketInfo.to = mongoose.Types.ObjectId();
         const res = await fetchRequest(
-            updateTicketEndpoint + "?pid=" + ticketInfo.pid,
+            ep.updateticket + "?pid=" + ticketInfo.pid,
             "POST",
             ticketInfo,
-            sessionCookie1
+            testUser1.session
         );
         expect(res.status).toBe(400);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 test(
     "Add user2 as a regular member to test project",
     async () => {
-        await addUserToTestProject(testUid2, createdProjects[0]._id, 1);
+        await addUserToTestProject(testUser2.uid, createdProjects[0]._id, 1);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
@@ -139,14 +108,14 @@ test(
         ticketInfo.tid = 123;
 
         let res = await fetchRequest(
-            updateTicketEndpoint + "?pid=" + createdProjects[1]._id,
+            ep.updateticket + "?pid=" + createdProjects[1]._id,
             "POST",
             ticketInfo,
-            sessionCookie1
+            testUser1.session
         );
         expect(res.status).toBe(400);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
@@ -156,14 +125,14 @@ test(
         ticketInfo.tid = targetTicket[0]._id;
 
         let res = await fetchRequest(
-            updateTicketEndpoint + "?pid=" + createdProjects[1]._id,
+            ep.updateticket + "?pid=" + createdProjects[1]._id,
             "POST",
             ticketInfo,
-            sessionCookie1
+            testUser1.session
         );
         expect(res.status).toBe(400);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
@@ -174,14 +143,14 @@ test(
         ticketInfo.tid = targetTicket[0]._id;
 
         const res = await fetchRequest(
-            updateTicketEndpoint + "?pid=" + ticketInfo.pid,
+            ep.updateticket + "?pid=" + ticketInfo.pid,
             "POST",
             ticketInfo,
-            sessionCookie1
+            testUser1.session
         );
         expect(res.status).toBe(200);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
@@ -192,16 +161,16 @@ test(
         ticketInfo.tid = targetTicket[0]._id;
         [ticketInfo.from, ticketInfo.to] = [ticketInfo.to, ticketInfo.from];
         const res = await fetchRequest(
-            updateTicketEndpoint + "?pid=" + ticketInfo.pid,
+            ep.updateticket + "?pid=" + ticketInfo.pid,
             "POST",
             ticketInfo,
-            sessionCookie2
+            testUser2.session
         );
         expect(res.status).toBe(400);
 
         await mongoose.connection.close();
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
@@ -212,23 +181,20 @@ test(
         ticketInfo.tid = targetTicket[0]._id;
         ticketInfo.to = mongoose.Types.ObjectId();
         const res = await fetchRequest(
-            updateTicketEndpoint + "?pid=" + ticketInfo.pid,
+            ep.updateticket + "?pid=" + ticketInfo.pid,
             "POST",
             ticketInfo,
-            sessionCookie2
+            testUser2.session
         );
         expect(res.status).toBe(400);
-
-        await mongoose.connection.close();
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-(async () => {
-    if (
-        mongoose.connection.readyState === 1 ||
-        mongoose.connection.readyState === 2
-    ) {
-        await mongoose.connection.close();
-    }
-})();
+test(
+    "Disconnect from DB",
+    async () => {
+        expect(await endMongooseConnection()).toBe(true);
+    },
+    DEFAULT_TIMEOUT
+);

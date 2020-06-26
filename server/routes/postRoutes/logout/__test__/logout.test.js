@@ -1,85 +1,72 @@
 import "babel-polyfill";
-import { domain } from "domain.js";
 import { fetchRequest } from "fetchRequest";
-import dotenv from "dotenv";
-
-dotenv.config();
-const testEmail1 = process.env.TESTEMAIL1;
-const testPassword = process.env.TESTPASSWORD;
-const TIMEOUT = 30000;
-const logoutEndpoint = domain + "logout";
-const amiloggedEndpoint = domain + "amilogged";
-const loginEndpoint = domain + "login";
+import { DEFAULT_TIMEOUT } from "timeouts";
+import { endpoints as ep } from "endpointUrls";
+import { createNativeTestSession } from "createNativeTestSession";
+import { testUser1 } from "testUsers";
 
 test(
     "Get a false response when not logged in",
     async () => {
-        const res = await fetchRequest(amiloggedEndpoint, "GET");
+        const res = await fetchRequest(ep.amilogged, "GET");
         expect(res.status).toBe(200);
         const amILoggedRes = await res.json();
         expect(amILoggedRes.loggedIn).toBe(false);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-let sessionCookie1;
 test(
-    "Login & Get Session for user1",
+    "Successful user1 login",
     async () => {
-        const loginInfo = {
-            email: testEmail1,
-            password: testPassword,
-            type: "native",
-        };
-        const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
-        sessionCookie1 = loginRes.headers.get("set-cookie");
-        expect(loginRes.status).toBe(200);
+        testUser1.session = await createNativeTestSession(testUser1);
+        expect(testUser1.session !== null).toBe(true);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
     "Get a true response when logged in",
     async () => {
         const res = await fetchRequest(
-            amiloggedEndpoint,
+            ep.amilogged,
             "GET",
             null,
-            sessionCookie1
+            testUser1.session
         );
         expect(res.status).toBe(200);
         const amILoggedRes = await res.json();
         expect(amILoggedRes.loggedIn).toBe(true);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
     "Request logout to server",
     async () => {
         const logoutRes = await fetchRequest(
-            logoutEndpoint,
+            ep.logout,
             "POST",
             null,
-            sessionCookie1
+            testUser1.session
         );
         expect(logoutRes.status).toBe(200);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
     "Get a false response when not logged in with cookie",
     async () => {
         const res = await fetchRequest(
-            amiloggedEndpoint,
+            ep.amilogged,
             "GET",
             null,
-            sessionCookie1
+            testUser1.session
         );
         expect(res.status).toBe(200);
         const amILoggedRes = await res.json();
         expect(amILoggedRes.loggedIn).toBe(false);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
