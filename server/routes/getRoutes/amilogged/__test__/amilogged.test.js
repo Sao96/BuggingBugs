@@ -1,55 +1,42 @@
 import "babel-polyfill";
-import { domain } from "domain.js";
 import { fetchRequest } from "fetchRequest";
-import dotenv from "dotenv";
-import {} from "models";
-
-dotenv.config();
-const TIMEOUT = 30000;
-const amiloggedEndpoint = domain + "amilogged";
-const loginEndpoint = domain + "login";
-const testemail1 = process.env.TESTEMAIL1;
-const testpassword = process.env.TESTPASSWORD;
+import { DEFAULT_TIMEOUT } from "timeouts";
+import { endpoints as ep } from "endpointUrls";
+import { testUser1 } from "testUsers";
+import { createNativeTestSession } from "createNativeTestSession";
 
 test(
-    "Get a false response when not logged in",
+    "Get a false response from endpoint when not logged in.",
     async () => {
-        const res = await fetchRequest(amiloggedEndpoint, "GET");
+        const res = await fetchRequest(ep.amilogged, "GET");
         expect(res.status).toBe(200);
         const amILoggedRes = await res.json();
         expect(amILoggedRes.loggedIn).toBe(false);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-let sessionCookie1;
 test(
-    "Login & Get Session for user1",
+    "Successful user1 login",
     async () => {
-        const loginInfo = {
-            email: testemail1,
-            password: testpassword,
-            type: "native",
-        };
-        const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
-        sessionCookie1 = loginRes.headers.get("set-cookie");
-        expect(loginRes.status).toBe(200);
+        testUser1.session = await createNativeTestSession(testUser1);
+        expect(testUser1.session !== null).toBe(true);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
-    "Get a true response when logged in",
+    "Get a true response from endpoint when logged in.",
     async () => {
         const res = await fetchRequest(
-            amiloggedEndpoint,
+            ep.amilogged,
             "GET",
             null,
-            sessionCookie1
+            testUser1.session
         );
         expect(res.status).toBe(200);
         const amILoggedRes = await res.json();
         expect(amILoggedRes.loggedIn).toBe(true);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );

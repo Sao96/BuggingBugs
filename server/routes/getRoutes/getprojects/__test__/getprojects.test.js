@@ -1,99 +1,99 @@
 import "babel-polyfill";
-import { domain } from "domain.js";
 import { fetchRequest } from "fetchRequest";
-import dotenv from "dotenv";
-import mongoose from "mongoose";
-import {} from "models";
+import { DEFAULT_TIMEOUT } from "timeouts";
+import { endpoints as ep } from "endpointUrls";
+import { createNativeTestSession } from "createNativeTestSession";
+import { testUser1, testUser2 } from "testUsers";
+import {
+    createMongooseConnection,
+    endMongooseConnection,
+} from "mongooseConnection";
+import { deleteTestProjects } from "deleteTestProjects";
 import { createTestProjects } from "createTestProjects";
 
-dotenv.config();
-const TIMEOUT = 30000;
-const getprojectsEndpoint = domain + "getprojects";
-const loginEndpoint = domain + "login";
-const testUid1 = process.env.TESTUID1;
+function checkProjectsFound(foundProjects, expectedProjects) {
+    const createdProjectsSet = new Set();
+    expectedProjects.forEach((target) => {
+        createdProjectsSet.add(String(target._id));
+    });
+    let matched = foundProjects.reduce((total, result) => {
+        return total + createdProjectsSet.has(String(result._id));
+    }, 0);
 
-function checkTargetsFound(projects, targets) {
-    const targetSet = new Set();
-    targets.forEach((target) => {
-        targetSet.add(String(target._id));
-    });
-    let matched = 0;
-    projects.forEach((project) => {
-        matched += targetSet.has(String(project._id));
-    });
-    return matched === targets.length;
+    return matched === expectedProjects.length;
 }
+
+let createdProjects;
 
 test(
     "Connect to DB",
     async () => {
-        await mongoose.connect(process.env.DBURL, {
-            useUnifiedTopology: true,
-            useNewUrlParser: true,
-        });
-        expect(true).toBe(true);
+        expect(await createMongooseConnection()).toBe(true);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
 test(
-    "Redirected when not logged in.",
+    "Successful user1 login",
     async () => {
-        const res = await fetchRequest(getprojectsEndpoint, "GET");
-        expect(res.status).toBe(300);
+        testUser1.session = await createNativeTestSession(testUser1);
+        expect(testUser1.session !== null).toBe(true);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-let targets;
+test(
+    "Redirected from endpoint when not logged in",
+    async () => {
+        const res = await fetchRequest(ep.getprojects, "GET");
+        expect(res.status).toBe(300);
+    },
+    DEFAULT_TIMEOUT
+);
+
+test(
+    "Delete all existing projects from user1",
+    async () => {
+        await deleteTestProjects(testUser1.uid);
+    },
+    DEFAULT_TIMEOUT
+);
+
 test(
     "Create test projects to get.",
     async () => {
-        targets = await createTestProjects(testUid1, ["test1", "test2"]);
+        createdProjects = await createTestProjects(testUser1.uid, [
+            "test1",
+            "test2",
+        ]);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-let sessionCookie1;
 test(
-    "Login & Get Session",
-    async () => {
-        const loginInfo = {
-            email: process.env.TESTEMAIL1,
-            password: process.env.TESTPASSWORD,
-            type: "native",
-        };
-        const loginRes = await fetchRequest(loginEndpoint, "POST", loginInfo);
-        sessionCookie1 = loginRes.headers.get("set-cookie");
-        expect(loginRes.status).toBe(200);
-    },
-    TIMEOUT
-);
-test(
-    "Get Projects",
+    "Get Projects from endpoint",
     async () => {
         const getProjectsRes = await fetchRequest(
-            getprojectsEndpoint,
+            ep.getprojects,
             "GET",
             null,
-            sessionCookie1
+            testUser1.session
         );
         expect(getProjectsRes.status).toBe(200);
         const getProjectsResData = await getProjectsRes.json();
-        const projects = getProjectsResData.projects;
-        expect(Array.isArray(projects)).toEqual(true);
-        expect(checkTargetsFound(projects, targets)).toBe(true);
-
-        await mongoose.connection.close();
+        const foundProjects = getProjectsResData.projects;
+        expect(
+            Array.isArray(foundProjects) &&
+                checkProjectsFound(foundProjects, createdProjects)
+        ).toEqual(true);
     },
-    TIMEOUT
+    DEFAULT_TIMEOUT
 );
 
-(async () => {
-    if (
-        mongoose.connection.readyState === 1 ||
-        mongoose.connection.readyState === 2
-    ) {
-        await mongoose.connection.close();
-    }
-})();
+test(
+    "Disconnect from DB",
+    async () => {
+        expect(await endMongooseConnection()).toBe(true);
+    },
+    DEFAULT_TIMEOUT
+);
