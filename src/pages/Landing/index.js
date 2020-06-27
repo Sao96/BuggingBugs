@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { HookSection } from "./components/HookSection";
 import { InfoSection } from "./components/InfoSection";
+import { landingBackgroundColor, mainBackgroundColor } from "themeColors";
 
 function Landing(props) {
-    const containerStyle = { width: "100%" };
+    useEffect(() => {
+        document.body.style.backgroundColor = landingBackgroundColor;
+        return () => {
+            document.body.style.backgroundColor = mainBackgroundColor;
+        };
+    }, []);
+    const containerStyle = {
+        backgroundColor: "white",
+    };
     const mainStyle = {
         display: "flex",
         flexDirection: "column",
-        width: "100%",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "white",
     };
 
     return (

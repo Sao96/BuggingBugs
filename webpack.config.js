@@ -35,6 +35,12 @@ module.exports = {
             initialstates: path.resolve("./src/initialstates/"),
             fields: path.resolve("./src/fields/"),
             img: path.resolve("./src/img"),
+            routes: path.resolve("./src/routes/"),
+            backendRequestors: path.resolve("./src/util/backendRequestors"),
+            altTexts: path.resolve("./src/util/altTexts"),
+            themeColors: path.resolve("./src/util/themeColors"),
+            navRoutes: path.resolve("./src/routes/navRoutes"),
+            apiRoutes: path.resolve("./src/routes/apiRoutes"),
         },
     },
     module: {

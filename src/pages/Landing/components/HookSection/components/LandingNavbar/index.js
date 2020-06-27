@@ -1,62 +1,7 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
-import { textHoverColor } from "util/ThemeColors";
-
-const LoginButton = (props) => {
-    const [hovered, setHovered] = useState(false);
-    const onMouseEnterHandler = () => {
-        setHovered(true);
-    };
-    const onMouseLeaveHandler = () => {
-        setHovered(false);
-    };
-    const buttonText = "Login";
-    const containerStyle = {
-        fontSize: "16px",
-        color: hovered ? textHoverColor : "white",
-        userSelect: "none",
-        cursor: "pointer",
-    };
-    return (
-        <span
-            style={containerStyle}
-            onMouseEnter={onMouseEnterHandler}
-            onMouseLeave={onMouseLeaveHandler}
-            onClick={props.handler}
-        >
-            {buttonText}
-        </span>
-    );
-};
-
-const RegisterButton = (props) => {
-    const [hovered, setHovered] = useState(false);
-    const onMouseEnterHandler = () => {
-        setHovered(true);
-    };
-    const onMouseLeaveHandler = () => {
-        setHovered(false);
-    };
-    const buttonText = "Register";
-    const containerStyle = {
-        padding: "3.5px 5px",
-        fontSize: "16px",
-        border: hovered ? "0.5px solid " + textHoverColor : "0.5px solid white",
-        color: hovered ? textHoverColor : "white",
-        cursor: "pointer",
-        userSelect: "none",
-    };
-    return (
-        <span
-            style={containerStyle}
-            onMouseEnter={onMouseEnterHandler}
-            onMouseLeave={onMouseLeaveHandler}
-            onClick={props.handler}
-        >
-            {buttonText}
-        </span>
-    );
-};
+import { LoginButton, RegisterButton } from "./components";
+import { navRoutes } from "navRoutes";
 
 function LandingNavbar(props) {
     const [redirectUrl, setRedirect] = useState("");
@@ -64,10 +9,10 @@ function LandingNavbar(props) {
         return <Redirect push to={redirectUrl} />;
     }
     const loginHandler = () => {
-        setRedirect("/login");
+        setRedirect(navRoutes.login);
     };
     const registerHandler = () => {
-        setRedirect("/register");
+        setRedirect(navRoutes.register);
     };
     const headerText = "BuggingBugs";
     const containerStyle = {

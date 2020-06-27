@@ -1,10 +1,9 @@
-//initial styles taken from w3schools modal example
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { sharedActions } from "actions/sharedactions.js";
 import { sharedFields } from "fields/sharedfields.js";
 import BackArrow from "svg/backarrow.svg";
-import { textHoverColor } from "util/ThemeColors";
+import { textHoverColor } from "util/themeColors";
 
 const selector = (field) => {
     return useSelector((state) => {

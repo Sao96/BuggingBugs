@@ -1,14 +1,15 @@
 import React from "react";
-
+import BuggingBugsLogo from "img/buggingbugslogo.png";
 const Logo = (props) => {
     return (
         <div>
             <img
+                alt="BuggingBugs logo, a bug crossed with a code clash between angle brackets"
                 style={{
                     width: "200px",
                     height: "85px",
                 }}
-                src="https://media.discordapp.net/attachments/704894643317243997/723136903070875658/buggingbugW3x.png"
+                src={BuggingBugsLogo}
             />
         </div>
     );

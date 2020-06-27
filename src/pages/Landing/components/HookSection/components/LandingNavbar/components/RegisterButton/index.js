@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { textHoverColor } from "util/themeColors";
+import { textHoverColor } from "themeColors";
 
-function TryAppButton(props) {
+function RegisterButton(props) {
     const [hovered, setHovered] = useState(false);
     const onMouseEnterHandler = () => {
         setHovered(true);
@@ -9,31 +9,25 @@ function TryAppButton(props) {
     const onMouseLeaveHandler = () => {
         setHovered(false);
     };
-    const buttonText = "Try it out!";
+    const buttonText = "Register";
     const containerStyle = {
-        padding: "5px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        border: hovered ? "1px solid " + textHoverColor : "1px solid white",
+        padding: "3.5px 5px",
+        fontSize: "16px",
+        border: hovered ? "0.5px solid " + textHoverColor : "0.5px solid white",
         color: hovered ? textHoverColor : "white",
-        fontFamily: "Montserrat",
-        fontWeight: "300",
-        fontSize: "20px",
-        width: "135px",
-        height: "22.5px",
-        userSelect: "none",
         cursor: "pointer",
+        userSelect: "none",
     };
     return (
-        <div
+        <span
             style={containerStyle}
             onMouseEnter={onMouseEnterHandler}
             onMouseLeave={onMouseLeaveHandler}
+            onClick={props.handler}
         >
             {buttonText}
-        </div>
+        </span>
     );
 }
 
-export { TryAppButton };
+export { RegisterButton };

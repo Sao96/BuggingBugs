@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Button(props) {
+function DefaultButton(props) {
     const buttonHover = (e) => {
         for (let prop in hoverStyle) {
             e.target.style[prop] = hoverStyle[prop];
@@ -42,3 +42,5 @@ export default function Button(props) {
         </div>
     );
 }
+
+export { DefaultButton };

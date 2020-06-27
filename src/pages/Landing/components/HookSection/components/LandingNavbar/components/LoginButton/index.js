@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { textHoverColor } from "themeColors";
 
-const TextButton = (props) => {
+function LoginButton(props) {
     const [hovered, setHovered] = useState(false);
     const onMouseEnterHandler = () => {
         setHovered(true);
@@ -8,19 +9,23 @@ const TextButton = (props) => {
     const onMouseLeaveHandler = () => {
         setHovered(false);
     };
+    const buttonText = "Login";
+    const containerStyle = {
+        fontSize: "16px",
+        color: hovered ? textHoverColor : "white",
+        userSelect: "none",
+        cursor: "pointer",
+    };
     return (
-        <div
-            style={{
-                color: hovered ? "rgb(187, 235, 252)" : "white",
-                cursor: "pointer",
-            }}
+        <span
+            style={containerStyle}
             onMouseEnter={onMouseEnterHandler}
             onMouseLeave={onMouseLeaveHandler}
             onClick={props.handler}
         >
-            {props.text}
-        </div>
+            {buttonText}
+        </span>
     );
-};
+}
 
-export { TextButton };
+export { LoginButton };

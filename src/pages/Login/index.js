@@ -9,30 +9,8 @@ import { sharedActions } from "actions/sharedactions";
 import { InputFields } from "util/Authentication/FormComponents/InputFields";
 import { SubmitButton } from "util/Authentication/FormComponents/SubmitButton";
 import { Logo } from "util/Authentication/FormComponents/Logo";
-
-const PushLogin = async (regInfoRefs) => {
-    const data = { type: "native" };
-    console.log(regInfoRefs);
-    for (let field in regInfoRefs) {
-        if (regInfoRefs[field].current) {
-            data[field] = regInfoRefs[field].current.value;
-        }
-    }
-    const endpoint = domain + "login";
-    var headers = new Headers();
-
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    const res = await fetch(endpoint, {
-        method: "POST",
-        headers: headers,
-        credentials: "include",
-        mode: "cors",
-        cache: "no-cache",
-        redirect: "follow",
-        body: JSON.stringify(data),
-    });
-};
+import { resolveRefValues } from "util/refHelpers/resolveRefValues";
+import { pushLogin } from "backendRequestors/Authentication/pushLogin";
 
 const ResRender = (props) => {
     const res = props.res;
@@ -61,7 +39,7 @@ const Login = (props) => {
     const [res, setRes] = useState(["", -1]);
     const [goToRegister, setGoToReigster] = useState(false);
     const loginClickHandler = useCallback(() => {
-        PushLogin(fieldRefs);
+        pushLogin(resolveRefValues(fieldRefs), "native");
     }, [fieldRefs]);
     const registerClickHandler = useCallback(() => {
         setGoToReigster(true);

@@ -1,5 +1,5 @@
 import React from "react";
-import { FeatureListing } from "./components/FeatureListing";
+import { FeatureListing } from "./components/";
 import SimpleIcon from "svg/simple.svg";
 import CycleIcon from "svg/cycle.svg";
 import JuggleIcon from "svg/juggle.svg";

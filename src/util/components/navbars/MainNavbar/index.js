@@ -10,7 +10,7 @@ import { sharedFields } from "fields/sharedfields";
 const SizeSVG = (Comp) => {
     return <Comp style={{ width: "45px", height: "45px", fill: "white" }} />;
 };
-function Navbar(props) {
+function MainNavbar(props) {
     const closedNavWidth = "70px";
     const openNavWidth = "200px";
     const transitionSpeed = "0.1s";
@@ -103,4 +103,4 @@ function Navbar(props) {
     );
 }
 
-export { Navbar };
+export { MainNavbar };
