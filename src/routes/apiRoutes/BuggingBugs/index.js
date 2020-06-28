@@ -20,7 +20,6 @@ const endpointNames = [
     "demoteself",
     "leaveproject",
 ];
-
 const endpoints = {};
 endpointNames.forEach((name) => {
     endpoints[name] = uri + name;

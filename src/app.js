@@ -13,6 +13,7 @@ async function initializeApp(setInitialized, store) {
         headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
+            "Cache-Control": "no-cache",
         },
         credentials: "include",
         mode: "cors",

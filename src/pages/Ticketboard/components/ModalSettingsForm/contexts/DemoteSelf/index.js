@@ -4,7 +4,7 @@ import { domain } from "routes";
 import { useHistory, Redirect } from "react-router";
 import { ErrorBox } from "util/ErrorBox";
 import DemoteIcon from "svg/demote.svg";
-import Button from "util/Button.jsx";
+import { DefaultButton } from "buttons";
 import { ticketboardFields } from "fields/ticketboardfields";
 
 async function PushUserDemote(pid, setRes) {
@@ -74,7 +74,7 @@ function DemoteSelf(props) {
                 undone.
             </div>
             <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-                <Button
+                <DefaultButton
                     onClick={sendUserDemoteHandler}
                     text={"Demote"}
                     backgroundColor="green"

@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "util/Button.jsx";
+import { DefaultButton } from "buttons";
 import { useSelector, useDispatch } from "react-redux";
 import { ticketboardActions } from "actions/ticketboardactions.js";
 import { FilterOptions } from "./components/FilterOptions/filteroptions.jsx";
@@ -21,7 +21,7 @@ function Filter(props) {
 
     return (
         <div>
-            <Button
+            <DefaultButton
                 onClick={handleDisplayClick}
                 backgroundColor={"rgb(10, 20, 31)"}
                 text={filterMenuOpen ? "Hide Filters" : "Show Filters"}

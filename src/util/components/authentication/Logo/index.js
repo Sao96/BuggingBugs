@@ -1,5 +1,5 @@
 import React from "react";
-import BuggingBugsLogo from "img/buggingbugslogo.png";
+import BuggingBugsLogo from "img/mainlogo.png";
 const Logo = (props) => {
     return (
         <div>

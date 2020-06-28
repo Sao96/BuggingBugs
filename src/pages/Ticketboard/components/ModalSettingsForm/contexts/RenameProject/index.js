@@ -4,7 +4,7 @@ import { domain } from "routes";
 import { useHistory, Redirect } from "react-router";
 import { ErrorBox } from "util/ErrorBox";
 import EditProjectIcon from "svg/editproject.svg";
-import Button from "util/Button.jsx";
+import { DefaultButton } from "buttons";
 import { ticketboardFields } from "fields/ticketboardfields";
 
 async function PushRename(projName, pid, setRes) {
@@ -78,7 +78,7 @@ function RenameProject(props) {
                 <input ref={newNameRef} type="text"></input>
             </div>
             <span style={{ marginTop: "15px" }}></span>
-            <Button
+            <DefaultButton
                 onClick={sendProjectNameChangeHandler}
                 text={"Rename"}
                 backgroundColor="green"

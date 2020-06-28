@@ -3,7 +3,7 @@ import { domain } from "routes";
 import { useHistory, Redirect } from "react-router";
 import { ErrorBox } from "util/ErrorBox";
 import RemoveUserIcon from "svg/removeuser.svg";
-import Button from "util/Button.jsx";
+import { DefaultButton } from "buttons";
 import { generateUserMap } from "util/generateUserMap";
 import { useSelector } from "react-redux";
 import { ticketboardFields } from "fields/ticketboardfields";
@@ -106,7 +106,7 @@ function RemoveUser(props) {
             <div style={{ marginTop: "10px", marginBottom: "10px" }}>
                 {usersSelectInput}
             </div>
-            <Button
+            <DefaultButton
                 onClick={sendUserRemoval}
                 text={"Remove"}
                 backgroundColor="green"

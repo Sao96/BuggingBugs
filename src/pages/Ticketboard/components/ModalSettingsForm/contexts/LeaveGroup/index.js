@@ -4,7 +4,7 @@ import { domain } from "routes";
 import { useHistory, Redirect } from "react-router";
 import { ErrorBox } from "util/ErrorBox";
 import LeaveIcon from "svg/leave.svg";
-import Button from "util/Button.jsx";
+import { DefaultButton } from "buttons";
 import { ticketboardFields } from "fields/ticketboardfields";
 
 async function PushUserLeave(pid, setRes) {
@@ -74,7 +74,7 @@ function LeaveGroup(props) {
                 to rejoin.
             </div>
             <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-                <Button
+                <DefaultButton
                     onClick={sendLeaveHandler}
                     text={"Leave"}
                     backgroundColor="green"

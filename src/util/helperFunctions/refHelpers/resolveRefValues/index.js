@@ -13,7 +13,6 @@ function resolveRefValues(refs) {
             res[field] = refs[field].current.value;
         }
     }
-    console.log(res);
     return res;
 }
 

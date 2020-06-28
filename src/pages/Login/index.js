@@ -1,117 +1,93 @@
 import React, { createRef, useCallback, useState } from "react";
 import { Redirect } from "react-router";
-import Button from "util/Button.jsx";
-import { GoogleLoginForm } from "util/Authentication/GoogleAuthenticate";
-import { domain } from "routes";
 import { useDispatch } from "react-redux";
-import { ErrorBox } from "util/ErrorBox";
-import { sharedActions } from "actions/sharedactions";
-import { InputFields } from "util/Authentication/FormComponents/InputFields";
-import { SubmitButton } from "util/Authentication/FormComponents/SubmitButton";
-import { Logo } from "util/Authentication/FormComponents/Logo";
-import { resolveRefValues } from "util/refHelpers/resolveRefValues";
-import { pushLogin } from "backendRequestors/Authentication/pushLogin";
+import { navRoutes } from "navRoutes";
+import { DefaultButton, TextButton } from "util/components/buttons";
+import { InputFields, Logo } from "util/components/authentication";
+import { ResRender } from "./components";
+import { GoogleAuthenticateButton } from "util/components/authentication";
+import { resolveRefValues } from "helperFunctions/refHelpers/resolveRefValues";
+import { postLogin } from "apiCalls/BuggingBugs/POST";
+import { authenticationStyles as authStyles } from "styles";
 
-const ResRender = (props) => {
-    const res = props.res;
-    const dispatch = props.dispatch;
-    const setError = props.setError;
-    switch (res[1]) {
-        case -1:
-            return <></>;
-        case 200:
-            dispatch({
-                type: sharedActions.SET_LOGGED_IN,
-                loggedIn: true,
-            });
-            return <Redirect push to={"/dashboard"} />;
-        default:
-            return <ErrorBox text={res[0]} />;
-    }
-};
-
-const Login = (props) => {
+function Login(props) {
     const dispatch = useDispatch();
+    const [res, setRes] = useState([-1, ""]);
+    const [processing, setProcessing] = useState(false);
+    const [redirect, setRedirect] = useState("");
     const fieldRefs = {
         email: createRef(),
         password: createRef(),
     };
-    const [res, setRes] = useState(["", -1]);
-    const [goToRegister, setGoToReigster] = useState(false);
-    const loginClickHandler = useCallback(() => {
-        pushLogin(resolveRefValues(fieldRefs), "native");
-    }, [fieldRefs]);
-    const registerClickHandler = useCallback(() => {
-        setGoToReigster(true);
-    }, [setGoToReigster]);
-
-    if (goToRegister) {
-        return <Redirect push to={"/register"} />;
-    }
-
     const inputFields = [
         ["Email", "text", fieldRefs.email],
         ["Password", "password", fieldRefs.password],
     ];
-
-    const loginTextStyle = {
-        fontSize: "30px",
-        paddingBottom: "20px",
-        fontFamily: "Montserrat",
+    const loginClickHandler = useCallback(() => {
+        postLogin(resolveRefValues(fieldRefs), "native", setRes, setProcessing);
+    }, [fieldRefs]);
+    const registerClickHandler = useCallback(() => {
+        setRedirect(navRoutes.register);
+    }, [setRedirect]);
+    const googleOnSuccessHandler = (googleUser) => {
+        const loginType = "google";
+        const reqData = {
+            token: googleUser.getAuthResponse().id_token,
+        };
+        postLogin(reqData, loginType);
     };
-    const pageStyle = {
+    if (redirect !== "") {
+        return <Redirect push to={redirect} />;
+    }
+
+    const headerText = "Sign In";
+    const containerStyle = {
         display: "absolute",
         width: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
     };
-    const mainStyle = {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        width: "500px",
-        height: "500px",
-        background: "rgb(67, 118, 148)",
-        border: "rgb(37, 88, 118) 0.5px solid",
-    };
+    const formDimensions = { height: "500px", width: "500px" };
+    const mainStyle = { ...authStyles.mainStyle, ...formDimensions };
+    const headerStyle = authStyles.headerStyle;
 
     return (
-        <article style={pageStyle}>
+        <article style={containerStyle}>
             <main style={mainStyle}>
-                <ResRender res={res} dispatch={dispatch} />
-                <section>
+                <header style={headerStyle}>
                     <Logo />
-                </section>
-                <section>
-                    <header style={loginTextStyle}>Sign In</header>
-                </section>
-                <section>
-                    <GoogleLoginForm
-                        dispatch={props.dispatch}
+                    {headerText}
+                </header>
+                <ResRender res={res} dispatch={dispatch} />
+                <section
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}
+                >
+                    <GoogleAuthenticateButton
                         text={"Sign In"}
-                        endpoint={"/api/login"}
-                        setRes={setRes}
+                        onSuccessHandler={googleOnSuccessHandler}
                     />
-                </section>
-                <section>
                     <InputFields data={inputFields} />
                 </section>
                 <section style={{ display: "flex" }}>
-                    <SubmitButton
+                    <TextButton
                         text={"Register"}
-                        handler={registerClickHandler}
+                        onClick={!processing ? registerClickHandler : null}
                     />
-                    <Button
+                    <span style={{ paddingLeft: "40px" }} />
+                    <DefaultButton
                         text={"Login"}
                         backgroundColor={"green"}
-                        onClick={loginClickHandler}
+                        onClick={!processing ? loginClickHandler : null}
                     />
                 </section>
             </main>
         </article>
     );
-};
+}
 
 export { Login };

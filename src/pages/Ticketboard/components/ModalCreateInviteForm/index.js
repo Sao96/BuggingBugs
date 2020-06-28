@@ -3,7 +3,7 @@ import { domain } from "routes";
 import { useHistory, Redirect } from "react-router";
 import { ErrorBox } from "util/ErrorBox";
 import InviteUserIcon from "svg/invite2.svg";
-import Button from "util/Button.jsx";
+import { DefaultButton } from "buttons";
 
 async function PushInvite(toUid, setRes, pid) {
     const data = {
@@ -72,7 +72,7 @@ function ModalCreateInviteForm(props) {
             <div style={{ marginTop: "10px", marginBottom: "10px" }}>
                 <input ref={toUidInputRef} type="text"></input>
             </div>
-            <Button
+            <DefaultButton
                 onClick={sendInviteClickHandler}
                 text={"Send Invite"}
                 backgroundColor="green"
@@ -99,7 +99,7 @@ export { ModalCreateInviteForm };
 //         <div style={{ marginTop: "10px", marginBottom: "10px" }}>
 //             <input ref={projNameRef} type="text" name="fname"></input>
 //         </div>
-//         <Button
+//         <DefaultButton
 //             onClick={createClickHandler}
 //             text={"Create"}
 //             backgroundColor="green"

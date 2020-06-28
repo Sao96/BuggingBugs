@@ -5,7 +5,7 @@ import ImageIcon from "svg/ImgDoc.svg";
 import CloseIcon from "svg/close.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { ticketboardFields } from "fields/ticketboardfields.js";
-import Button from "util/Button.jsx";
+import { DefaultButton } from "buttons";
 import { sharedActions } from "actions/sharedactions";
 import { ticketboardActions } from "actions/ticketboardactions";
 import { TicketInfoTable } from "./components/TicketInfoTable";
@@ -172,14 +172,14 @@ const ChangeTicketStateButtonsLeader = (props) => {
             break;
     }
     const button1 = (
-        <Button
+        <DefaultButton
             text={button1Data[0]}
             backgroundColor={button1Data[1]}
             onClick={button1Data[2]}
         />
     );
     const button2 = button2Data ? (
-        <Button
+        <DefaultButton
             text={button2Data[0]}
             backgroundColor={button2Data[1]}
             onClick={button2Data[2]}
@@ -218,7 +218,7 @@ const ChangeTicketStateButtonsRegular = (props) => {
     }
 
     return (
-        <Button
+        <DefaultButton
             text={buttonData[0]}
             backgroundColor={buttonData[1]}
             onClick={buttonData[2]}

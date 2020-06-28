@@ -1,7 +1,7 @@
 import React, { useEffect, createRef, useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ticketboardFields } from "fields/ticketboardfields";
-import Button from "util/Button.jsx";
+import { DefaultButton } from "buttons";
 import { createSelectFields, createInputFields } from "../util/InputForm";
 import { domain } from "routes";
 import { Redirect, useHistory } from "react-router-dom";
@@ -142,7 +142,7 @@ function ModalEditTicketForm(props) {
                 {createSelectFields(fieldData, userMap)}
                 {createInputFields(fieldData)}
             </div>
-            <Button
+            <DefaultButton
                 text={"Edit Ticket"}
                 onClick={createClickHandler}
                 backgroundColor="green"

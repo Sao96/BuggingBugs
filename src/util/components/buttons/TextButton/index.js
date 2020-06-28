@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { textHoverColor } from "themeColors";
 function TextButton(props) {
     const [hovered, setHovered] = useState(false);
     const onMouseEnterHandler = () => {
@@ -11,12 +11,18 @@ function TextButton(props) {
     return (
         <div
             style={{
-                color: hovered ? "rgb(187, 235, 252)" : "white",
+                display: "inline-block",
+                backgroundColor: props.backgroundColor,
+                color: "white",
+                fontFamily: "Didact Gothic, Quattrocento Sans",
+                padding: "12px",
+                fontSize: "18px",
                 cursor: "pointer",
+                userSelect: "none",
             }}
             onMouseEnter={onMouseEnterHandler}
             onMouseLeave={onMouseLeaveHandler}
-            onClick={props.handler}
+            onClick={props.onClick}
         >
             {props.text}
         </div>

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { HookSection } from "./components/HookSection";
-import { InfoSection } from "./components/InfoSection";
+import { HookSection, InfoSection } from "./components";
 import { landingBackgroundColor, mainBackgroundColor } from "themeColors";
 
 function Landing(props) {

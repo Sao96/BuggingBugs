@@ -1,7 +1,7 @@
 import React, { createRef, useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router";
-import Button from "util/Button.jsx";
+import { DefaultButton } from "buttons";
 import { createSelectFields, createInputFields } from "../util/InputForm";
 import { domain } from "routes";
 import { ErrorBox } from "util/ErrorBox";
@@ -109,7 +109,7 @@ function ModalCreateTicketForm(props) {
                 {createSelectFields(fieldData, userMap)}
                 {createInputFields(fieldData)}
             </div>
-            <Button
+            <DefaultButton
                 text={"Create Ticket"}
                 onClick={createClickHandler}
                 backgroundColor="green"
