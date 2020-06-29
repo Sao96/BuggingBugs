@@ -6,6 +6,7 @@ import { combinedReducer } from "reducers/combinedreducer.js";
 import { Routing } from "./routing";
 import { endpoints as ep } from "apiRoutes/BuggingBugs";
 import { sharedActions as sA } from "actions/sharedactions.js";
+import { MainNavbar } from "util/components/navbars/MainNavbar";
 
 async function initializeApp(setInitialized, store) {
     const res = await fetch(ep.amilogged, {
@@ -31,6 +32,7 @@ async function initializeApp(setInitialized, store) {
 function App(props) {
     const [initialized, setInitialized] = useState(false);
     const store = createStore(combinedReducer);
+    const appStyle = { display: "flex" };
     useEffect(() => {
         initializeApp(setInitialized, store);
     }, [store]);

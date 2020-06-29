@@ -1,28 +1,20 @@
 import React from "react";
+import { Redirect } from "react-router-dom";
 import { ErrorBox } from "responseBoxes";
-import ClipLoader from "react-spinners/ClipLoader";
-import { InviteList } from "..";
 
 function ResRender(props) {
     const res = props.res;
-    switch (res[1]) {
+    const resMsg = res[1].message;
+    switch (res[0]) {
         case -1: //set loading
-            return (
-                <ClipLoader
-                    size={150}
-                    color={"rgb(200,200,200)"}
-                    loading={true}
-                />
-            );
         case 200:
-            return <InviteList invites={res[0]} />;
+            return <></>;
         case 300:
             return <Redirect push to={"/login"} />;
-        case 400:
-        case 500:
-            return <ErrorBox text={res[1]} />;
         default:
-            return <ErrorBox text={"An internal error has occured."} />;
+            const errorText =
+                resMsg !== "" ? resMsg : "An unknown error has occured";
+            return <ErrorBox text={errorText} />;
     }
 }
 

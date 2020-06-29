@@ -68,5 +68,7 @@ app.use((err, req, res, next) => {
         req.body.err.status = 500;
         req.body.err.restext = "An internal error has occured.";
     }
-    res.status(req.body.err.status).send(JSON.stringify(req.body.err.restext));
+    res.status(req.body.err.status).send(
+        JSON.stringify({ message: req.body.err.restext })
+    );
 });

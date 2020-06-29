@@ -14,73 +14,8 @@ import { ModalTitle } from "util/ModalTitle";
 import { SuccessBox } from "util/SuccessBox";
 import { ErrorBox } from "util/ErrorBox";
 import { ticketStatusCodes } from "util/ticketStatusCodes";
-import { domain } from "routes";
+// import { domain } from "routes";
 import ClipLoader from "react-spinners/ClipLoader";
-
-async function PushTicketDelete(pid, tid, setRes, setLoading, dispatch) {
-    setLoading(true);
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    const data = {
-        tid: tid,
-    };
-    const endpoint = domain + "deleteticket?pid=" + pid; //subject to change
-    const res = await fetch(endpoint, {
-        method: "POST",
-        headers: headers,
-        credentials: "include",
-        mode: "cors",
-        cache: "no-cache",
-        redirect: "follow",
-        body: JSON.stringify(data),
-    });
-    const resStatus = res.status,
-        resData = await res.json();
-    if (resStatus === 200) {
-        dispatch({ type: ticketboardActions.SET_REFRESH_NEEDED });
-        dispatch({ type: sharedActions.EMPTY_MODAL_STACK });
-    } else {
-        setLoading(false);
-        setRes([resData, resStatus]);
-    }
-}
-async function PushTicketStatusChange(
-    newTicketStatus,
-    pid,
-    tid,
-    setRes,
-    setLoading,
-    dispatch
-) {
-    setLoading(true);
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    const data = {
-        tid: tid,
-        newTicketStatus: newTicketStatus,
-    };
-    const endpoint = domain + "updateticketstatus?pid=" + pid; //subject to change
-    const res = await fetch(endpoint, {
-        method: "POST",
-        headers: headers,
-        credentials: "include",
-        mode: "cors",
-        cache: "no-cache",
-        redirect: "follow",
-        body: JSON.stringify(data),
-    });
-    const resStatus = res.status,
-        resData = await res.json();
-    if (resStatus === 200) {
-        dispatch({ type: ticketboardActions.SET_REFRESH_NEEDED });
-        dispatch({ type: sharedActions.EMPTY_MODAL_STACK });
-    } else {
-        setLoading(false);
-        setRes([resData, resStatus]);
-    }
-}
 
 const FromSection = (props) => {
     const containerStyle = {

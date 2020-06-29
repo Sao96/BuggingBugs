@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import * as sample from "util/samples.jsx";
-import Ticket from "./components/Ticket/ticket.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import { sharedActions } from "actions/sharedactions.js";
 import { sharedFields } from "fields/sharedfields.js";
 import { ticketboardFields } from "fields/ticketboardfields.js";
-import { TypeFilter } from "./components/TypeFilter";
+import { TypeFilter, Ticket } from "./components";
 
 // const randomTickets = () => {
 //     let res = [...sample.premade];
@@ -129,7 +127,7 @@ function TicketDisplayer(props) {
             selectedCards = closedTickets;
             break;
     }
-    const mainStyle = {
+    const ticketLayoutStyle = {
         display: "flex",
         flexWrap: "wrap",
         width: "100%",
@@ -152,7 +150,7 @@ function TicketDisplayer(props) {
                 active={activeSection}
                 setState={setActiveSection}
             />
-            <div style={mainStyle}>{selectedCards} </div>
+            <div style={ticketLayoutStyle}>{selectedCards} </div>
         </div>
     );
 }

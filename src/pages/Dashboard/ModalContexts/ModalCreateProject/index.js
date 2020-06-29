@@ -3,19 +3,24 @@ import CreateGroupIcon from "svg/create.svg";
 import { useDispatch } from "react-redux";
 import { dashboardActions } from "actions/dashboardactions";
 import { ResRender, CreateButton } from "./components";
+import { postCreateProject } from "apiCalls/BuggingBugs/POST";
 
 function ModalCreateProject(props) {
-    const [processing, setProcessing] = useState(false);
-    const [res, setRes] = useState(["", -1]);
     const dispatch = useDispatch();
+    const [processing, setProcessing] = useState(false);
+    const [res, setRes] = useState([-1, ""]);
+    const projNameRef = createRef();
     useEffect(() => {
         return () => {
             dispatch({ type: dashboardActions.SET_PROJECTS_MODIFIED });
         };
     }, []);
-    const projNameRef = createRef();
     const createButtonHandler = useCallback(() => {
-        pushProject(projNameRef, setProcessing, setRes);
+        postCreateProject(
+            { projName: projNameRef.current.value },
+            setRes,
+            setProcessing
+        );
     }, [projNameRef, setProcessing, setRes]);
 
     const containerStyle = {
@@ -35,7 +40,7 @@ function ModalCreateProject(props) {
         <article style={containerStyle}>
             <ResRender res={res} />
             <CreateGroupIcon style={createGroupSvgStyle} />
-            Enter the name of your new BuggingBugs application:
+            <header>Enter the name of your new BuggingBugs application:</header>
             <div style={{ marginTop: "10px", marginBottom: "10px" }}>
                 <input ref={projNameRef} type="text" name="fname"></input>
             </div>

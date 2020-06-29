@@ -59,7 +59,6 @@ function Dashboard(props) {
         flexWrap: "wrap",
         alignItems: "center",
         justifyContent: "center",
-        width: "100%",
     };
     return (
         <article style={containerStyle}>

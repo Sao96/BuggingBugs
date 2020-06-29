@@ -2,13 +2,13 @@ import React, { createRef, useCallback, useState } from "react";
 import { Redirect } from "react-router";
 import { useDispatch } from "react-redux";
 import { navRoutes } from "navRoutes";
-import { DefaultButton, TextButton } from "util/components/buttons";
+import { DefaultButton, TextButton } from "buttons";
 import { InputFields, Logo } from "util/components/authentication";
-import { ResRender } from "./components";
 import { GoogleAuthenticateButton } from "util/components/authentication";
 import { resolveRefValues } from "helperFunctions/refHelpers/resolveRefValues";
-import { postLogin } from "apiCalls/BuggingBugs/POST";
 import { authenticationStyles as authStyles } from "styles";
+import { ResRender } from "./components";
+import { postLogin } from "apiCalls/BuggingBugs/POST";
 
 function Login(props) {
     const dispatch = useDispatch();
@@ -25,17 +25,20 @@ function Login(props) {
     ];
     const loginClickHandler = useCallback(() => {
         postLogin(resolveRefValues(fieldRefs), "native", setRes, setProcessing);
-    }, [fieldRefs]);
+    }, [fieldRefs, setRes, setProcessing]);
     const registerClickHandler = useCallback(() => {
         setRedirect(navRoutes.register);
     }, [setRedirect]);
-    const googleOnSuccessHandler = (googleUser) => {
-        const loginType = "google";
-        const reqData = {
-            token: googleUser.getAuthResponse().id_token,
-        };
-        postLogin(reqData, loginType);
-    };
+    const googleOnSuccessHandler = useCallback(
+        (googleUser) => {
+            const loginType = "google";
+            const reqData = {
+                token: googleUser.getAuthResponse().id_token,
+            };
+            postLogin(reqData, loginType, setRes, setProcessing);
+        },
+        [setRes, setProcessing]
+    );
     if (redirect !== "") {
         return <Redirect push to={redirect} />;
     }
@@ -59,7 +62,11 @@ function Login(props) {
                     <Logo />
                     {headerText}
                 </header>
-                <ResRender res={res} dispatch={dispatch} />
+                <ResRender
+                    res={res}
+                    dispatch={dispatch}
+                    setRedirect={setRedirect}
+                />
                 <section
                     style={{
                         display: "flex",

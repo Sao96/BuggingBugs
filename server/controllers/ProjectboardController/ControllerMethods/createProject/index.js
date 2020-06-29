@@ -13,7 +13,7 @@ const validProjectName = (projName) => {
  *
  */
 async function createProject(req, res, next) {
-    if (!validProjectName(req.body.projectName)) {
+    if (!validProjectName(req.body.projName)) {
         setError(
             req,
             400,
@@ -26,7 +26,7 @@ async function createProject(req, res, next) {
     try {
         const Project = mongoose.model("Project");
         const newProject = new Project({
-            name: req.body.projectName,
+            name: req.body.projName,
         });
         req.body.newProjData = await newProject.save();
         req.body.projectId = req.body.newProjData._id;
@@ -38,7 +38,7 @@ async function createProject(req, res, next) {
 
     req.body.res.data = {
         message: "Group successfully created!",
-        projInfo: req.body.newProjData
+        projInfo: req.body.newProjData,
     };
 
     next();

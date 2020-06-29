@@ -3,10 +3,14 @@ import { endpoints as ep } from "apiRoutes/BuggingBugs";
 /**
  * @function postLogin
  *
- * @param {Object} regInfo: Expects all required fields filled for a login.
+ * @param {Object} regInfo: Expects all required fields filled for a login,
+ * except type.
  * @param {String} type: The type of login.
  */
-async function postLogin(regInfo, type, dispatch) {
+async function postLogin(regInfo, type, setRes, setProcessing = null) {
+    if (setProcessing) {
+        setProcessing(true);
+    }
     regInfo.type = type;
     const res = await fetch(ep.login, {
         method: "POST",
@@ -21,6 +25,12 @@ async function postLogin(regInfo, type, dispatch) {
         redirect: "follow",
         body: JSON.stringify(regInfo),
     });
+    if (setProcessing) {
+        setProcessing(false);
+    }
+    const resStatus = res.status,
+        resData = await res.json();
+    setRes([resStatus, resData]);
 }
 
 export { postLogin };

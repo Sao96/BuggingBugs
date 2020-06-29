@@ -1,5 +1,9 @@
+import Open from "svg/open.svg";
+import Worker from "svg/worker.svg";
+import Closed from "svg/closed.svg";
+
 const ticketStatusCodes = {
-    open: 0,
+    0: {}
     pending: 1,
     closed: 2,
 };

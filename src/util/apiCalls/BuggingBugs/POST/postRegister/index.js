@@ -6,7 +6,10 @@ import { endpoints as ep } from "apiRoutes/BuggingBugs";
  * @param {Object} regInfo: Expects all required fields filled for a register.
  * @param {String} type: The type of register.
  */
-async function postRegister(regInfo, type, dispatch) {
+async function postRegister(regInfo, type, setRes, setProcessing = null) {
+    if (setProcessing) {
+        setProcessing(true);
+    }
     regInfo.type = type;
     const res = await fetch(ep.register, {
         method: "POST",
@@ -21,6 +24,12 @@ async function postRegister(regInfo, type, dispatch) {
         redirect: "follow",
         body: JSON.stringify(regInfo),
     });
+    if (setProcessing) {
+        setProcessing(false);
+    }
+    const resStatus = res.status,
+        resData = await res.json();
+    setRes([resStatus, resData]);
 }
 
 export { postRegister };

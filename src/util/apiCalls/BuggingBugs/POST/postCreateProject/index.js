@@ -31,7 +31,7 @@ async function postCreateProject(reqData, setRes, setProcessing = null) {
     }
     const resStatus = res.status,
         resData = await res.json();
-    setRes([resData, resStatus]);
+    setRes([resStatus, resData]);
 }
 
 export { postCreateProject };

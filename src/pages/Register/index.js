@@ -4,11 +4,11 @@ import { useDispatch } from "react-redux";
 import { navRoutes } from "navRoutes";
 import { DefaultButton, TextButton } from "util/components/buttons";
 import { InputFields, Logo } from "util/components/authentication";
-import { ResRender } from "./components";
 import { GoogleAuthenticateButton } from "util/components/authentication";
 import { resolveRefValues } from "helperFunctions/refHelpers/resolveRefValues";
-import { postRegister } from "apiCalls/BuggingBugs/POST";
 import { authenticationStyles as authStyles } from "styles";
+import { ResRender } from "./components";
+import { postRegister } from "apiCalls/BuggingBugs/POST";
 
 function Register(props) {
     const dispatch = useDispatch();
@@ -36,17 +36,20 @@ function Register(props) {
             setRes,
             setProcessing
         );
-    }, [fieldRefs]);
+    }, [fieldRefs, setRes, setProcessing]);
     const loginClickHandler = useCallback(() => {
         setRedirect(navRoutes.login);
     }, [setRedirect]);
-    const googleOnSuccessHandler = (googleUser) => {
-        const registerType = "google";
-        const reqData = {
-            token: googleUser.getAuthResponse().id_token,
-        };
-        postLogin(reqData, registerType);
-    };
+    const googleOnSuccessHandler = useCallback(
+        (googleUser) => {
+            const registerType = "google";
+            const reqData = {
+                token: googleUser.getAuthResponse().id_token,
+            };
+            postRegister(reqData, registerType, setRes, setProcessing);
+        },
+        [setRes, setProcessing]
+    );
     if (redirect !== "") {
         return <Redirect push to={redirect} />;
     }

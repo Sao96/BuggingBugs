@@ -9,23 +9,30 @@ import { MainNavbar } from "util/components/navbars/MainNavbar";
 import { Landing } from "./pages/Landing";
 import { Dashboard } from "./pages/Dashboard";
 import { Login } from "./pages/Login";
-// import { TicketBoard } from "./pages/Ticketboard/";
+import { TicketBoard } from "./pages/Ticketboard/";
 // import { Logout } from "./pages/Logout";
 import { Register } from "./pages/Register";
 function Routing() {
     return (
-        <Router>
-            {/* switch this path to 404 for default */}
-            {/* <MainNavbar /> */}
-            <Switch>
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/register" component={Register} />
-                <Route exact path="/dashboard" component={Dashboard} />
-                {/*<Route exact path="/ticketboard" component={TicketBoard} />
-                <Route exact path="/logout" component={Logout} /> */}
-                <Route component={Landing} />
-            </Switch>
-        </Router>
+        <div style={{ display: "flex" }}>
+            <Router>
+                <MainNavbar />
+                <div style={{ width: "100%" }}>
+                    <Switch>
+                        <Route exact path="/login" component={Login} />
+                        <Route exact path="/register" component={Register} />
+                        <Route exact path="/dashboard" component={Dashboard} />
+                        <Route
+                            exact
+                            path="/ticketboard"
+                            component={TicketBoard}
+                        />
+                        {/*<Route exact path="/logout" component={Logout} /> */}
+                        <Route component={Landing} />
+                    </Switch>
+                </div>
+            </Router>
+        </div>
     );
 }
 
