@@ -2,12 +2,14 @@ import React, { createRef, useState, useEffect } from "react";
 import { TicketDisplayer } from "./components";
 import { useSelector, useDispatch } from "react-redux";
 import { Modal } from "modal";
-import { ModalTicketForm } from "./ModalContexts";
-//     ModalCreateTicketForm,
-//     ModalCreateInviteForm,
-//     ModalEditTicketForm,
+import {
+    ModalTicketForm,
+    ModalCreateTicketForm,
+    ModalEditTicketForm,
+    ModalCreateInviteForm,
+    ModalSettingsForm,
+} from "./ModalContexts";
 //     ModalSettingsForm,
-// } from "./ModalContexts";
 import { sharedActions } from "actions/sharedactions.js";
 import { sharedFields } from "fields/sharedfields.js";
 import { ticketboardActions } from "actions/ticketboardactions";
@@ -55,14 +57,14 @@ function TicketBoard(props) {
         switch (currModalStack[currModalStack.length - 1]) {
             case 1:
                 return <ModalTicketForm />;
-            // case 2:
-            //     return <ModalCreateTicketForm users={users} pid={pid} />;
-            // case 3:
-            //     return <ModalEditTicketForm users={users} pid={pid} />;
-            // case 4:
-            //     return <ModalCreateInviteForm pid={pid} />;
-            // case 5:
-            //     return <ModalSettingsForm />;
+            case 2:
+                return <ModalCreateTicketForm users={users} pid={pid} />;
+            case 3:
+                return <ModalEditTicketForm users={users} pid={pid} />;
+            case 4:
+                return <ModalCreateInviteForm pid={pid} />;
+            case 5:
+                return <ModalSettingsForm />;
         }
     };
     const containerStyle = {

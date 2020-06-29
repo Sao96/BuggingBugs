@@ -1,50 +1,10 @@
 import React, { useCallback, useState, createRef } from "react";
 import { useSelector } from "react-redux";
-import { domain } from "routes";
-import { useHistory, Redirect } from "react-router";
-import { ErrorBox } from "util/ErrorBox";
 import EditProjectIcon from "svg/editproject.svg";
 import { DefaultButton } from "buttons";
 import { ticketboardFields } from "fields/ticketboardfields";
-
-async function PushRename(projName, pid, setRes) {
-    const data = {
-        projName: projName,
-    };
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    const endpoint = domain + "renameproject?pid=" + pid; //subject to change
-    const res = await fetch(endpoint, {
-        method: "POST",
-        headers: headers,
-        credentials: "include",
-        mode: "cors",
-        cache: "no-cache",
-        redirect: "follow",
-        body: JSON.stringify(data),
-    });
-    const resStatus = res.status,
-        resData = await res.json();
-    setRes([resStatus, resData]);
-}
-
-const ResRender = (props) => {
-    const res = props.res;
-    const pid = props.pid;
-    switch (res[0]) {
-        case 200:
-            useHistory().go(); //say invite sent or something
-        case 300:
-            return <Redirect push to={"/login"} />;
-        case 400:
-            return <ErrorBox text={res[1]} />;
-        case 500:
-            return <ErrorBox text={res[1]} />;
-        default:
-            return <></>;
-    }
-};
+import { ResRender } from "./components";
+import { postRename } from "apiCalls/BuggingBugs/POST";
 
 function RenameProject(props) {
     const [res, setRes] = useState([-1, ""]);
@@ -53,8 +13,9 @@ function RenameProject(props) {
     });
     const newNameRef = createRef();
     const sendProjectNameChangeHandler = useCallback(() => {
-        PushRename(newNameRef.current.value, pid, setRes);
-    }, [newNameRef, pid]);
+        postRename({ projName: newNameRef.current.value }, pid, setRes);
+    }, [newNameRef, pid, setRes]);
+
     const svgStyle = {
         height: "130px",
         width: "130px",

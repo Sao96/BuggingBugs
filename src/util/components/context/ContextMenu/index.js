@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavList } from "./components/NavList";
 
-function ContextsMenu(props) {
+function ContextMenu(props) {
     const [active, setActive] = useState(0);
     const contexts = props.contexts;
     const contextDisplayStyle = {
@@ -11,6 +11,11 @@ function ContextsMenu(props) {
         justifyContent: "center",
         backgroundColor: "rgb(10,25,45)",
     };
+    const activeContext = contexts.length ? (
+        contexts[active][1]
+    ) : (
+        <div style={{ fontFamily: "Didact Gothic" }}>No context to display</div>
+    );
     return (
         <div
             style={{
@@ -29,9 +34,9 @@ function ContextsMenu(props) {
                 setActive={setActive}
             />
             <div style={contextDisplayStyle}>
-                <div style={{ paddingTop: "40px" }}>{contexts[active][1]}</div>
+                <div style={{ paddingTop: "40px" }}>{activeContext}</div>
             </div>
         </div>
     );
 }
-export { ContextsMenu };
+export { ContextMenu };

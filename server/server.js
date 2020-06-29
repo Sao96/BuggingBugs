@@ -59,6 +59,9 @@ app.use((req, res, next) => {
         return next(req.body.err);
     }
     console.log(req.url, "SUCCESS", req.body.res);
+    if (!req.body.res.data.message) {
+        req.body.res.data.message = "Success!";
+    }
     res.status(req.body.res.status).send(JSON.stringify(req.body.res.data));
 });
 app.use((err, req, res, next) => {

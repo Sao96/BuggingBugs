@@ -1,4 +1,6 @@
 import { endpoints as ep } from "apiRoutes/BuggingBugs";
+import { ticketboardActions } from "actions/ticketboardactions";
+import { sharedActions } from "actions/sharedactions";
 
 /**
  * @param {*} reqData: An object expecting to contain fields: newTicketStatus, tid
@@ -9,6 +11,7 @@ import { endpoints as ep } from "apiRoutes/BuggingBugs";
  */
 async function postTicketStatusChange(
     reqData,
+    pid,
     setRes,
     setProcessing,
     dispatch
@@ -38,8 +41,9 @@ async function postTicketStatusChange(
     if (resStatus === 200) {
         dispatch({ type: ticketboardActions.SET_REFRESH_NEEDED });
         dispatch({ type: sharedActions.EMPTY_MODAL_STACK });
+    } else {
+        setRes([resData, resStatus]);
     }
-    setRes([resData, resStatus]);
 }
 
 export { postTicketStatusChange };

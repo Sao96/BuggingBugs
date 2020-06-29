@@ -1,4 +1,6 @@
 import { endpoints as ep } from "apiRoutes/BuggingBugs";
+import { ticketboardActions } from "actions/ticketboardactions";
+import { sharedActions } from "actions/sharedactions";
 
 /**
  * expects pid, tid
@@ -8,7 +10,7 @@ import { endpoints as ep } from "apiRoutes/BuggingBugs";
  * @param {*} setProcessing
  * @param {*} dispatch
  */
-async function postTicketDelete(reqData, setRes, setProcessing, dispatch) {
+async function postDeleteTicket(reqData, pid, setRes, setProcessing, dispatch) {
     if (setProcessing) {
         setProcessing(true);
     }
@@ -34,8 +36,9 @@ async function postTicketDelete(reqData, setRes, setProcessing, dispatch) {
     if (resStatus === 200) {
         dispatch({ type: ticketboardActions.SET_REFRESH_NEEDED });
         dispatch({ type: sharedActions.EMPTY_MODAL_STACK });
+    } else {
+        setRes([resData, resStatus]);
     }
-    setRes([resData, resStatus]);
 }
 
-export { postTicketDelete };
+export { postDeleteTicket };

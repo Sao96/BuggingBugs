@@ -1,170 +1,27 @@
 import React, { useEffect, useCallback, useState } from "react";
-import AddAttachmentButtonIcon from "svg/AddAttachment.svg";
-import DocumentIcon from "svg/TxtDoc.svg";
-import ImageIcon from "svg/ImgDoc.svg";
-import CloseIcon from "svg/close.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { ticketboardFields } from "fields/ticketboardfields.js";
-import { DefaultButton } from "buttons";
 import { sharedActions } from "actions/sharedactions";
 import { ticketboardActions } from "actions/ticketboardactions";
-import { TicketInfoTable } from "./components/TicketInfoTable";
-import { TextButton } from "util/TextButton";
-import { ModalTitle } from "util/ModalTitle";
-import { SuccessBox } from "util/SuccessBox";
-import { ErrorBox } from "util/ErrorBox";
-import { ticketStatusCodes } from "util/ticketStatusCodes";
-// import { domain } from "routes";
-import ClipLoader from "react-spinners/ClipLoader";
-
-const FromSection = (props) => {
-    const containerStyle = {
-        display: "flex",
-        flexFlow: "column wrap",
-        alignItems: "center",
-    };
-
-    return (
-        <section style={containerStyle}>
-            <img
-                style={{
-                    height: "130px",
-                    width: "130px",
-                    border: "1px solid black",
-                    borderRadius: "100%",
-                }}
-                src={props.fromPfp}
-            />
-            <div
-                style={{
-                    fontFamily: "Didact Gothic",
-                    marginBottom: "40px",
-                }}
-            >
-                From:{" "}
-                <span style={{ paddingLeft: "5px" }}> {props.fromName} </span>
-            </div>
-        </section>
-    );
-};
-
-const EditDeleteButtons = (props) => {
-    const containerStyle = {
-        display: "flex",
-        justifyContent: "space-around",
-        width: "50%",
-        fontSize: "18px",
-        fontFamily: "Didact Gothic",
-        marginBottom: "2px",
-    };
-    return (
-        <main style={containerStyle}>
-            <TextButton text={"Edit"} handler={props.editHandler} />
-            <TextButton text={"Delete"} handler={props.deleteHanlder} />
-        </main>
-    );
-};
-
-const ResRender = (props) => {
-    const res = props.res;
-    switch (res[1]) {
-        case -1:
-            return <></>;
-        case 400:
-        case 500:
-            return <ErrorBox text={res[0]} />;
-        default:
-            return <ErrorBox text={"An unknown error has occured."} />;
-    }
-};
-
-const RenderLoading = (props) => {
-    if (props.loading) {
-        return (
-            <ClipLoader size={100} color={"rgb(200,200,200)"} loading={true} />
-        );
-    }
-
-    return <></>;
-};
-
-const ChangeTicketStateButtonsLeader = (props) => {
-    const ticketStatus = props.ticketStatus;
-    const handlers = props.handlers;
-    let button1Data, button2Data;
-    switch (ticketStatus) {
-        case ticketStatusCodes["open"]:
-            button1Data = ["Close", "green", handlers["closed"]];
-            button2Data = null;
-            break;
-        case ticketStatusCodes["pending"]:
-            button1Data = ["Approve", "green", handlers["closed"]];
-            button2Data = ["Decline", "red", handlers["open"]];
-            break;
-        case ticketStatusCodes["closed"]:
-            button1Data = ["Reopen", "green", handlers["open"]];
-            button2Data = null;
-            break;
-    }
-    const button1 = (
-        <DefaultButton
-            text={button1Data[0]}
-            backgroundColor={button1Data[1]}
-            onClick={button1Data[2]}
-        />
-    );
-    const button2 = button2Data ? (
-        <DefaultButton
-            text={button2Data[0]}
-            backgroundColor={button2Data[1]}
-            onClick={button2Data[2]}
-        />
-    ) : (
-        <></>
-    );
-    return (
-        <div style={{ display: "flex" }}>
-            {button1}
-            <span style={{ paddingLeft: "15px" }} />
-            {button2}
-        </div>
-    );
-};
-const ChangeTicketStateButtonsRegular = (props) => {
-    const ticketStatus = props.ticketStatus;
-    const handlers = props.handlers;
-    let buttonData;
-    switch (ticketStatus) {
-        case ticketStatusCodes["open"]:
-            buttonData = ["Request Review", "green", handlers["pending"]];
-            break;
-        case ticketStatusCodes["pending"]:
-            buttonData = ["Cancel Review", "red", handlers["open"]];
-            break;
-        case ticketStatusCodes["closed"]:
-            const closedButtonStyle = {
-                display: "flex",
-                justifyContent: "center",
-                padding: "10px",
-                fontFamily: "Didact Gothic",
-                fontSize: "20px",
-            };
-            return <div style={closedButtonStyle}>Ticket is closed.</div>;
-    }
-
-    return (
-        <DefaultButton
-            text={buttonData[0]}
-            backgroundColor={buttonData[1]}
-            onClick={buttonData[2]}
-        />
-    );
-};
+import {
+    FromSection,
+    TicketInfoTable,
+    EditDeleteButtons,
+    ResRender,
+    ChangeStateButtons,
+} from "./components";
+import { ticketStatusMap } from "statusCodes/tickets";
+import { ModalTitle } from "util/components/modal";
+import { SpinningLoader } from "util/components/loading";
+import {
+    postDeleteTicket,
+    postTicketStatusChange,
+} from "apiCalls/BuggingBugs/POST";
 
 function ModalTicketForm(props) {
     const dispatch = useDispatch();
-    const [res, setRes] = useState(["", -1]);
-    const [loading, setLoading] = useState(false);
+    const [res, setRes] = useState([-1, ""]);
+    const [processing, setProcessing] = useState(false);
     const [pid, ticketInfo, authLevel] = useSelector((state) => {
         return [
             state.ticketboard[ticketboardFields.PID],
@@ -180,35 +37,27 @@ function ModalTicketForm(props) {
         dispatch({ type: sharedActions.PUSH_MODAL_STATE, modalState: 3 });
     };
     const deleteTicketHandler = useCallback(() => {
-        PushTicketDelete(pid, ticketInfo.tid, setRes, setLoading, dispatch);
-    }, [pid, ticketInfo.tid]);
+        postDeleteTicket(
+            { tid: ticketInfo.tid },
+            pid,
+            setRes,
+            setProcessing,
+            dispatch
+        );
+    }, [pid, ticketInfo.tid, setRes, setProcessing, dispatch]);
 
     let statusChangeRequestHandlers = {};
-    for (let [name, code] of Object.entries(ticketStatusCodes)) {
+    for (let [name, code] of Object.entries(ticketStatusMap)) {
         statusChangeRequestHandlers[name] = useCallback(() => {
-            PushTicketStatusChange(
-                code,
+            postTicketStatusChange(
+                { newTicketStatus: code, tid: ticketInfo.tid },
                 pid,
-                ticketInfo.tid,
                 setRes,
-                setLoading,
+                setProcessing,
                 dispatch
             );
-        }, [setRes, setLoading, dispatch]);
+        }, [setRes, setProcessing, dispatch]);
     }
-
-    const changeStateButtons =
-        authLevel === 0 ? (
-            <ChangeTicketStateButtonsLeader
-                handlers={statusChangeRequestHandlers}
-                ticketStatus={ticketInfo.status}
-            />
-        ) : (
-            <ChangeTicketStateButtonsRegular
-                handlers={statusChangeRequestHandlers}
-                ticketStatus={ticketInfo.status}
-            />
-        );
 
     return (
         <article
@@ -227,10 +76,11 @@ function ModalTicketForm(props) {
             />
 
             <TicketInfoTable ticketInfo={ticketInfo} />
-            <RenderLoading loading={loading} />
+            <SpinningLoader loading={processing} />
             <EditDeleteButtons
                 editHandler={editTicketHandler}
                 deleteHanlder={deleteTicketHandler}
+                authLevel={authLevel}
             />
             <div
                 style={{
@@ -239,7 +89,11 @@ function ModalTicketForm(props) {
                     marginTop: "20px",
                 }}
             >
-                {changeStateButtons}
+                <ChangeStateButtons
+                    handlers={statusChangeRequestHandlers}
+                    ticketStatus={ticketInfo.status}
+                    authLevel={authLevel}
+                />
             </div>
         </article>
     );

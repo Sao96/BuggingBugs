@@ -44,9 +44,12 @@ module.exports = {
             helperFunctions: path.resolve("./src/util/helperFunctions"),
             oauth2: path.resolve("./src/oauth2"),
             styles: path.resolve("./src/util/styles"),
+            globalStyles: path.resolve("./src/util/styles"),
+            globalHelperFunctions: path.resolve("./src/util/helperFunctions"),
             buttons: path.resolve("./src/util/components/buttons"),
             responseBoxes: path.resolve("./src/util/components/responseBoxes"),
             modal: path.resolve("./src/util/components/modal"),
+            statusCodes: path.resolve("./src/util/statusCodes"),
         },
     },
     module: {

@@ -2,56 +2,14 @@ import React, { useEffect, createRef, useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ticketboardFields } from "fields/ticketboardfields";
 import { DefaultButton } from "buttons";
-import { createSelectFields, createInputFields } from "../util/InputForm";
-import { domain } from "routes";
-import { Redirect, useHistory } from "react-router-dom";
-import { ErrorBox } from "util/ErrorBox";
-import { ModalTitle } from "util/ModalTitle";
+import { createSelectFields, createInputFields } from "util/components/ticket";
+// import { ModalTitle } from "util/ModalTitle";
 import { ticketboardActions } from "actions/ticketboardactions";
-import { sharedActions } from "actions/sharedactions";
-
-const PushTicketEdit = async (
-    fieldData,
-    setRes,
-    pid,
-    tid,
-    setModified,
-    dispatch
-) => {
-    const data = {};
-    data.tid = tid;
-    for (let field in fieldData) {
-        if (fieldData[field][0].current) {
-            data[field] = fieldData[field][0].current.value;
-        }
-    }
-    data.priority = Math.floor(Number(data.priority));
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    const endpoint = domain + "updateticket?pid=" + pid; //subject to change
-    const res = await fetch(endpoint, {
-        method: "POST",
-        headers: headers,
-        credentials: "include",
-        mode: "cors",
-        cache: "no-cache",
-        redirect: "follow",
-        body: JSON.stringify(data),
-    });
-    const resStatus = res.status,
-        resData = await res.json();
-    if (resStatus === 200) {
-        dispatch({
-            type: ticketboardActions.UPDATE_DISP_TICKET_INFO,
-            data: data,
-        });
-        setModified(true);
-        dispatch({ type: sharedActions.POP_MODAL_STATE });
-    } else {
-        setRes([resData, resStatus]);
-    }
-};
+import { postEditTicket } from "apiCalls/BuggingBugs/POST";
+import { ModalTitle } from "util/components/modal";
+import { ResRender } from "./components";
+import { TicketInputFields, TicketSelectFields } from "util/components/ticket";
+import { resolveRefValues } from "globalHelperFunctions/refHelpers";
 
 //maps uid with name.
 const generateUserMap = (users) => {
@@ -76,24 +34,11 @@ const createHTMLDate = (date) => {
     return [year, month, day].join("-");
 };
 
-const ResRender = (props) => {
-    const res = props.res;
-    switch (res[0]) {
-        case 300:
-            return <Redirect to={"/login"} />;
-        case 400:
-            return <ErrorBox text={res[1]} />;
-        case 500:
-            return <ErrorBox text={res[1]} />;
-        default:
-            return <></>;
-    }
-};
-
 function ModalEditTicketForm(props) {
     const dispatch = useDispatch();
     const [modified, setModified] = useState(false);
     const [res, setRes] = useState([-1, ""]);
+    const [processing, setProcessing] = useState(false);
     const currFieldVals = useSelector((state) => {
         return state.ticketboard[ticketboardFields.NEW_TICKET_FORM_INFO];
     });
@@ -113,19 +58,24 @@ function ModalEditTicketForm(props) {
         headline: [createRef(), currFieldVals.headline],
         summary: [createRef(), currFieldVals.summary],
     };
-    const tid = currFieldVals.tid;
 
     const userMap = generateUserMap(props.users);
     const createClickHandler = useCallback(() => {
-        PushTicketEdit(
-            fieldData,
-            setRes,
+        let reqData = {};
+        Object.entries(fieldData).forEach(([fieldName, fieldVal]) => {
+            reqData[fieldName] = fieldVal[0];
+        });
+        reqData = resolveRefValues(reqData);
+        reqData.tid = currFieldVals.tid;
+        postEditTicket(
+            reqData,
             props.pid,
-            tid,
             setModified,
+            setRes,
+            setProcessing,
             dispatch
         );
-    }, [fieldData, dispatch, setModified]);
+    }, [fieldData, setRes, setModified, setProcessing, dispatch]);
 
     const mainStyle = {
         display: "flex",
@@ -139,8 +89,8 @@ function ModalEditTicketForm(props) {
             <ModalTitle text={"Edit Ticket"} />
             <ResRender res={res} pid={props.pid} />
             <div>
-                {createSelectFields(fieldData, userMap)}
-                {createInputFields(fieldData)}
+                <TicketSelectFields fieldData={fieldData} userMap={userMap} />
+                <TicketInputFields fieldData={fieldData} />
             </div>
             <DefaultButton
                 text={"Edit Ticket"}

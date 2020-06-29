@@ -1,47 +1,15 @@
 import React, { createRef, useState, useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Redirect } from "react-router";
 import { DefaultButton } from "buttons";
-import { createSelectFields, createInputFields } from "../util/InputForm";
-import { domain } from "routes";
-import { ErrorBox } from "util/ErrorBox";
-import { ModalTitle } from "util/ModalTitle";
+import { createSelectFields, createInputFields } from "util/components/ticket";
+// import { ModalTitle } from "util/ModalTitle";
 import { ticketboardActions } from "actions/ticketboardactions";
-import { sharedActions } from "actions/sharedactions";
-
-const PushTicket = async (fieldData, setRes, pid, setModified, dispatch) => {
-    const data = {};
-    for (let field in fieldData) {
-        if (fieldData[field][0].current) {
-            data[field] = fieldData[field][0].current.value;
-        }
-    }
-    data.priority = Math.floor(Number(data.priority));
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    const endpoint = domain + "createticket?pid=" + pid;
-    const res = await fetch(endpoint, {
-        method: "POST",
-        headers: headers,
-        credentials: "include",
-        mode: "cors",
-        cache: "no-cache",
-        redirect: "follow",
-        body: JSON.stringify(data),
-    });
-
-    const resStatus = res.status,
-        resData = await res.json();
-    if (resStatus === 200) {
-        setModified(true);
-        dispatch({ type: sharedActions.POP_MODAL_STATE });
-    } else {
-        setRes([resData, resStatus]);
-    }
-};
-
-//maps uid with name.
+// import { sharedActions } from "actions/sharedactions";
+import { ModalTitle } from "util/components/modal";
+import { ResRender } from "./components";
+import { TicketInputFields, TicketSelectFields } from "util/components/ticket";
+import { resolveRefValues } from "globalHelperFunctions/refHelpers";
+import { postCreateTicket } from "apiCalls/BuggingBugs/POST";
 const generateUserMap = (users) => {
     const userMap = [];
     for (let user in users) {
@@ -50,23 +18,10 @@ const generateUserMap = (users) => {
     return userMap;
 };
 
-const ResRender = (props) => {
-    const res = props.res;
-    switch (res[0]) {
-        case 300:
-            return <Redirect to={"/login"} />;
-        case 400:
-            return <ErrorBox text={res[1]} />;
-        case 500:
-            return <ErrorBox text={res[1]} />;
-        default:
-            return <></>;
-    }
-};
-
 function ModalCreateTicketForm(props) {
     const dispatch = useDispatch();
     const [res, setRes] = useState([-1, ""]);
+    const [processing, setProcessing] = useState(false);
     const [modified, setModified] = useState(false);
     useEffect(() => {
         return () => {
@@ -86,8 +41,19 @@ function ModalCreateTicketForm(props) {
     };
     const userMap = generateUserMap(props.users);
     const createClickHandler = useCallback(() => {
-        PushTicket(fieldData, setRes, props.pid, setModified, dispatch);
-    }, [fieldData, modified]);
+        const refs = {};
+        Object.entries(fieldData).forEach(([fieldName, fieldVal]) => {
+            refs[fieldName] = fieldVal[0];
+        });
+        postCreateTicket(
+            resolveRefValues(refs),
+            props.pid,
+            setModified,
+            setRes,
+            setProcessing,
+            dispatch
+        );
+    }, [fieldData, setModified, setRes, setProcessing, dispatch]);
     const titleStyle = {
         fontFamily: "Didact Gothic",
         fontSize: "36px",
@@ -102,19 +68,21 @@ function ModalCreateTicketForm(props) {
     };
 
     return (
-        <div style={mainStyle}>
-            <ModalTitle text={"New Ticket"} />
+        <article style={mainStyle}>
+            <header>
+                <ModalTitle text={"New Ticket"} />
+            </header>
             <ResRender res={res} pid={props.pid} />
-            <div>
-                {createSelectFields(fieldData, userMap)}
-                {createInputFields(fieldData)}
-            </div>
+            <section>
+                <TicketSelectFields fieldData={fieldData} userMap={userMap} />
+                <TicketInputFields fieldData={fieldData} />
+            </section>
             <DefaultButton
                 text={"Create Ticket"}
                 onClick={createClickHandler}
                 backgroundColor="green"
             />
-        </div>
+        </article>
     );
 }
 
