@@ -1,13 +1,13 @@
 import { endpoints as ep } from "apiRoutes/BuggingBugs";
 
 /**
- * @function postRemoveUesr
- * @param {Object} reqData: fields: toUid
+ *
+ * @param {*} reqData: fields: to
  * @param {*} pid
  * @param {*} setRes
  */
-async function postRemoveUser(reqData, pid, setRes) {
-    const endpoint = ep.removeuser + "?pid=" + pid; //subject to change
+async function postUserPromotion(reqData, pid, setRes) {
+    const endpoint = ep.promoteuser + "?pid=" + pid; //subject to change
     const res = await fetch(endpoint, {
         method: "POST",
         headers: {
@@ -26,4 +26,4 @@ async function postRemoveUser(reqData, pid, setRes) {
     setRes([resStatus, resData]);
 }
 
-export { postRemoveUser };
+export { postUserPromotion };

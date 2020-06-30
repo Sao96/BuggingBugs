@@ -1,52 +1,11 @@
 import React, { useCallback, useState, createRef } from "react";
-import { domain } from "routes";
-import { useHistory, Redirect } from "react-router";
-import { ErrorBox } from "util/ErrorBox";
 import PromoteUserIcon from "svg/userpromotion.svg";
 import { DefaultButton } from "buttons";
 import { generateUserMap } from "util/generateUserMap";
 import { useSelector } from "react-redux";
 import { ticketboardFields } from "fields/ticketboardfields";
-
-async function PushUserPromotion(toUid, pid, setRes) {
-    const data = {
-        to: toUid,
-    };
-
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    const endpoint = domain + "promoteuser?pid=" + pid; //subject to change
-    const res = await fetch(endpoint, {
-        method: "POST",
-        headers: headers,
-        credentials: "include",
-        mode: "cors",
-        cache: "no-cache",
-        redirect: "follow",
-        body: JSON.stringify(data),
-    });
-    const resStatus = res.status,
-        resData = await res.json();
-    setRes([resStatus, resData]);
-}
-
-const ResRender = (props) => {
-    const res = props.res;
-    const pid = props.pid;
-    switch (res[0]) {
-        case 200:
-            useHistory().go(); //say invite sent or something
-        case 300:
-            return <Redirect push to={"/login"} />;
-        case 400:
-            return <ErrorBox text={res[1]} />;
-        case 500:
-            return <ErrorBox text={res[1]} />;
-        default:
-            return <></>;
-    }
-};
+import { postUserPromotion } from "apiCalls/BuggingBugs/POST";
+import { ResRender } from "./components";
 
 const createSelectFields = (users, userRef) => {
     const selectStyle = {
@@ -80,7 +39,7 @@ function PromoteUser(props) {
     const userRef = createRef();
     const usersSelectInput = createSelectFields(userMap, userRef);
     const sendUserPromotion = useCallback(() => {
-        PushUserPromotion(userRef.current.value, pid, setRes);
+        postUserPromotion({ to: userRef.current.value }, pid, setRes);
     }, [userRef]);
 
     const svgStyle = {
@@ -100,7 +59,7 @@ function PromoteUser(props) {
     };
     return (
         <div style={mainStyle}>
-            <ResRender res={res} pid={props.pid} />
+            <ResRender res={res} />
             <PromoteUserIcon style={svgStyle} />
             <div>Select the user you would like to promote to leader.</div>
             <div style={{ marginTop: "10px", marginBottom: "10px" }}>
