@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { SuccessBox, ErrorBox } from "responseBoxes";
+import { ErrorBox } from "responseBoxes";
 import { navRoutes } from "navRoutes";
 
 function ResRender(props) {

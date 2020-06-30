@@ -14,11 +14,11 @@ function ProjectCard(props) {
     const projectcardStyle = {
         backgroundColor: "rgb(33, 59, 74)",
         color: "black",
-        width: "300px",
+        width: props.width + "px",
         alignItems: "center",
         display: "flex",
         flexDirection: "column",
-        marginRight: "30px",
+        marginRight: props.marginRight + "px",
         marginBottom: "30px",
         cursor: "pointer",
         boxShadow: "2px 4px 4px 0px rgba(0,0,0,0.75)",

@@ -4,7 +4,10 @@ function TypeFilter(props) {
     const types = props.types.map((type, idx) => {
         const paddingNeeded = idx !== props.types.length - 1;
         return (
-            <div style={{ paddingRight: paddingNeeded ? "10px" : "0px" }}>
+            <div
+                key={idx}
+                style={{ paddingRight: paddingNeeded ? "10px" : "0px" }}
+            >
                 <TypeTab
                     type={type[0]}
                     numItems={type[1]}

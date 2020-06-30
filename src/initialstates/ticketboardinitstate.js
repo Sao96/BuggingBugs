@@ -4,7 +4,7 @@ const ticketboardInitialState = {
     [ticketboardFields.PID]: "",
     [ticketboardFields.USERS]: [],
     [ticketboardFields.TICKETS]: [],
-    [ticketboardFields.AUTH_LEVEL]: 1,
+    [ticketboardFields.AUTH_LEVEL]: -1,
     [ticketboardFields.DISPLAY_SEARCH_FILTER]: false,
     [ticketboardFields.TICKET_MODIFIED]: false,
     [ticketboardFields.FILTER_TS_OPEN]: false,

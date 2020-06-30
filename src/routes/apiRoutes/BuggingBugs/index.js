@@ -14,6 +14,7 @@ const endpointNames = [
     "createproject",
     "createinvite",
     "acceptinvite",
+    "declineinvite",
     "renameproject",
     "removeuser",
     "promoteuser",

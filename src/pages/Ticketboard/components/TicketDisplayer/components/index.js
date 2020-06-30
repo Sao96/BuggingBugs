@@ -1,4 +1,5 @@
 import { Ticket } from "./Ticket";
 import { TypeFilter } from "./TypeFilter";
+import { NoTicketsMessage } from "./NoTicketsMessage";
 
-export { Ticket, TypeFilter };
+export { Ticket, TypeFilter, NoTicketsMessage };

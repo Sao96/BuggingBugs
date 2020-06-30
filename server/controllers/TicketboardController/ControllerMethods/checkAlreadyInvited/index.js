@@ -17,7 +17,6 @@ async function checkAlreadyInvited(req, res, next) {
         if (exists) {
             setError(
                 req,
-                checkAlreadyInvited.name,
                 400,
                 "An invite to user already exists.",
                 "An invite to user already exists."
@@ -27,7 +26,6 @@ async function checkAlreadyInvited(req, res, next) {
     } catch (err) {
         setError(
             req,
-            checkAlreadyInvited.name,
             500,
             "An internal error has occured.",
             "An internal error has occured."

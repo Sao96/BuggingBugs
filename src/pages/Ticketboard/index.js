@@ -1,5 +1,5 @@
 import React, { createRef, useState, useEffect } from "react";
-import { TicketDisplayer } from "./components";
+import { TicketDisplayer, ResRender } from "./components";
 import { useSelector, useDispatch } from "react-redux";
 import { Modal } from "modal";
 import {
@@ -21,7 +21,6 @@ function TicketBoard(props) {
     const dispatch = useDispatch();
     const [ticketsLoading, setTicketsLoading] = useState(true);
     const [res, setRes] = useState([-1, ""]);
-    const modalRef = createRef();
     const query = new URLSearchParams(props.location.search);
     const pid = query.get("pid");
     const [
@@ -64,6 +63,8 @@ function TicketBoard(props) {
                 return <ModalCreateInviteForm pid={pid} />;
             case 5:
                 return <ModalSettingsForm />;
+            default:
+                return <></>;
         }
     };
     const containerStyle = {
@@ -81,7 +82,8 @@ function TicketBoard(props) {
 
     return (
         <article style={containerStyle}>
-            <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
+            <ResRender res={res} />
+            <Modal>{currModalContext()}</Modal>
             <Toolbar />
             <main>
                 <TicketDisplayer

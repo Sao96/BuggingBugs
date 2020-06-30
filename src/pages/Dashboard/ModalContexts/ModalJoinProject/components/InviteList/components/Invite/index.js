@@ -5,98 +5,31 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { useSelector, useDispatch } from "react-redux";
 import { domain } from "routes";
 import { dashboardFields } from "fields/dashboardfields.js";
-
-const processInvite = async (
-    accept,
-    invId,
-    dispatch,
-    setLoading,
-    invites,
-    setInvites
-) => {
-    dispatch({ type: dashboardActions.SET_INVITE_BOARD_LOCKED });
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    const data = { invId: invId };
-    const endpoint = domain + (accept ? "acceptinvite" : "declineinvite");
-    setLoading(true);
-    await fetch(endpoint, {
-        method: "POST",
-        headers: headers,
-        credentials: "include",
-        mode: "cors",
-        cache: "no-cache",
-        body: JSON.stringify(data),
-        redirect: "follow",
-        body: JSON.stringify(data),
-    });
-    for (let idx = 0; idx < invites.length; ++idx) {
-        if (invites[idx].invId === invId) {
-            dispatch({ type: dashboardActions.SET_INVITE_BOARD_UNLOCKED });
-            setLoading(false);
-            setInvites(invites.slice(0, idx).concat(invites.slice(idx + 1)));
-            break;
-        }
-    }
-
-    dispatch({ type: dashboardActions.SET_INVITES_MODIFIED });
-};
-
-const ButtonsDisplay = (props) => {
-    const boardLocked = props.boardLocked,
-        loading = props.loading,
-        acceptButtonHandler = props.acceptHandler,
-        declineButtonHandler = props.declineHandler;
-    let buttonDisplay = (
-        <>
-            <DefaultButton
-                text={"Accept"}
-                backgroundColor={"green"}
-                onClick={!boardLocked ? acceptButtonHandler : () => {}}
-            />
-            <div style={{ paddingRight: "10px" }}></div>
-            <DefaultButton
-                text={"Decline"}
-                backgroundColor={"rgb(150,0,0)"}
-                onClick={!boardLocked ? declineButtonHandler : () => {}}
-            />
-        </>
-    );
-    if (loading) {
-        buttonDisplay = (
-            <ClipLoader size={30} color={"rgb(200,200,200)"} loading={true} />
-        );
-    }
-    return buttonDisplay;
-};
+import { postProcessInvite } from "apiCalls/BuggingBugs/POST";
 
 function Invite(props) {
-    const [loading, setLoading] = useState(false);
+    const [processing, setProcessing] = useState(false);
     const dispatch = useDispatch();
-    const boardLocked = useSelector((state) => {
-        return state.dashboard[dashboardFields.INVITE_BOARD_LOCKED];
-    });
     const acceptButtonHandler = useCallback(() => {
-        processInvite(
+        postProcessInvite(
+            { invId: props.invId },
             true,
-            props.invId,
-            dispatch,
-            setLoading,
+            setProcessing,
             props.invites,
-            props.setInvites
+            props.setInvites,
+            dispatch
         );
-    }, [props.invId, dispatch, setLoading]);
+    }, [setProcessing, dispatch]);
     const declineButtonHandler = useCallback(() => {
-        processInvite(
+        postProcessInvite(
+            { invId: props.invId },
             false,
-            props.invId,
-            dispatch,
-            setLoading,
+            setProcessing,
             props.invites,
-            props.setInvites
+            props.setInvites,
+            dispatch
         );
-    });
+    }, [setProcessing, dispatch]);
     const mainStyle = { display: "flex" };
     const nameStyle = {
         fontSize: "20px",
@@ -105,17 +38,23 @@ function Invite(props) {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        width: "200px",
     };
 
     return (
         <main style={mainStyle}>
             <div style={nameStyle}>{props.name}</div>
             <div style={{ paddingRight: "50px" }}></div>
-            <ButtonsDisplay
-                boardLocked={boardLocked}
-                loading={loading}
-                acceptHandler={acceptButtonHandler}
-                declineHandler={declineButtonHandler}
+            <DefaultButton
+                text={"Accept"}
+                backgroundColor={"green"}
+                onClick={!processing ? acceptButtonHandler : null}
+            />
+            <span style={{ paddingRight: "10px" }} />
+            <DefaultButton
+                text={"Decline"}
+                backgroundColor={"rgb(150,0,0)"}
+                onClick={!processing ? declineButtonHandler : null}
             />
         </main>
     );

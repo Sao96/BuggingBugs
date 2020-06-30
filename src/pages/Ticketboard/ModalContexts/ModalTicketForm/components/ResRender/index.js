@@ -1,5 +1,6 @@
 import React from "react";
 import { ErrorBox } from "responseBoxes";
+import { navRoutes } from "navRoutes";
 
 function ResRender(props) {
     const res = props.res;

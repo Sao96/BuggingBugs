@@ -3,6 +3,7 @@ import { postRegister } from "./postRegister";
 import { postCreateProject } from "./postCreateProject";
 import { postDeleteTicket } from "./postDeleteTicket";
 import { postCreateInvite } from "./postCreateProject";
+import { postProcessInvite } from "./postProcessInvite";
 import { postCreateTicket } from "./postCreateTicket";
 import { postEditTicket } from "./postEditTicket";
 import { postTicketStatusChange } from "./postTicketStatusChange";
@@ -18,6 +19,7 @@ export {
     postCreateProject,
     postDeleteTicket,
     postCreateInvite,
+    postProcessInvite,
     postCreateTicket,
     postEditTicket,
     postTicketStatusChange,

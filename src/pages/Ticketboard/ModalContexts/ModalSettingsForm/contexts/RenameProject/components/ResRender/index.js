@@ -1,6 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { SuccessBox, ErrorBox } from "responseBoxes";
+import { navRoutes } from "navRoutes";
 
 function ResRender(props) {
     const res = props.res;
@@ -11,7 +12,7 @@ function ResRender(props) {
         case 200:
             return <SuccessBox text={resText} />;
         case 300:
-            return <Redirect push to={"/login"} />;
+            return <Redirect push to={navRoutes.login} />;
         default:
             const errorText =
                 resText !== "" ? resText : "An unknown error has occured.";

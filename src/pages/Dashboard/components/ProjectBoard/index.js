@@ -2,6 +2,7 @@ import React from "react";
 import { ProjectCard } from "./components";
 
 function ProjectBoard(props) {
+    const [cardWidth, cardMarginRight] = [300, 30];
     const projectCards = props.projects.map((proj, idx) => {
         return (
             <ProjectCard
@@ -9,13 +10,13 @@ function ProjectBoard(props) {
                 projectName={proj.name}
                 pid={proj._id}
                 authLevel={proj.authLevel}
+                width={cardWidth}
+                marginRight={cardMarginRight}
             />
         );
     });
 
-    const cardMargin = 30;
-    const cardWidth = 300;
-    const boardWidth = (cardMargin + cardWidth) * 4;
+    const boardWidth = (cardMarginRight + cardWidth) * 4;
     const mainStyle = {
         display: "flex",
         flexWrap: "wrap",

@@ -1,7 +1,6 @@
 import React from "react";
-import { dispatch, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SettingsIcon from "svg/settings.svg";
-import CycleIcon from "svg/cycle.svg";
 import InviteUserIcon from "svg/inviteuser.svg";
 import CreateTicketIcon from "svg/createticket.svg";
 import { ToolbarItem } from "./components/ToolbarItem";
@@ -28,18 +27,22 @@ function Toolbar(props) {
             ["New Ticket", CreateTicketIcon, createTicketClickHandler],
             ["Invite User", InviteUserIcon, createInviteHandler],
             ["Settings", SettingsIcon, launchSettingsHandler],
-        ].map((Item) => {
-            const Svg = Item[1];
+        ].map((Item, idx) => {
             return (
-                <ToolbarItem text={Item[0]} Svg={Item[1]} handler={Item[2]} />
+                <ToolbarItem
+                    key={idx}
+                    text={Item[0]}
+                    Svg={Item[1]}
+                    handler={Item[2]}
+                />
             );
         });
     } else {
         items = [["Settings", SettingsIcon, launchSettingsHandler]].map(
-            (Item) => {
-                const Svg = Item[1];
+            (Item, idx) => {
                 return (
                     <ToolbarItem
+                        key={idx}
                         text={Item[0]}
                         Svg={Item[1]}
                         handler={Item[2]}
@@ -63,11 +66,11 @@ function Toolbar(props) {
         backgroundColor: "rgb(68, 91, 112, 0.3)",
     };
     return (
-        <div
+        <nav
             style={{ width: "100%", display: "flex", justifyContent: "center" }}
         >
             <div style={containerStyle}>{items}</div>
-        </div>
+        </nav>
     );
 }
 export { Toolbar };

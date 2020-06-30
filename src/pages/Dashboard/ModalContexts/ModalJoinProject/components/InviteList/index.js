@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Invite } from "./components/Invite";
+import { Invite, NoInvitesMessage } from "./components";
 import { dashboardActions } from "actions/dashboardactions";
+
 function InviteList(props) {
     const [invites, setInvites] = useState(props.invites);
     const boardStyle = {
@@ -13,17 +14,23 @@ function InviteList(props) {
     useEffect(() => {
         dispatch({ type: dashboardActions.SET_INVITE_BOARD_UNLOCKED });
     }, []);
-
-    return invites.map((invite) => {
-        return (
-            <Invite
-                name={invite.name}
-                invId={invite.invId}
-                pid={invite.pid}
-                invites={invites}
-                setInvites={setInvites}
-            />
+    const InvitesDisplay =
+        invites.length > 0 ? (
+            invites.map((invite) => {
+                return (
+                    <Invite
+                        name={invite.name}
+                        invId={invite.invId}
+                        pid={invite.pid}
+                        invites={invites}
+                        setInvites={setInvites}
+                    />
+                );
+            })
+        ) : (
+            <NoInvitesMessage />
         );
-    });
+
+    return InvitesDisplay;
 }
 export { InviteList };

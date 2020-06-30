@@ -5,16 +5,14 @@ import { sharedFields } from "fields/sharedfields.js";
 import BackArrow from "svg/backarrow.svg";
 import { textHoverColor } from "util/themeColors";
 
-const selector = (field) => {
-    return useSelector((state) => {
-        return state.shared[field];
-    });
-};
-
 function Modal(props) {
+    const dispatch = useDispatch();
     const [hovered, setHovered] = useState(false);
+    const modalStack = useSelector((state) => {
+        return state.shared[sharedFields.MODAL_STACK];
+    });
     let overlayStyle = {
-        display: selector(sharedFields.MODAL_STACK).length ? "flex" : "none",
+        display: modalStack.length ? "flex" : "none",
         position: "fixed",
         zIndex: "1",
         left: "0",
@@ -37,11 +35,11 @@ function Modal(props) {
         minWidth: "400px",
         minHeight: "250px",
     };
-    const dispatch = useDispatch();
-    const clickHandler = (e) => {
-        if (!props.assignedRef.current.contains(e.target)) {
-            dispatch({ type: sharedActions.EMPTY_MODAL_STACK });
-        }
+    const contentClickHandler = (e) => {
+        e.stopPropagation();
+    };
+    const outsideClickHandler = (e) => {
+        dispatch({ type: sharedActions.EMPTY_MODAL_STACK });
     };
     const backButtonHandler = () => {
         dispatch({ type: sharedActions.POP_MODAL_STATE });
@@ -56,8 +54,8 @@ function Modal(props) {
     };
 
     return (
-        <div style={overlayStyle} onClick={clickHandler}>
-            <div ref={props.assignedRef} style={mainStyle}>
+        <div style={overlayStyle} onClick={outsideClickHandler}>
+            <div style={mainStyle} onClick={contentClickHandler}>
                 <BackArrow
                     style={backArrowSvgStyle}
                     onClick={backButtonHandler}

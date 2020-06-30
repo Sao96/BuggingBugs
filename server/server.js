@@ -58,9 +58,12 @@ app.use((req, res, next) => {
     if (!req.body.res.status) {
         return next(req.body.err);
     }
-    console.log(req.url, "SUCCESS", req.body.res);
+    console.log(req.url, "SUCCESS", req.body.res, req.url);
+    if (!req.body.res.data) {
+        req.body.res.data = {};
+    }
     if (!req.body.res.data.message) {
-        req.body.res.data.message = "Success!";
+        req.body.res.data.message = "Ok";
     }
     res.status(req.body.res.status).send(JSON.stringify(req.body.res.data));
 });

@@ -9,7 +9,6 @@ function GoogleAuthenticateButton(props) {
             buttonText={props.text}
             onSuccess={props.onSuccessHandler}
             cookiePolicy={"single_host_origin"}
-            disabled={false}
         />
     );
 }

@@ -19,6 +19,9 @@ function ModalJoinProject(props) {
             dispatch({ type: dashboardActions.SET_PROJECTS_MODIFIED });
         };
     }, [dispatch]);
+
+    const RenderedInvites =
+        res[0] !== -1 ? <InviteList invites={invites} /> : <></>;
     const containerStyle = {
         display: "flex",
         flexWrap: "wrap",
@@ -27,17 +30,12 @@ function ModalJoinProject(props) {
         flexDirection: "column",
         position: "relative",
     };
-    const joinGroupSvgStyle = {
-        height: "130px",
-        width: "130px",
-        fill: "rgb(180,180,180)",
-    };
 
     return (
         <div style={containerStyle}>
             <ResRender res={res} />
             <SpinningLoader loading={invitesLoading} />
-            <InviteList invites={invites} />
+            {RenderedInvites}
         </div>
     );
 }
