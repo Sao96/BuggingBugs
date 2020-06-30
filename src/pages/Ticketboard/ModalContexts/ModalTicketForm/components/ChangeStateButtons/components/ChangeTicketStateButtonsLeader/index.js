@@ -24,14 +24,14 @@ function ChangeTicketStateButtonsLeader(props) {
         <DefaultButton
             text={button1Data[0]}
             backgroundColor={button1Data[1]}
-            onClick={button1Data[2]}
+            onClick={!props.disable ? button1Data[2] : null}
         />
     );
     const button2 = button2Data ? (
         <DefaultButton
             text={button2Data[0]}
             backgroundColor={button2Data[1]}
-            onClick={button2Data[2]}
+            onClick={!props.disable ? button2Data[2] : null}
         />
     ) : (
         <></>

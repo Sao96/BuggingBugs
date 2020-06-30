@@ -4,30 +4,14 @@ import { DefaultButton } from "buttons";
 import { generateUserMap } from "util/generateUserMap";
 import { useSelector } from "react-redux";
 import { ticketboardFields } from "fields/ticketboardfields";
-import { postUserPromotion } from "apiCalls/BuggingBugs/POST";
+import { UserSelectFields } from "util/components/users";
+import { SpinningLoader } from "util/components/loading";
 import { ResRender } from "./components";
-
-const createSelectFields = (users, userRef) => {
-    const selectStyle = {
-        height: "35px",
-        width: "200px",
-        backgroundColor: "rgb(10, 25, 45)",
-        color: "white",
-        fontSize: "20px",
-        fontFamily: "Didact Gothic",
-    };
-
-    return (
-        <select ref={userRef} style={selectStyle}>
-            {users.map((userData) => {
-                return <option value={userData[0]}>{userData[1]}</option>;
-            })}
-        </select>
-    );
-};
+import { postUserPromotion } from "apiCalls/BuggingBugs/POST";
 
 function PromoteUser(props) {
     const [res, setRes] = useState([-1, ""]);
+    const [processing, setProcessing] = useState(false);
     const pid = useSelector((state) => {
         return state.ticketboard[ticketboardFields.PID];
     });
@@ -37,11 +21,16 @@ function PromoteUser(props) {
     const [users, setUsers] = useState(originalUsers);
     const userMap = generateUserMap(users);
     const userRef = createRef();
-    const usersSelectInput = createSelectFields(userMap, userRef);
-    const sendUserPromotion = useCallback(() => {
-        postUserPromotion({ to: userRef.current.value }, pid, setRes);
+    const promoteUserButton = useCallback(() => {
+        postUserPromotion(
+            { to: userRef.current.value },
+            pid,
+            setRes,
+            setProcessing
+        );
     }, [userRef]);
 
+    const headerText = "Select the user you would like to promote to leader.";
     const svgStyle = {
         height: "130px",
         width: "130px",
@@ -49,7 +38,12 @@ function PromoteUser(props) {
         position: "relative",
         top: "10px",
     };
-    const mainStyle = {
+    const centerBlock = {
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "column",
+    };
+    const containerStyle = {
         display: "flex",
         flexWrap: "wrap",
         fontFamily: "didact gothic",
@@ -58,19 +52,24 @@ function PromoteUser(props) {
         position: "relative",
     };
     return (
-        <div style={mainStyle}>
-            <ResRender res={res} />
-            <PromoteUserIcon style={svgStyle} />
-            <div>Select the user you would like to promote to leader.</div>
-            <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-                {usersSelectInput}
-            </div>
-            <DefaultButton
-                onClick={sendUserPromotion}
-                text={"Promote"}
-                backgroundColor="green"
-            />
-        </div>
+        <article style={containerStyle}>
+            <ResRender res={res} pid={props.pid} />
+            <SpinningLoader size={100} loading={processing} />
+            <header style={centerBlock}>
+                <PromoteUserIcon style={svgStyle} />
+                {headerText}
+            </header>
+            <main style={centerBlock}>
+                <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+                    <UserSelectFields users={userMap} userRef={userRef} />
+                </div>
+                <DefaultButton
+                    onClick={!processing ? promoteUserButton : null}
+                    text={"Promote"}
+                    backgroundColor="green"
+                />
+            </main>
+        </article>
     );
 }
 

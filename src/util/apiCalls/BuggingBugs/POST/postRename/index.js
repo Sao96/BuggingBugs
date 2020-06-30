@@ -6,7 +6,8 @@ import { endpoints as ep } from "apiRoutes/BuggingBugs";
  * @param {*} pid
  * @param {*} setRes
  */
-async function postRename(reqData, pid, setRes) {
+async function postRename(reqData, pid, setRes, setProcessing) {
+    setProcessing(true);
     const endpoint = ep.renameproject + "?pid=" + pid; //subject to change
     const res = await fetch(endpoint, {
         method: "POST",
@@ -21,6 +22,7 @@ async function postRename(reqData, pid, setRes) {
         redirect: "follow",
         body: JSON.stringify(reqData),
     });
+    setProcessing(false);
     const resStatus = res.status,
         resData = await res.json();
     setRes([resStatus, resData]);

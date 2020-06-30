@@ -14,6 +14,8 @@ function priorityInformationMap(priorityCode) {
             return ["Med", "rgb(156, 142, 0)", "yellow"];
         case 3:
             return ["Low", "rgb(38, 135, 16)", "rgb(0, 255, 22)"];
+        default:
+            return ["/", "gray", "white"];
     }
 }
 

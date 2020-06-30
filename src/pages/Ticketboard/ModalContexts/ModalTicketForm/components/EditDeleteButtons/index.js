@@ -12,10 +12,16 @@ function EditDeleteButtons(props) {
         marginBottom: "2px",
     };
     return (
-        <main style={containerStyle}>
-            <TextButton text={"Edit"} onClick={props.editHandler} />
-            <TextButton text={"Delete"} onClick={props.deleteHanlder} />
-        </main>
+        <section style={containerStyle}>
+            <TextButton
+                text={"Edit"}
+                onClick={!props.disable ? props.editHandler : null}
+            />
+            <TextButton
+                text={"Delete"}
+                onClick={!props.disable ? props.deleteHanlder : null}
+            />
+        </section>
     );
 }
 

@@ -1,38 +1,15 @@
 import React, { useEffect, createRef, useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ticketboardFields } from "fields/ticketboardfields";
+import { ticketboardFields as tbF } from "fields/ticketboardfields";
 import { DefaultButton } from "buttons";
-import { createSelectFields, createInputFields } from "util/components/ticket";
-// import { ModalTitle } from "util/ModalTitle";
-import { ticketboardActions } from "actions/ticketboardactions";
-import { postEditTicket } from "apiCalls/BuggingBugs/POST";
+import { ticketboardActions as tbA } from "actions/ticketboardactions";
 import { ModalTitle } from "util/components/modal";
 import { ResRender } from "./components";
 import { TicketInputFields, TicketSelectFields } from "util/components/ticket";
 import { resolveRefValues } from "globalHelperFunctions/refHelpers";
-
-//maps uid with name.
-const generateUserMap = (users) => {
-    const userMap = [];
-    for (let user in users) {
-        userMap.push([user, users[user].name]);
-    }
-    return userMap;
-};
-
-const createHTMLDate = (date) => {
-    date = new Date(date);
-    let year = date.getFullYear();
-    let month = String(date.getMonth() + 1);
-    let day = String(date.getDate() + 1);
-    if (month.length < 2) {
-        month = "0" + month;
-    }
-    if (day.length < 2) {
-        day = "0" + month;
-    }
-    return [year, month, day].join("-");
-};
+import { postEditTicket } from "apiCalls/BuggingBugs/POST";
+import { generateUserMap } from "util/helperFunctions/users";
+import { SpinningLoader } from "util/components/loading";
 
 function ModalEditTicketForm(props) {
     const dispatch = useDispatch();
@@ -40,19 +17,19 @@ function ModalEditTicketForm(props) {
     const [res, setRes] = useState([-1, ""]);
     const [processing, setProcessing] = useState(false);
     const currFieldVals = useSelector((state) => {
-        return state.ticketboard[ticketboardFields.NEW_TICKET_FORM_INFO];
+        return state.ticketboard[tbF.NEW_TICKET_FORM_INFO];
     });
     useEffect(() => {
         return () => {
             if (modified) {
-                dispatch({ type: ticketboardActions.SET_REFRESH_NEEDED });
+                dispatch({ type: tbA.SET_REFRESH_NEEDED });
             }
         };
     }, [modified]);
     const fieldData = {
         to: [createRef(), currFieldVals.to],
         priority: [createRef(), currFieldVals.priority],
-        due: [createRef(), createHTMLDate(currFieldVals.due)],
+        due: [createRef(), currFieldVals.due],
         tags: [createRef(), currFieldVals.tags],
         environment: [createRef(), currFieldVals.environment],
         headline: [createRef(), currFieldVals.headline],
@@ -60,7 +37,7 @@ function ModalEditTicketForm(props) {
     };
 
     const userMap = generateUserMap(props.users);
-    const createClickHandler = useCallback(() => {
+    const editButtonHandler = useCallback(() => {
         let reqData = {};
         Object.entries(fieldData).forEach(([fieldName, fieldVal]) => {
             reqData[fieldName] = fieldVal[0];
@@ -85,19 +62,22 @@ function ModalEditTicketForm(props) {
     };
 
     return (
-        <div style={mainStyle}>
-            <ModalTitle text={"Edit Ticket"} />
-            <ResRender res={res} pid={props.pid} />
-            <div>
+        <article style={mainStyle}>
+            <header>
+                <ModalTitle text={"Edit Ticket"} />
+            </header>
+            <SpinningLoader loading={processing} />
+            <ResRender res={res} />
+            <section>
                 <TicketSelectFields fieldData={fieldData} userMap={userMap} />
                 <TicketInputFields fieldData={fieldData} />
-            </div>
+            </section>
             <DefaultButton
                 text={"Edit Ticket"}
-                onClick={createClickHandler}
+                onClick={!processing ? editButtonHandler : null}
                 backgroundColor="green"
             />
-        </div>
+        </article>
     );
 }
 

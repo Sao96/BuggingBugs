@@ -1,7 +1,9 @@
 import React from "react";
+import { tableTheme } from "themeColors";
+import { priorityInformationMap } from "util/helperFunctions/ticketHelpers";
 
 function TicketInfoTable(props) {
-    const concern = {
+    const tableStyle = {
         border: "1px solid #999",
         borderCollapse: "collapse",
         fontStyle: "",
@@ -11,16 +13,21 @@ function TicketInfoTable(props) {
     };
 
     const ticketInfo = props.ticketInfo;
+    const [priorityText, bgColor, priorityTextColor] = priorityInformationMap(
+        ticketInfo.priority
+    );
+    let dueDate = new Date(ticketInfo.due + " 00:00:00");
+
     let tableData = [
-        ["Priority", ticketInfo.priority, "red"],
-        ["Due", ticketInfo.due.toString(), "white"],
+        ["Priority", priorityText, priorityTextColor],
+        ["Due", dueDate.toString(), "white"],
         ["Tags", ticketInfo.tags, "white"],
         ["Environment", ticketInfo.environment, "white"],
         ["Summary", ticketInfo.summary, "white"],
     ];
 
-    const even = { backgroundColor: "rgb(70,100,120, 0.7)" };
-    const odd = { backgroundColor: "rgb(30,60,80)" };
+    const even = { backgroundColor: tableTheme.even };
+    const odd = { backgroundColor: tableTheme.odd };
     const tableRows = tableData.map((data, idx) => {
         return (
             <tr style={idx % 2 ? odd : even}>
@@ -34,7 +41,6 @@ function TicketInfoTable(props) {
                         paddingLeft: "30px",
                     }}
                 >
-                    {" "}
                     <span style={{ color: data[2] }}>{data[1]}</span>
                 </td>
             </tr>
@@ -42,11 +48,9 @@ function TicketInfoTable(props) {
     });
 
     return (
-        <div>
-            <table style={concern}>
-                <tbody>{tableRows}</tbody>
-            </table>
-        </div>
+        <table style={tableStyle}>
+            <tbody>{tableRows}</tbody>
+        </table>
     );
 }
 

@@ -3,14 +3,16 @@ import { ErrorBox } from "responseBoxes";
 
 function ResRender(props) {
     const res = props.res;
+    const resText = res[1].message;
     switch (res[0]) {
         case -1:
             return <></>;
-        case 400:
-        case 500:
-            return <ErrorBox text={res[0]} />;
+        case 300:
+            return <Redirect push to={navRoutes.login} />;
         default:
-            return <ErrorBox text={"An unknown error has occured."} />;
+            const errorText =
+                resText !== "" ? resText : "An unknown error has occured.";
+            return <ErrorBox text={errorText} />;
     }
 }
 

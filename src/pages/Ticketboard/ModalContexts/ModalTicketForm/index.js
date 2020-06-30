@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ticketboardFields } from "fields/ticketboardfields.js";
 import { sharedActions } from "actions/sharedactions";
@@ -47,7 +47,7 @@ function ModalTicketForm(props) {
     }, [pid, ticketInfo.tid, setRes, setProcessing, dispatch]);
 
     let statusChangeRequestHandlers = {};
-    for (let [name, code] of Object.entries(ticketStatusMap)) {
+    Object.entries(ticketStatusMap).forEach(([name, code]) => {
         statusChangeRequestHandlers[name] = useCallback(() => {
             postTicketStatusChange(
                 { newTicketStatus: code, tid: ticketInfo.tid },
@@ -57,7 +57,7 @@ function ModalTicketForm(props) {
                 dispatch
             );
         }, [setRes, setProcessing, dispatch]);
-    }
+    });
 
     return (
         <article
@@ -69,20 +69,26 @@ function ModalTicketForm(props) {
             }}
         >
             <ResRender res={res} />
-            <ModalTitle text={"View Ticket"} />
-            <FromSection
-                fromPfp={ticketInfo.fromPfp}
-                fromName={ticketInfo.fromName}
-            />
-
-            <TicketInfoTable ticketInfo={ticketInfo} />
+            <header>
+                <ModalTitle text={"View Ticket"} />
+                <FromSection
+                    fromPfp={ticketInfo.fromPfp}
+                    fromName={ticketInfo.fromName}
+                />
+            </header>
+            <main>
+                <TicketInfoTable ticketInfo={ticketInfo} />
+            </main>
             <SpinningLoader loading={processing} />
-            <EditDeleteButtons
-                editHandler={editTicketHandler}
-                deleteHanlder={deleteTicketHandler}
-                authLevel={authLevel}
-            />
-            <div
+            <section>
+                <EditDeleteButtons
+                    editHandler={editTicketHandler}
+                    deleteHanlder={deleteTicketHandler}
+                    authLevel={authLevel}
+                    disable={processing}
+                />
+            </section>
+            <section
                 style={{
                     display: "flex",
                     justifyContent: "center",
@@ -93,8 +99,9 @@ function ModalTicketForm(props) {
                     handlers={statusChangeRequestHandlers}
                     ticketStatus={ticketInfo.status}
                     authLevel={authLevel}
+                    disable={processing}
                 />
-            </div>
+            </section>
         </article>
     );
 }

@@ -1,6 +1,7 @@
 import { endpoints as ep } from "apiRoutes/BuggingBugs";
 
-async function postUserLeave(pid, setRes) {
+async function postUserLeave(pid, setRes, setProcessing) {
+    setProcessing(true);
     const endpoint = ep.leaveproject + "?pid=" + pid; //subject to change
     const res = await fetch(endpoint, {
         method: "POST",
@@ -14,6 +15,7 @@ async function postUserLeave(pid, setRes) {
         cache: "no-cache",
         redirect: "follow",
     });
+    setProcessing(false);
     const resStatus = res.status,
         resData = await res.json();
     setRes([resStatus, resData]);

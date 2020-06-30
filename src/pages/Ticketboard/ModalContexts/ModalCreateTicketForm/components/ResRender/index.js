@@ -1,4 +1,5 @@
 import React from "react";
+import { navRoutes } from "navRoutes";
 import { Redirect } from "react-router-dom";
 import { ErrorBox } from "responseBoxes";
 
@@ -9,7 +10,7 @@ function ResRender(props) {
         case -1:
             return <></>;
         case 300:
-            return <Redirect to={"/login"} />;
+            return <Redirect to={navRoutes.login} />;
         default:
             const errorText =
                 resText !== "" ? resText : "An unknown error has occured.";

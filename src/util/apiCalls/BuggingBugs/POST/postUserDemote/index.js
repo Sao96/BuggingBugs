@@ -1,7 +1,8 @@
 import { endpoints as ep } from "apiRoutes/BuggingBugs";
 import { sharedActions } from "actions/sharedactions";
 
-async function postUserDemote(pid, setRes, dispatch) {
+async function postUserDemote(pid, setRes, dispatch, setProcessing) {
+    setProcessing(true);
     const endpoint = ep.demoteself + "?pid=" + pid; //subject to change
     const res = await fetch(endpoint, {
         method: "POST",
@@ -15,6 +16,7 @@ async function postUserDemote(pid, setRes, dispatch) {
         cache: "no-cache",
         redirect: "follow",
     });
+    setProcessing(false);
     const resStatus = res.status,
         resData = await res.json();
 

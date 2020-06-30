@@ -27,14 +27,20 @@ function TicketSelectFields(props) {
         ],
         ["To", fieldData.to[0], userMap, fieldData.to[1]],
     ];
-    for (let i in data) {
-        data[i][2] = data[i][2].map((optionData) => {
-            return <option value={optionData[0]}>{optionData[1]}</option>;
+
+    data.forEach((item) => {
+        item[2] = item[2].map((optionData, idx) => {
+            return (
+                <option key={idx} value={optionData[0]}>
+                    {optionData[1]}
+                </option>
+            );
         });
-    }
-    data = data.map((data) => {
+    });
+
+    data = data.map((data, idx) => {
         return (
-            <div style={ticketFormStyles.formItemStyle}>
+            <div key={idx} style={ticketFormStyles.formItemStyle}>
                 <label style={ticketFormStyles.labelStyle}>{data[0]}</label>
                 <FieldSeparator />
                 <select

@@ -9,11 +9,13 @@ function ChangeStateButtons(props) {
         <ChangeTicketStateButtonsLeader
             handlers={props.handlers}
             ticketStatus={props.ticketStatus}
+            disable={props.disable}
         />
     ) : (
         <ChangeTicketStateButtonsRegular
             handlers={props.handlers}
             ticketStatus={props.ticketStatus}
+            disable={props.disable}
         />
     );
 }

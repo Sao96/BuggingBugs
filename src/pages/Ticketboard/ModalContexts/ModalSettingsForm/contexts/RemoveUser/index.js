@@ -3,45 +3,34 @@ import RemoveUserIcon from "svg/removeuser.svg";
 import { DefaultButton } from "buttons";
 import { generateUserMap } from "util/generateUserMap";
 import { useSelector } from "react-redux";
-import { ticketboardFields } from "fields/ticketboardfields";
+import { ticketboardFields as tbF } from "fields/ticketboardfields";
+import { UserSelectFields } from "util/components/users";
+import { SpinningLoader } from "util/components/loading";
 import { ResRender } from "./components";
 import { postRemoveUser } from "apiCalls/BuggingBugs/POST";
 
-const createSelectFields = (users, userRef) => {
-    const selectStyle = {
-        height: "35px",
-        width: "200px",
-        backgroundColor: "rgb(10, 25, 45)",
-        color: "white",
-        fontSize: "20px",
-        fontFamily: "Didact Gothic",
-    };
-
-    return (
-        <select ref={userRef} style={selectStyle}>
-            {users.map((userData) => {
-                return <option value={userData[0]}>{userData[1]}</option>;
-            })}
-        </select>
-    );
-};
-
 function RemoveUser(props) {
     const [res, setRes] = useState([-1, ""]);
+    const [processing, setProcessing] = useState(false);
     const pid = useSelector((state) => {
-        return state.ticketboard[ticketboardFields.PID];
+        return state.ticketboard[tbF.PID];
     });
     const originalUsers = useSelector((state) => {
-        return state.ticketboard[ticketboardFields.USERS];
+        return state.ticketboard[tbF.USERS];
     });
     const [users, setUsers] = useState(originalUsers);
     const userMap = generateUserMap(users);
     const userRef = createRef();
-    const usersSelectInput = createSelectFields(userMap, userRef);
-    const sendUserRemoval = useCallback(() => {
-        postRemoveUser({ toUid: userRef.current.value }, pid, setRes);
+    const removeUserButtonHandler = useCallback(() => {
+        postRemoveUser(
+            { toUid: userRef.current.value },
+            pid,
+            setRes,
+            setProcessing
+        );
     }, [userRef, pid, setRes]);
 
+    const headerText = "Select the user you would like to remove.";
     const svgStyle = {
         height: "130px",
         width: "130px",
@@ -49,7 +38,12 @@ function RemoveUser(props) {
         position: "relative",
         top: "10px",
     };
-    const mainStyle = {
+    const centerBlock = {
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "column",
+    };
+    const containerStyle = {
         display: "flex",
         flexWrap: "wrap",
         fontFamily: "didact gothic",
@@ -58,19 +52,24 @@ function RemoveUser(props) {
         position: "relative",
     };
     return (
-        <div style={mainStyle}>
-            <ResRender res={res} pid={props.pid} />
-            <RemoveUserIcon style={svgStyle} />
-            Select the user you would like to remove.
-            <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-                {usersSelectInput}
-            </div>
-            <DefaultButton
-                onClick={sendUserRemoval}
-                text={"Remove"}
-                backgroundColor="green"
-            />
-        </div>
+        <article style={containerStyle}>
+            <ResRender res={res} />
+            <SpinningLoader size={100} loading={processing} />
+            <header style={centerBlock}>
+                <RemoveUserIcon style={svgStyle} />
+                {headerText}
+            </header>
+            <main style={centerBlock}>
+                <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+                    <UserSelectFields users={userMap} userRef={userRef} />
+                </div>
+                <DefaultButton
+                    onClick={!processing ? removeUserButtonHandler : null}
+                    text={"Remove"}
+                    backgroundColor="green"
+                />
+            </main>
+        </article>
     );
 }
 

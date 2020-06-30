@@ -1,22 +1,14 @@
 import React, { createRef, useState, useCallback, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { DefaultButton } from "buttons";
-import { createSelectFields, createInputFields } from "util/components/ticket";
-// import { ModalTitle } from "util/ModalTitle";
 import { ticketboardActions } from "actions/ticketboardactions";
-// import { sharedActions } from "actions/sharedactions";
 import { ModalTitle } from "util/components/modal";
 import { ResRender } from "./components";
 import { TicketInputFields, TicketSelectFields } from "util/components/ticket";
 import { resolveRefValues } from "globalHelperFunctions/refHelpers";
 import { postCreateTicket } from "apiCalls/BuggingBugs/POST";
-const generateUserMap = (users) => {
-    const userMap = [];
-    for (let user in users) {
-        userMap.push([user, users[user].name]);
-    }
-    return userMap;
-};
+import { generateUserMap } from "util/helperFunctions/users";
+import { SpinningLoader } from "util/components/loading";
 
 function ModalCreateTicketForm(props) {
     const dispatch = useDispatch();
@@ -40,7 +32,7 @@ function ModalCreateTicketForm(props) {
         summary: [createRef(), ""],
     };
     const userMap = generateUserMap(props.users);
-    const createClickHandler = useCallback(() => {
+    const createButtonHandler = useCallback(() => {
         const refs = {};
         Object.entries(fieldData).forEach(([fieldName, fieldVal]) => {
             refs[fieldName] = fieldVal[0];
@@ -54,12 +46,7 @@ function ModalCreateTicketForm(props) {
             dispatch
         );
     }, [fieldData, setModified, setRes, setProcessing, dispatch]);
-    const titleStyle = {
-        fontFamily: "Didact Gothic",
-        fontSize: "36px",
-        marginBottom: "35px",
-        color: "rgb(240, 240, 240)",
-    };
+
     const mainStyle = {
         display: "flex",
         flexDirection: "column",
@@ -72,14 +59,15 @@ function ModalCreateTicketForm(props) {
             <header>
                 <ModalTitle text={"New Ticket"} />
             </header>
-            <ResRender res={res} pid={props.pid} />
+            <ResRender res={res} />
             <section>
                 <TicketSelectFields fieldData={fieldData} userMap={userMap} />
                 <TicketInputFields fieldData={fieldData} />
             </section>
+            <SpinningLoader loading={processing} />
             <DefaultButton
                 text={"Create Ticket"}
-                onClick={createClickHandler}
+                onClick={!processing ? createButtonHandler : null}
                 backgroundColor="green"
             />
         </article>

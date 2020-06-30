@@ -13,6 +13,7 @@ function PFPImage(props) {
                     borderWidth: "1px",
                 }}
                 src={props.image}
+                alt="The profile picture of the sender"
             />
         </span>
     );

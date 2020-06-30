@@ -4,15 +4,17 @@ import LeaveIcon from "svg/leave.svg";
 import { DefaultButton } from "buttons";
 import { ticketboardFields } from "fields/ticketboardfields";
 import { ResRender } from "./components";
+import { SpinningLoader } from "util/components/loading";
 import { postUserLeave } from "apiCalls/BuggingBugs/POST";
 
 function LeaveGroup(props) {
     const [res, setRes] = useState([-1, ""]);
+    const [processing, setProcessing] = useState(false);
     const pid = useSelector((state) => {
         return state.ticketboard[ticketboardFields.PID];
     });
-    const sendLeaveHandler = useCallback(() => {
-        postUserLeave(pid, setRes);
+    const leaveButtonHandler = useCallback(() => {
+        postUserLeave(pid, setRes, setProcessing);
     }, [pid, setRes]);
     const svgStyle = {
         height: "130px",
@@ -21,7 +23,12 @@ function LeaveGroup(props) {
         position: "relative",
         top: "10px",
     };
-    const mainStyle = {
+    const centerBlock = {
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "column",
+    };
+    const containerStyle = {
         display: "flex",
         flexWrap: "wrap",
         fontFamily: "didact gothic",
@@ -30,21 +37,26 @@ function LeaveGroup(props) {
         position: "relative",
     };
     return (
-        <div style={mainStyle}>
+        <article style={containerStyle}>
             <ResRender res={res} pid={props.pid} />
-            <LeaveIcon style={svgStyle} />
-            <div style={{ paddingLeft: "20px" }}>
-                Are you sure you want to leave? You will need to be invited back
-                to rejoin.
-            </div>
-            <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-                <DefaultButton
-                    onClick={sendLeaveHandler}
-                    text={"Leave"}
-                    backgroundColor="green"
-                />
-            </div>
-        </div>
+            <SpinningLoader size={100} loading={processing} />
+            <header style={centerBlock}>
+                <LeaveIcon style={svgStyle} />
+                <div style={{ paddingLeft: "20px" }}>
+                    Are you sure you want to leave? You will need to be invited
+                    back to rejoin.
+                </div>
+            </header>
+            <main style={centerBlock}>
+                <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+                    <DefaultButton
+                        onClick={!processing ? leaveButtonHandler : null}
+                        text={"Leave"}
+                        backgroundColor="green"
+                    />
+                </div>
+            </main>
+        </article>
     );
 }
 export { LeaveGroup };

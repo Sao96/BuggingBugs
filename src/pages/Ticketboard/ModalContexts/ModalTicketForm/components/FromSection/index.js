@@ -9,16 +9,19 @@ function FromSection(props) {
 
     return (
         <section style={containerStyle}>
-            <img
-                style={{
-                    height: "130px",
-                    width: "130px",
-                    border: "1px solid black",
-                    borderRadius: "100%",
-                }}
-                src={props.fromPfp}
-            />
-            <div
+            <section>
+                <img
+                    style={{
+                        height: "130px",
+                        width: "130px",
+                        border: "1px solid black",
+                        borderRadius: "100%",
+                    }}
+                    alt="Profile picture of the author"
+                    src={props.fromPfp}
+                />
+            </section>
+            <section
                 style={{
                     fontFamily: "Didact Gothic",
                     marginBottom: "40px",
@@ -26,7 +29,7 @@ function FromSection(props) {
             >
                 From:{" "}
                 <span style={{ paddingLeft: "5px" }}> {props.fromName} </span>
-            </div>
+            </section>
         </section>
     );
 }

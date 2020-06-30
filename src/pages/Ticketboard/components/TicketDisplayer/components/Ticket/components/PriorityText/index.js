@@ -1,27 +1,22 @@
 import React from "react";
 
 function PriorityText(props) {
+    const containerStyle = {
+        position: "absolute",
+        left: "27%",
+        top: "80.2%",
+        fontStyle: "italic",
+        color: "rgb(200,200,200)",
+    };
+    const textStyle = {
+        color: props.color,
+        fontSize: "21px",
+        fontStyle: "normal",
+    };
     return (
-        <span
-            style={{
-                position: "absolute",
-                left: "27%",
-                top: "80.2%",
-                fontStyle: "italic",
-                color: "rgb(200,200,200)",
-            }}
-        >
+        <span style={containerStyle}>
             Priority:
-            <span
-                style={{
-                    color: props.priorityColor,
-                    fontSize: "21px",
-                    fontStyle: "normal",
-                }}
-            >
-                {" "}
-                {props.text}
-            </span>
+            <span style={textStyle}> {props.text}</span>
         </span>
     );
 }

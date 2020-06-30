@@ -22,7 +22,7 @@ function TicketInputFields(props) {
         paddingLeft: "3px",
     };
     const date = (
-        <div style={ticketFormStyles.formItemStyle}>
+        <div style={ticketFormStyles.formItemStyle} key={0}>
             <label style={ticketFormStyles.labelStyle}>Date</label>
             <FieldSeparator />
             <input
@@ -34,9 +34,8 @@ function TicketInputFields(props) {
         </div>
     );
     data.push(date);
-
+    const keyOffset = data.length;
     const textareaFields = [
-        // ["Due", "date", fieldData.due[0], fieldData.due[1]],
         [
             "Environment",
             "text",
@@ -66,7 +65,7 @@ function TicketInputFields(props) {
             fieldData.summary[1],
             ["400px", "150px"],
         ],
-    ].map((data) => {
+    ].map((data, idx) => {
         const textInputStyle = {
             backgroundColor: "rgb(255,255,255)",
             fontFamily: "Didact Gothic",
@@ -82,7 +81,7 @@ function TicketInputFields(props) {
             resize: "none",
         };
         return (
-            <div style={ticketFormStyles.formItemStyle}>
+            <div style={ticketFormStyles.formItemStyle} key={keyOffset + idx}>
                 <label style={ticketFormStyles.labelStyle}>{data[0]}</label>
                 <FieldSeparator />
                 <textarea

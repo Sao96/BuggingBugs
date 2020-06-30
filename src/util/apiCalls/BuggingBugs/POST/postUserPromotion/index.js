@@ -1,12 +1,13 @@
 import { endpoints as ep } from "apiRoutes/BuggingBugs";
 
 /**
- *
+ * @function postUserPromotion
  * @param {*} reqData: fields: to
  * @param {*} pid
  * @param {*} setRes
  */
-async function postUserPromotion(reqData, pid, setRes) {
+async function postUserPromotion(reqData, pid, setRes, setProcessing) {
+    setProcessing(true);
     const endpoint = ep.promoteuser + "?pid=" + pid; //subject to change
     const res = await fetch(endpoint, {
         method: "POST",
@@ -21,6 +22,7 @@ async function postUserPromotion(reqData, pid, setRes) {
         redirect: "follow",
         body: JSON.stringify(reqData),
     });
+    setProcessing(false);
     const resStatus = res.status,
         resData = await res.json();
     setRes([resStatus, resData]);

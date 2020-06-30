@@ -15,11 +15,9 @@ import { priorityInformationMap } from "util/helperFunctions/ticketHelpers";
 
 function Ticket(props) {
     const dispatch = useDispatch();
-
     const [priorityText, bgColor, priorityColor] = priorityInformationMap(
         props.priority
     );
-    props.priority;
     const launchModalHandler = () => {
         dispatch({ type: sharedActions.PUSH_MODAL_STATE, modalState: 1 });
         dispatch({
@@ -32,8 +30,8 @@ function Ticket(props) {
         fromPfp: props.fromPfp,
         fromName: props.fromName,
         to: props.to,
-        priority: priorityText,
-        due: new Date(props.due).toString(),
+        priority: props.priority,
+        due: props.due,
         tags: props.tags,
         environment: props.environment,
         headline: props.headline,

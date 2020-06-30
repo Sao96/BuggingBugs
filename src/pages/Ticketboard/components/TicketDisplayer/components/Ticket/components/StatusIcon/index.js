@@ -5,7 +5,6 @@ import Closed from "svg/closed.svg";
 
 function StatusIcon(props) {
     let Comp;
-    console.log("ive been", props.status);
     switch (props.status) {
         case 0:
             Comp = Open;
