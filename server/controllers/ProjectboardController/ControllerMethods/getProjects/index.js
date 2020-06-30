@@ -15,9 +15,10 @@ async function getProjects(req, res, next) {
                 },
             },
             { $unwind: { path: "$projInfo" } },
-            { $project: { _id: true, projInfo: true } },
+            { $project: { _id: true, authLevel: true, projInfo: true } },
         ]);
         req.body.dbSearch = req.body.dbSearch.map((proj) => {
+            proj.projInfo.authLevel = proj.authLevel;
             return proj.projInfo;
         });
     } catch (err) {

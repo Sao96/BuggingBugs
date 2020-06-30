@@ -25,6 +25,7 @@ function Dashboard(props) {
             state.shared[sF.MODAL_STACK],
         ];
     });
+
     useEffect(() => {
         getGetProjects(setRes, setProjectsLoading, dispatch);
     }, [refreshNeeded]);

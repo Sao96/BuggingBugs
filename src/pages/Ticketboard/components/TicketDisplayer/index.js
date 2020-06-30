@@ -135,16 +135,15 @@ function TicketDisplayer(props) {
         alignItems: "center",
         marginTop: "30px",
     };
+    const containerStyle = {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+    };
 
     return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                width: "100%",
-            }}
-        >
+        <div style={containerStyle}>
             <TypeFilter
                 types={ticketTypes}
                 active={activeSection}

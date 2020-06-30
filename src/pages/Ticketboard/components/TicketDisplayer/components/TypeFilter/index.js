@@ -1,14 +1,8 @@
 import React from "react";
 import { TypeTab } from "./components/TypeTab";
 function TypeFilter(props) {
-    const containerStyle = {
-        display: "flex",
-        flexFlow: "row wrap",
-        marginTop: "25px",
-    };
     const types = props.types.map((type, idx) => {
         const paddingNeeded = idx !== props.types.length - 1;
-
         return (
             <div style={{ paddingRight: paddingNeeded ? "10px" : "0px" }}>
                 <TypeTab
@@ -22,6 +16,14 @@ function TypeFilter(props) {
             </div>
         );
     });
+
+    const containerStyle = {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexFlow: "row wrap",
+        marginTop: "25px",
+    };
     const headerStyle = {
         fontSize: "26px",
         fontFamily: "Didact Gothic",

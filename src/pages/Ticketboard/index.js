@@ -70,15 +70,19 @@ function TicketBoard(props) {
         color: "white",
         display: "flex",
         flexDirection: "column",
-        alignItems: "flex-start",
+        alignItems: "center",
         width: "100%",
+    };
+    const loaderStyle = {
+        position: "fixed",
+        top: "200px",
+        left: "50%",
     };
 
     return (
         <article style={containerStyle}>
             <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
             <Toolbar />
-            <SpinningLoader loading={ticketsLoading} />
             <main>
                 <TicketDisplayer
                     tickets={tickets}
@@ -87,6 +91,7 @@ function TicketBoard(props) {
                     authLevel={authLevel}
                 />
             </main>
+            <SpinningLoader style={loaderStyle} loading={ticketsLoading} />
         </article>
     );
 }
