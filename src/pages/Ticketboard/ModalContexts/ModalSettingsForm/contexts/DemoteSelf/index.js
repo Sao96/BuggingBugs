@@ -1,18 +1,18 @@
 import React, { useCallback, useState, createRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import DemoteIcon from "svg/demote.svg";
 import { DefaultButton } from "buttons";
 import { ticketboardFields } from "fields/ticketboardfields";
 import { ResRender } from "./components";
 import { postUserDemote } from "apiCalls/BuggingBugs/POST";
-
 function DemoteSelf(props) {
+    const dispatch = useDispatch();
     const [res, setRes] = useState([-1, ""]);
     const pid = useSelector((state) => {
         return state.ticketboard[ticketboardFields.PID];
     });
     const sendUserDemoteHandler = useCallback(() => {
-        postUserDemote(pid, setRes);
+        postUserDemote(pid, setRes, dispatch);
     }, [pid]);
     const svgStyle = {
         height: "130px",

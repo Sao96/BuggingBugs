@@ -17,7 +17,7 @@ async function getGetProjects(setRes, setProjectsLoading, dispatch) {
     setProjectsLoading(false);
     const resStatus = res.status,
         resData = await res.json();
-    setRes([resData, resStatus]);
+    setRes([resStatus, resData]);
     if (res.status === 200) {
         dispatch({
             type: dbA.SET_PROJECTS,

@@ -1,8 +1,7 @@
 import { endpoints as ep } from "apiRoutes/BuggingBugs";
-import { sharedActions } from "actions/sharedactions";
 
-async function postUserDemote(pid, setRes, dispatch) {
-    const endpoint = ep.demoteself + "?pid=" + pid; //subject to change
+async function postUserLeave(pid, setRes) {
+    const endpoint = ep.leaveproject + "?pid=" + pid; //subject to change
     const res = await fetch(endpoint, {
         method: "POST",
         headers: {
@@ -17,11 +16,7 @@ async function postUserDemote(pid, setRes, dispatch) {
     });
     const resStatus = res.status,
         resData = await res.json();
-
-    if (resStatus === 200) {
-        dispatch({ type: sharedActions.POP_MODAL_STATE });
-    } else {
-        setRes([resStatus, resData]);
-    }
+    setRes([resStatus, resData]);
 }
-export { postUserDemote };
+
+export { postUserLeave };

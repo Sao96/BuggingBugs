@@ -36,7 +36,7 @@ async function postCreateTicket(
         setModified(true);
         dispatch({ type: sharedActions.POP_MODAL_STATE });
     } else {
-        setRes([resData, resStatus]);
+        setRes([resStatus, resData]);
     }
 }
 

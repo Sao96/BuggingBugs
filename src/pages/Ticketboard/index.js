@@ -9,7 +9,6 @@ import {
     ModalCreateInviteForm,
     ModalSettingsForm,
 } from "./ModalContexts";
-//     ModalSettingsForm,
 import { sharedActions } from "actions/sharedactions.js";
 import { sharedFields } from "fields/sharedfields.js";
 import { ticketboardActions } from "actions/ticketboardactions";

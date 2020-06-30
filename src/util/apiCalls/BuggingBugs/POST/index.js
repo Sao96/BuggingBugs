@@ -11,7 +11,7 @@ import { postRename } from "./postRename";
 import { postRemoveUser } from "./postRemoveUser";
 import { postUserPromotion } from "./postUserPromotion";
 import { postUserDemote } from "./postUserDemote";
-
+import { postUserLeave } from "./postUserLeave";
 export {
     postLogin,
     postRegister,
@@ -26,4 +26,5 @@ export {
     postRemoveUser,
     postUserPromotion,
     postUserDemote,
+    postUserLeave,
 };

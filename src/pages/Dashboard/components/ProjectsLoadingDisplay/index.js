@@ -1,23 +1,20 @@
 import React from "react";
-import ClipLoader from "react-spinners/ClipLoader";
+import { SpinningLoader } from "util/components/loading";
 
 function ProjectsLoadingDisplay(props) {
     if (props.loading) {
         return (
-            <div
+            <SpinningLoader
+                size={150}
+                color={"rgb(200,200,200)"}
                 style={{
                     position: "fixed",
                     left: "50%",
                     top: "25%",
                     zIndex: 1,
                 }}
-            >
-                <ClipLoader
-                    size={150}
-                    color={"rgb(200,200,200)"}
-                    loading={true}
-                />
-            </div>
+                loading={true}
+            />
         );
     }
 

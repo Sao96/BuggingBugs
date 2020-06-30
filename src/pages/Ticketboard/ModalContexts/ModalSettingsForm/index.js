@@ -4,7 +4,7 @@ import { RenameProject } from "./contexts/RenameProject";
 import { RemoveUser } from "./contexts/RemoveUser";
 import { PromoteUser } from "./contexts/PromoteUser";
 import { DemoteSelf } from "./contexts/DemoteSelf";
-// import { LeaveGroup } from "./contexts/LeaveGroup";
+import { LeaveGroup } from "./contexts/LeaveGroup";
 import { ContextMenu } from "util/components/context";
 import { ticketboardActions } from "actions/ticketboardactions";
 
@@ -20,7 +20,7 @@ function ModalSettingsForm(props) {
         ["Remove User", <RemoveUser />],
         ["Promote User", <PromoteUser />],
         ["Demote Self", <DemoteSelf />],
-        // ["Leave Group", <LeaveGroup />],
+        ["Leave Group", <LeaveGroup />],
     ];
 
     return <ContextMenu contexts={contexts} />;

@@ -5,7 +5,8 @@ import { navRoutes } from "navRoutes";
 
 function ResRender(props) {
     const res = props.res;
-    switch (res[1]) {
+    const resText = res[1].message;
+    switch (res[0]) {
         case -1:
         case 200:
             return <></>;
@@ -13,7 +14,7 @@ function ResRender(props) {
             return <Redirect push to={navRoutes.login} />;
         default:
             const errorText =
-                res[0] !== "" ? res[0] : "An unknown error has occured.";
+                resText !== "" ? resText : "An unknown error has occured.";
             return <ErrorBox text={errorText} />;
     }
 }

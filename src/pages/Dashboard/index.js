@@ -3,19 +3,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { dashboardFields as dbF } from "fields/dashboardfields";
 import { sharedActions as sA } from "actions/sharedactions";
 import { sharedFields as sF } from "fields/sharedfields";
-import { ProjectBoard, ResRender, ProjectsLoadingDisplay } from "./components";
+import { Modal } from "modal";
+import { DefaultButton } from "util/components/buttons";
 import {
     ModalNewProject,
     ModalCreateProject,
     ModalJoinProject,
 } from "./ModalContexts";
-import { Modal } from "modal";
-import { DefaultButton } from "util/components/buttons";
+import { ProjectBoard, ResRender, ProjectsLoadingDisplay } from "./components";
 import { getGetProjects } from "apiCalls/BuggingBugs/GET";
 
 function Dashboard(props) {
     const dispatch = useDispatch();
-    const [res, setRes] = useState(["", -1]);
+    const [res, setRes] = useState([-1, ""]);
     const [projectsLoading, setProjectsLoading] = useState(true);
     const modalRef = createRef();
     const [projects, refreshNeeded, currModalStack] = useSelector((state) => {

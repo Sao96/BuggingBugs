@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
+import { navRoutes } from "navRoutes";
+import { Separator } from "./components/Separator";
 
 function ProjectCard(props) {
     const [loadProject, setLoadProject] = useState(false);
@@ -7,16 +9,12 @@ function ProjectCard(props) {
         setLoadProject(true);
     };
     if (loadProject) {
-        return <Redirect push to={"/ticketboard" + "?pid=" + props.pid} />;
+        return (
+            <Redirect push to={navRoutes.ticketboard + "?pid=" + props.pid} />
+        );
     }
-    const Separator = (color) => {
-        const styles = {
-            border: "1px solid " + color,
-            width: "90%",
-        };
-        return <div style={styles}> </div>;
-    };
-    const projectcardStyle = {
+
+    const containerStyle = {
         backgroundColor: "rgb(33, 59, 74)",
         color: "black",
         width: "300px",
@@ -35,27 +33,19 @@ function ProjectCard(props) {
         fontFamily: "Montserrat,Source Sans Pro",
         paddingTop: "10px",
     };
-    const unreadStyle = {
-        color: "white",
-        fontSize: "30px",
-        fontFamily: "Didact Gothic",
-    };
 
     return (
-        <div style={projectcardStyle} onClick={launchProject}>
+        <article style={containerStyle} onClick={launchProject}>
             <header style={titleStyle}>{props.projectName}</header>
-            {Separator("rgb(71, 196, 255)")}
-            <div style={{ paddingBottom: "10px" }}></div>
+            <Separator color={"rgb(71, 196, 255)"} />
+            <span style={{ paddingBottom: "10px" }} />
             <img
                 src="https://www.adazing.com/wp-content/uploads/2019/02/open-book-clipart-03.png"
                 style={{ height: "200px", width: "200px" }}
+                alt=""
             />
-            <div style={{ paddingBottom: "10px" }}></div>
-            <div style={unreadStyle}>
-                Tickets Unread:{" "}
-                <span style={{ color: "rgb(255, 241, 133)" }}>5</span>
-            </div>
-        </div>
+            <span style={{ paddingBottom: "10px" }} />
+        </article>
     );
 }
 
