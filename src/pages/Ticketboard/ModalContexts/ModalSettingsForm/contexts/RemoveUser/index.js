@@ -7,6 +7,7 @@ import { ticketboardFields as tbF } from "fields/ticketboardfields";
 import { UserSelectFields } from "util/components/users";
 import { SpinningLoader } from "util/components/loading";
 import { ResRender } from "./components";
+import { contextStyles } from "styles";
 import { postRemoveUser } from "apiCalls/BuggingBugs/POST";
 
 function RemoveUser(props) {
@@ -31,43 +32,26 @@ function RemoveUser(props) {
     }, [userRef, pid, setRes]);
 
     const headerText = "Select the user you would like to remove.";
-    const svgStyle = {
-        height: "130px",
-        width: "130px",
-        fill: "rgb(180,180,180)",
-        position: "relative",
-        top: "10px",
-    };
-    const centerBlock = {
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-    };
-    const containerStyle = {
-        display: "flex",
-        flexWrap: "wrap",
-        fontFamily: "didact gothic",
-        alignItems: "center",
-        flexDirection: "column",
-        position: "relative",
-    };
+
     return (
-        <article style={containerStyle}>
+        <article style={contextStyles.containerStyle}>
             <ResRender res={res} />
             <SpinningLoader size={100} loading={processing} />
-            <header style={centerBlock}>
-                <RemoveUserIcon style={svgStyle} />
-                {headerText}
+            <header style={contextStyles.centerBlock}>
+                <RemoveUserIcon style={contextStyles.svgStyle} />
+                <div style={contextStyles.headerTextStyle}>{headerText}</div>
             </header>
-            <main style={centerBlock}>
-                <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+            <main style={contextStyles.centerBlock}>
+                <section style={{ marginTop: "10px" }}>
                     <UserSelectFields users={userMap} userRef={userRef} />
+                </section>
+                <div style={contextStyles.buttonSpace}>
+                    <DefaultButton
+                        onClick={!processing ? removeUserButtonHandler : null}
+                        text={"Remove"}
+                        backgroundColor="green"
+                    />
                 </div>
-                <DefaultButton
-                    onClick={!processing ? removeUserButtonHandler : null}
-                    text={"Remove"}
-                    backgroundColor="green"
-                />
             </main>
         </article>
     );

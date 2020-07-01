@@ -9,7 +9,6 @@ import { NoTicketsMessage } from "./components";
  * a certain status.
  */
 const generateTicketCards = (tickets, authLevel, usersMap) => {
-    console.log(tickets);
     const openTickets = [],
         pendingTickets = [],
         closedTickets = [];

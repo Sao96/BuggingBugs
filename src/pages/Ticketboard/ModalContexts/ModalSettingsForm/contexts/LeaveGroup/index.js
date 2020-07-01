@@ -5,6 +5,7 @@ import { DefaultButton } from "buttons";
 import { ticketboardFields } from "fields/ticketboardfields";
 import { ResRender } from "./components";
 import { SpinningLoader } from "util/components/loading";
+import { contextStyles } from "styles";
 import { postUserLeave } from "apiCalls/BuggingBugs/POST";
 
 function LeaveGroup(props) {
@@ -16,39 +17,20 @@ function LeaveGroup(props) {
     const leaveButtonHandler = useCallback(() => {
         postUserLeave(pid, setRes, setProcessing);
     }, [pid, setRes]);
-    const svgStyle = {
-        height: "130px",
-        width: "130px",
-        fill: "rgb(180,180,180)",
-        position: "relative",
-        top: "10px",
-    };
-    const centerBlock = {
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-    };
-    const containerStyle = {
-        display: "flex",
-        flexWrap: "wrap",
-        fontFamily: "didact gothic",
-        alignItems: "center",
-        flexDirection: "column",
-        position: "relative",
-    };
+
+    const headerText =
+        "Are you sure you want to leave? You will need to be invited back to rejoin.";
+
     return (
-        <article style={containerStyle}>
+        <article style={contextStyles.containerStyle}>
             <ResRender res={res} pid={props.pid} />
             <SpinningLoader size={100} loading={processing} />
-            <header style={centerBlock}>
-                <LeaveIcon style={svgStyle} />
-                <div style={{ paddingLeft: "20px" }}>
-                    Are you sure you want to leave? You will need to be invited
-                    back to rejoin.
-                </div>
+            <header style={contextStyles.centerBlock}>
+                <LeaveIcon style={contextStyles.svgStyle} />
+                <div style={contextStyles.headerTextStyle}>{headerText}</div>
             </header>
-            <main style={centerBlock}>
-                <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+            <main style={contextStyles.centerBlock}>
+                <div style={contextStyles.buttonSpace}>
                     <DefaultButton
                         onClick={!processing ? leaveButtonHandler : null}
                         text={"Leave"}

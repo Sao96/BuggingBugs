@@ -5,6 +5,7 @@ import { DefaultButton } from "buttons";
 import { ticketboardFields } from "fields/ticketboardfields";
 import { ResRender } from "./components";
 import { SpinningLoader } from "util/components/loading";
+import { contextStyles } from "styles";
 import { postUserDemote } from "apiCalls/BuggingBugs/POST";
 
 function DemoteSelf(props) {
@@ -17,39 +18,20 @@ function DemoteSelf(props) {
     const demoteButtonHandler = useCallback(() => {
         postUserDemote(pid, setRes, dispatch, setProcessing);
     }, [pid]);
-    const svgStyle = {
-        height: "130px",
-        width: "130px",
-        fill: "rgb(180,180,180)",
-        position: "relative",
-        top: "10px",
-    };
-    const centerBlock = {
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-    };
-    const containerStyle = {
-        display: "flex",
-        flexWrap: "wrap",
-        fontFamily: "didact gothic",
-        alignItems: "center",
-        flexDirection: "column",
-        position: "relative",
-    };
+
+    const headerText =
+        "Are you sure you would like to demote yourself? This cannot be undone.";
+
     return (
-        <article style={containerStyle}>
+        <article style={contextStyles.containerStyle}>
             <ResRender res={res} />
             <SpinningLoader size={100} loading={processing} />
-            <header style={centerBlock}>
-                <DemoteIcon style={svgStyle} />
-                <div style={{ paddingLeft: "20px" }}>
-                    Are you sure you would like to demote yourself? This cannot
-                    be undone.
-                </div>
+            <header style={contextStyles.centerBlock}>
+                <DemoteIcon style={contextStyles.svgStyle} />
+                <div style={contextStyles.headerTextStyle}>{headerText}</div>
             </header>
-            <main style={centerBlock}>
-                <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+            <main style={contextStyles.centerBlock}>
+                <div style={contextStyles.buttonSpace}>
                     <DefaultButton
                         onClick={!processing ? demoteButtonHandler : null}
                         text={"Demote"}

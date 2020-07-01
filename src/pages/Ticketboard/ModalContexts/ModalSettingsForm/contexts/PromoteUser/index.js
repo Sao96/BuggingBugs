@@ -7,6 +7,7 @@ import { ticketboardFields } from "fields/ticketboardfields";
 import { UserSelectFields } from "util/components/users";
 import { SpinningLoader } from "util/components/loading";
 import { ResRender } from "./components";
+import { contextStyles } from "styles";
 import { postUserPromotion } from "apiCalls/BuggingBugs/POST";
 
 function PromoteUser(props) {
@@ -31,43 +32,26 @@ function PromoteUser(props) {
     }, [userRef]);
 
     const headerText = "Select the user you would like to promote to leader.";
-    const svgStyle = {
-        height: "130px",
-        width: "130px",
-        fill: "rgb(180,180,180)",
-        position: "relative",
-        top: "10px",
-    };
-    const centerBlock = {
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-    };
-    const containerStyle = {
-        display: "flex",
-        flexWrap: "wrap",
-        fontFamily: "didact gothic",
-        alignItems: "center",
-        flexDirection: "column",
-        position: "relative",
-    };
+
     return (
-        <article style={containerStyle}>
+        <article style={contextStyles.containerStyle}>
             <ResRender res={res} pid={props.pid} />
             <SpinningLoader size={100} loading={processing} />
-            <header style={centerBlock}>
-                <PromoteUserIcon style={svgStyle} />
-                {headerText}
+            <header style={contextStyles.centerBlock}>
+                <PromoteUserIcon style={contextStyles.svgStyle} />
+                <div style={contextStyles.headerTextStyle}>{headerText}</div>
             </header>
-            <main style={centerBlock}>
-                <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+            <main style={contextStyles.centerBlock}>
+                <section style={{ marginTop: "10px" }}>
                     <UserSelectFields users={userMap} userRef={userRef} />
+                </section>
+                <div style={contextStyles.buttonSpace}>
+                    <DefaultButton
+                        onClick={!processing ? promoteUserButton : null}
+                        text={"Promote"}
+                        backgroundColor="green"
+                    />
                 </div>
-                <DefaultButton
-                    onClick={!processing ? promoteUserButton : null}
-                    text={"Promote"}
-                    backgroundColor="green"
-                />
             </main>
         </article>
     );

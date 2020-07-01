@@ -5,6 +5,7 @@ import { DefaultButton } from "buttons";
 import { ticketboardFields as tbF } from "fields/ticketboardfields";
 import { SpinningLoader } from "util/components/loading";
 import { ResRender } from "./components";
+import { contextStyles } from "styles";
 import { postRename } from "apiCalls/BuggingBugs/POST";
 
 function RenameProject(props) {
@@ -24,43 +25,26 @@ function RenameProject(props) {
     }, [newNameRef, pid, setRes]);
 
     const headerText = "Enter the new name of the project.";
-    const svgStyle = {
-        height: "130px",
-        width: "130px",
-        fill: "rgb(180,180,180)",
-    };
-    const centerBlock = {
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-    };
-    const mainStyle = {
-        display: "flex",
-        flexWrap: "wrap",
-        fontFamily: "didact gothic",
-        alignItems: "center",
-        flexDirection: "column",
-        position: "relative",
-        marginTop: "8px",
-    };
+
     return (
-        <article style={mainStyle}>
+        <article style={contextStyles.containerStyle}>
             <ResRender res={res} pid={props.pid} />
             <SpinningLoader size={100} loading={processing} />
-            <header style={centerBlock}>
-                <EditProjectIcon style={svgStyle} />
-                {headerText}
+            <header style={contextStyles.centerBlock}>
+                <EditProjectIcon style={contextStyles.svgStyle} />
+                <div style={contextStyles.headerTextStyle}>{headerText}</div>
             </header>
-            <main style={centerBlock}>
-                <div style={{ marginTop: "10px", marginBottom: "10px" }}>
+            <main style={contextStyles.centerBlock}>
+                <section style={{ marginTop: "10px" }}>
                     <input ref={newNameRef} type="text"></input>
+                </section>
+                <div style={contextStyles.buttonSpace}>
+                    <DefaultButton
+                        onClick={!processing ? renameButtonHandler : null}
+                        text={"Rename"}
+                        backgroundColor="green"
+                    />
                 </div>
-                <span style={{ marginTop: "15px" }}></span>
-                <DefaultButton
-                    onClick={!processing ? renameButtonHandler : null}
-                    text={"Rename"}
-                    backgroundColor="green"
-                />
             </main>
         </article>
     );
