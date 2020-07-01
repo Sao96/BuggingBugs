@@ -9,9 +9,11 @@ import { MainNavbar } from "util/components/navbars/MainNavbar";
 import { Landing } from "./pages/Landing";
 import { Dashboard } from "./pages/Dashboard";
 import { Login } from "./pages/Login";
+import { Settings } from "./pages/Settings";
 import { TicketBoard } from "./pages/Ticketboard/";
 // import { Logout } from "./pages/Logout";
 import { Register } from "./pages/Register";
+import { navRoutes } from "navRoutes";
 function Routing() {
     return (
         <div style={{ display: "flex" }}>
@@ -21,6 +23,11 @@ function Routing() {
                     <Switch>
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/register" component={Register} />
+                        <Route
+                            exact
+                            path={navRoutes.settings}
+                            component={Settings}
+                        />
                         <Route exact path="/dashboard" component={Dashboard} />
                         <Route
                             exact

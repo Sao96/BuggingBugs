@@ -22,12 +22,12 @@ function authenticateUser(req, res, next) {
     switch (req.body.type) {
         case "native":
             if (!nativeAuthenticator(req)) {
-                return next(req.body.error);
+                return next(req.body.err);
             }
             break;
         case "google":
             if (!googleAuthenticator(req)) {
-                return next(req.body.error);
+                return next(req.body.err);
             }
             break;
         default:
