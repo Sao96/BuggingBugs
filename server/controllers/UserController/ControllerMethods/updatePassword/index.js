@@ -21,25 +21,32 @@ async function updatePassword(req, res, next) {
         );
         return next(req.body.err);
     }
-    let changed;
     try {
         const pwSalt = crypto.randomBytes(16);
         const pwSaltedHash = crypto
             .createHash("sha256")
-            .update(req.body.userData.password + pwSalt)
+            .update(req.body.password + pwSalt)
             .digest("hex");
-        changed = mongoose
+        const changed = await mongoose
             .model("NativeUser")
-            .updateOne(
-                { _id: req.body.userData.uid },
+            .updateMany(
+                { uid: req.body.userData.uid },
                 { pwSalt: pwSalt, pwSaltedHash: pwSaltedHash }
             );
+        if (changed.n === 0) {
+            setError(
+                req,
+                400,
+                "Not a native user",
+                "The email attached to your account is not registered through BuggingBugs."
+            );
+            return next(req.body.err);
+        }
     } catch (err) {
         setError(req, 500, err, "An internal error has occured.");
         return next(req.body.err);
     }
 
-    console.log(changed);
     req.body.res.status = 200;
     next();
 }

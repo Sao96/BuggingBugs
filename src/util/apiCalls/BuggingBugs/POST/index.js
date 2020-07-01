@@ -13,6 +13,9 @@ import { postRemoveUser } from "./postRemoveUser";
 import { postUserPromotion } from "./postUserPromotion";
 import { postUserDemote } from "./postUserDemote";
 import { postUserLeave } from "./postUserLeave";
+import { postUpdateName } from "./postUpdateName";
+import { postUpdatePassword } from "./postUpdatePassword";
+
 export {
     postLogin,
     postRegister,
@@ -29,4 +32,6 @@ export {
     postUserPromotion,
     postUserDemote,
     postUserLeave,
+    postUpdateName,
+    postUpdatePassword,
 };

@@ -1,9 +1,11 @@
 // import { setTargetIds } from "./ControllerMethods/setTargetIds";
+import { updateName } from "./ControllerMethods/updateName";
+import { updatePassword } from "./ControllerMethods/updatePassword";
 
 const userController = {
-    // updateName: updateName,
+    updateName: updateName,
     // updatePfp: updatePfp,
-    // updatePassword: updatePassword,
+    updatePassword: updatePassword,
 };
 
 export { userController };

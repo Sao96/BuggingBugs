@@ -20,6 +20,8 @@ const endpointNames = [
     "promoteuser",
     "demoteself",
     "leaveproject",
+    "updateusername",
+    "updatepassword",
 ];
 const endpoints = {};
 endpointNames.forEach((name) => {

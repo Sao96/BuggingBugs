@@ -17,6 +17,12 @@ const GETRoutes = [
     ["/amilogged", controller.authorizationController.amILogged],
 ];
 const POSTRoutes = [
+    ["/updateusername", controller.authorizationController.checkLoggedIn],
+    ["/updateusername", controller.userController.updateName],
+
+    ["/updatepassword", controller.authorizationController.checkLoggedIn],
+    ["/updatepassword", controller.userController.updatePassword],
+
     ["/login", controller.authorizationController.verifyLoginInfo],
     ["/login", controller.authorizationController.userExists],
     ["/login", controller.authorizationController.authenticateUser],
@@ -27,6 +33,7 @@ const POSTRoutes = [
     ["/register", controller.authorizationController.verifyInfo],
     ["/register", controller.authorizationController.userExists],
     ["/register", controller.authorizationController.createUser],
+    ["/register", controller.authorizationController.getSession],
 
     ["/createticket", controller.authorizationController.checkLoggedIn],
     ["/createticket", controller.tbController.validateTicketFields],
