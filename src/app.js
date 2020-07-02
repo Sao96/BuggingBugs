@@ -40,11 +40,11 @@ async function initializeApp(setInitialized, store) {
 
 function App(props) {
     const [initialized, setInitialized] = useState(false);
-    const store = createStore(combinedReducer);
-    const appStyle = { display: "flex" };
+    const [store, setStore] = useState(createStore(combinedReducer));
+
     useEffect(() => {
         initializeApp(setInitialized, store);
-    }, [store]);
+    }, []);
 
     if (initialized) {
         return (

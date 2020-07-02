@@ -7,6 +7,7 @@ const sharedActions = {
     SET_AUTH_LEVEL: "SET_AUTH_LEVEL",
     SET_LOGGED_IN: "SET_LOGGED_IN",
     SET_USER_DATA: "SET_USER_DATA",
+    DESTROY_SESSION: "DESTROY_SESSION",
 };
 
 export { sharedActions };

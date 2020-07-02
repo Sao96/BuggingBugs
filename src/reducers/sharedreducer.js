@@ -32,6 +32,9 @@ function sharedReducer(prevState = sharedInitialState, action) {
         case sharedActions.TOGGLE_NAV:
             newState[sharedFields.SHOW_NAV] = !newState[sharedFields.SHOW_NAV];
             break;
+        case sharedActions.DESTROY_SESSION:
+            newState[sharedFields.LOGGED_IN] = false;
+            newState[sharedFields.USER_DATA] = {};
     }
 
     return newState;

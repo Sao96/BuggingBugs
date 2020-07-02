@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { useSelector } from "react-redux";
+import { sharedFields as sF } from "fields/sharedfields";
 import {
     Route,
     BrowserRouter as Router,
@@ -15,6 +17,11 @@ import { Logout } from "./pages/Logout";
 import { Register } from "./pages/Register";
 import { navRoutes } from "navRoutes";
 function Routing() {
+    let loggedIn = null;
+    loggedIn = useSelector((state) => {
+        return state.shared[sF.LOGGED_IN];
+    });
+
     return (
         <div style={{ display: "flex" }}>
             <Router>
@@ -36,7 +43,7 @@ function Routing() {
                             component={TicketBoard}
                         />
                         {/*<Route exact path="/logout" component={Logout} /> */}
-                        <Route component={Landing} />
+                        <Route component={loggedIn ? Dashboard : Landing} />
                     </Switch>
                 </div>
             </Router>
