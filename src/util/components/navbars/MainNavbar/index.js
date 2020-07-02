@@ -28,7 +28,6 @@ const SizeImg = (img) => {
             style={{
                 width: "45px",
                 height: "45px",
-                border: "1px solid rgb(100,100,100)",
                 borderRadius: "100%",
             }}
             src={img}
@@ -39,9 +38,10 @@ function MainNavbar(props) {
     const closedNavWidth = "70px";
     const openNavWidth = "200px";
     const transitionSpeed = "0.1s";
-    const [showNav, pfpImage] = useSelector((state) => {
+    const [showNav, userName, pfpImage] = useSelector((state) => {
         return [
             state.shared[sharedFields.SHOW_NAV],
+            state.shared[sharedFields.USER_DATA].name,
             state.shared[sharedFields.USER_DATA].pfp,
         ];
     });
@@ -66,6 +66,7 @@ function MainNavbar(props) {
         backgroundColor: "rgb(73, 99, 114)",
         position: "fixed",
         transition: "width " + transitionSpeed,
+        userSelect: "none",
     };
     const textStyling = {
         display: navOpen ? "inline" : "none",
@@ -87,7 +88,7 @@ function MainNavbar(props) {
 
     const items = [
         ["Dashboard", "svg", DashboardIcon, createRef(), "/dashboard"],
-        ["Settings", "img", SettingsIcon, createRef(), "/settings"],
+        ["Settings", "img", pfpImage, createRef(), "/settings"],
         ["Logout", "svg", LogoutIcon, createRef(), "/logout"],
     ].map((item) => {
         return (
@@ -116,7 +117,7 @@ function MainNavbar(props) {
                     >
                         {item[1] === "svg"
                             ? SizeSVG(item[2])
-                            : SizeImg(pfpImage)}
+                            : SizeImg(item[2])}
                         <span style={textStyling}>{item[0]}</span>
                     </div>
                 </NavLink>

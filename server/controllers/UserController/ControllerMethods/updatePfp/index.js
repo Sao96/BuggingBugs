@@ -8,7 +8,6 @@ import isImageUrl from "is-image-url";
  * updates the pfp from @db.globalusers for the requesting user
  */
 async function updatePfp(req, res, next) {
-    console.log(req.body.pfp, isImageUrl(req.body.pfp));
     if (!(typeof req.body.pfp === "string" && isImageUrl(req.body.pfp))) {
         setError(req, 400, "Invalid URL", "Url is not an image.");
         return next(req.body.err);

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { TypeFilter, Ticket } from "./components";
 import { NoTicketsMessage } from "./components";
+import { ticketCardStyles as tcStyles } from "styles";
 
 /**
- *
- * @param {*} tickets a DB response of tickets
+ * @function generateTicketCards
+ * @param {Array} tickets a DB response of tickets
  * @return a list of lists, where each list corresponds to the tickets of
  * a certain status.
  */
@@ -77,15 +78,16 @@ function TicketDisplayer(props) {
             selectedCards = closedTickets;
             break;
     }
-    const ticketsOutput =
-        selectedCards.length > 0 ? selectedCards : <NoTicketsMessage />;
-    const ticketLayoutStyle = {
+
+    const tcDimensions = tcStyles.dimensions;
+    const containerWidth = (tcDimensions.width + tcDimensions.marginRight) * 3;
+    const ticketContainerStyle = {
         display: "flex",
         flexWrap: "wrap",
         width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: "flex-start",
         marginTop: "30px",
+        width: containerWidth,
     };
     const containerStyle = {
         display: props.authLevel !== -1 ? "flex" : "none",
@@ -93,7 +95,11 @@ function TicketDisplayer(props) {
         alignItems: "center",
         justifyContent: "center",
     };
-
+    const ticketContainer = (
+        <div style={ticketContainerStyle}>{selectedCards} </div>
+    );
+    const ticketsOutput =
+        selectedCards.length > 0 ? ticketContainer : <NoTicketsMessage />;
     return (
         <nav style={containerStyle}>
             <TypeFilter
@@ -101,7 +107,7 @@ function TicketDisplayer(props) {
                 active={activeSection}
                 setState={setActiveSection}
             />
-            <div style={ticketLayoutStyle}>{ticketsOutput} </div>
+            {ticketsOutput}
         </nav>
     );
 }

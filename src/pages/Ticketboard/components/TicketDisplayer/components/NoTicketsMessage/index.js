@@ -7,7 +7,10 @@ function NoTicketsMessage(props) {
                 fontSize: "30px",
                 fontFamily: "Didact Gothic",
                 color: "rgb(230,230,230)",
-                paddingTop: "30px",
+                paddingTop: "50px",
+                display: "flex",
+                alignItems: "center",
+                width: "100%",
             }}
         >
             No tickets available to display.

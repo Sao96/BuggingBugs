@@ -59,7 +59,7 @@ function Ticket(props) {
 
     return (
         <article style={containerStyle} onClick={launchModalHandler}>
-            <PFPImage image={props.cardPfp} />
+            <PFPImage image={props.cardPfp} priorityColor={priorityColor} />
             <Sender name={props.cardName} />
             <Separator color={priorityColor} />
             <HeadlineText text={props.headline} />
