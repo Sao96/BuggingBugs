@@ -1,4 +1,5 @@
 import { endpoints as ep } from "apiRoutes/BuggingBugs";
+import { sharedActions } from "actions/sharedactions";
 
 /**
  * @function postUpdatePfp
@@ -10,7 +11,7 @@ import { endpoints as ep } from "apiRoutes/BuggingBugs";
  */
 async function postUpdatePfp(reqData, setRes, setProcessing, dispatch) {
     setProcessing(true);
-    const res = await fetch(ep.updateusername, {
+    const res = await fetch(ep.updatepfp, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -27,7 +28,12 @@ async function postUpdatePfp(reqData, setRes, setProcessing, dispatch) {
     const resStatus = res.status,
         resData = await res.json();
     setRes([resStatus, resData]);
-    //add dispatch
+    if (resStatus === 200) {
+        dispatch({
+            type: sharedActions.SET_USER_DATA,
+            userData: { pfp: reqData.pfp },
+        });
+    }
 }
 
 export { postUpdatePfp };

@@ -20,8 +20,8 @@ async function updateName(req, res, next) {
         );
         return next(req.body.err);
     }
+    const name = req.body.firstName + " " + req.body.lastName;
     try {
-        const name = req.body.firstName + " " + req.body.lastName;
         await mongoose
             .model("GlobalUser")
             .updateOne({ _id: req.body.userData.uid, name: name });
@@ -30,7 +30,7 @@ async function updateName(req, res, next) {
         return next(req.body.err);
     }
     req.body.res.status = 200;
-
+    req.session.name = name;
     next();
 }
 

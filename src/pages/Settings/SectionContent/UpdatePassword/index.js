@@ -4,6 +4,7 @@ import { DefaultButton } from "buttons";
 import { ResRender } from "./components";
 import { resolveRefValues } from "util/helperFunctions/refHelpers";
 import { postUpdatePassword } from "apiCalls/BuggingBugs/POST";
+import { SpinningLoader } from "util/components/loading";
 
 function UpdatePassword(props) {
     const [res, setRes] = useState([-1, ""]);
@@ -23,6 +24,7 @@ function UpdatePassword(props) {
     return (
         <>
             <ResRender res={res} />
+            <SpinningLoader loading={processing} />
             <InputFields data={passwordInputFields} />
             <DefaultButton
                 onClick={updatePasswordButton}

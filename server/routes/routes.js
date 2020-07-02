@@ -23,6 +23,9 @@ const POSTRoutes = [
     ["/updatepassword", controller.authorizationController.checkLoggedIn],
     ["/updatepassword", controller.userController.updatePassword],
 
+    ["/updatepfp", controller.authorizationController.checkLoggedIn],
+    ["/updatepfp", controller.userController.updatePfp],
+
     ["/login", controller.authorizationController.verifyLoginInfo],
     ["/login", controller.authorizationController.userExists],
     ["/login", controller.authorizationController.authenticateUser],

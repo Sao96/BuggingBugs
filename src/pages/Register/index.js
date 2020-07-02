@@ -9,6 +9,7 @@ import { resolveRefValues } from "helperFunctions/refHelpers/resolveRefValues";
 import { authenticationStyles as authStyles } from "styles";
 import { ResRender } from "./components";
 import { postRegister } from "apiCalls/BuggingBugs/POST";
+import { SpinningLoader } from "util/components/loading";
 
 function Register(props) {
     const dispatch = useDispatch();
@@ -62,7 +63,7 @@ function Register(props) {
         alignItems: "center",
         justifyContent: "center",
     };
-    const formDimensions = { height: "750px", width: "500px" };
+    const formDimensions = { height: "750px", paddingBottom: "50px" };
     const mainStyle = { ...authStyles.mainStyle, ...formDimensions };
     const headerStyle = authStyles.headerStyle;
 
@@ -74,6 +75,7 @@ function Register(props) {
                     {headerText}
                 </header>
                 <ResRender res={res} dispatch={dispatch} />
+                <SpinningLoader loading={processing} />
                 <section
                     style={{
                         display: "flex",

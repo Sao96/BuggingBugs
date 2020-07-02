@@ -5,6 +5,7 @@ import { resolveRefValues } from "util/helperFunctions/refHelpers";
 import { DefaultButton } from "buttons";
 import { ResRender } from "./components";
 import { postUpdateName } from "apiCalls/BuggingBugs/POST";
+import { SpinningLoader } from "util/components/loading";
 
 function UpdateName(props) {
     const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function UpdateName(props) {
     return (
         <>
             <ResRender res={res} />
+            <SpinningLoader loading={processing} />
             <InputFields data={nameInputFields} />
             <DefaultButton
                 onClick={updateNameButtonHandler}

@@ -1,4 +1,5 @@
 import { endpoints as ep } from "apiRoutes/BuggingBugs";
+import { sharedActions } from "actions/sharedactions";
 
 /**
  * @function postUpdateName
@@ -27,7 +28,12 @@ async function postUpdateName(reqData, setRes, setProcessing, dispatch) {
     const resStatus = res.status,
         resData = await res.json();
     setRes([resStatus, resData]);
-    //add dispatch
+    if (resStatus === 200) {
+        dispatch({
+            type: sharedActions.SET_USER_DATA,
+            userData: { name: reqData.firstName + " " + reqData.lastName },
+        });
+    }
 }
 
 export { postUpdateName };

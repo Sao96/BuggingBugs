@@ -8,6 +8,7 @@ import { GoogleAuthenticateButton } from "util/components/authentication";
 import { resolveRefValues } from "helperFunctions/refHelpers/resolveRefValues";
 import { authenticationStyles as authStyles } from "styles";
 import { ResRender } from "./components";
+import { SpinningLoader } from "util/components/loading";
 import { postLogin } from "apiCalls/BuggingBugs/POST";
 
 function Login(props) {
@@ -51,7 +52,7 @@ function Login(props) {
         alignItems: "center",
         justifyContent: "center",
     };
-    const formDimensions = { height: "500px", width: "500px" };
+    const formDimensions = { width: "500px", paddingBottom: "50px" };
     const mainStyle = { ...authStyles.mainStyle, ...formDimensions };
     const headerStyle = authStyles.headerStyle;
 
@@ -67,6 +68,7 @@ function Login(props) {
                     dispatch={dispatch}
                     setRedirect={setRedirect}
                 />
+                <SpinningLoader loading={processing} />
                 <section
                     style={{
                         display: "flex",

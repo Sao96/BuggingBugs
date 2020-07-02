@@ -22,6 +22,7 @@ const endpointNames = [
     "leaveproject",
     "updateusername",
     "updatepassword",
+    "updatepfp",
 ];
 const endpoints = {};
 endpointNames.forEach((name) => {
