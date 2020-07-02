@@ -11,7 +11,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Login } from "./pages/Login";
 import { Settings } from "./pages/Settings";
 import { TicketBoard } from "./pages/Ticketboard/";
-// import { Logout } from "./pages/Logout";
+import { Logout } from "./pages/Logout";
 import { Register } from "./pages/Register";
 import { navRoutes } from "navRoutes";
 function Routing() {
@@ -22,6 +22,7 @@ function Routing() {
                 <div style={{ width: "100%" }}>
                     <Switch>
                         <Route exact path="/login" component={Login} />
+                        <Route exact path="/logout" component={Logout} />
                         <Route exact path="/register" component={Register} />
                         <Route
                             exact

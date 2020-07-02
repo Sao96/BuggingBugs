@@ -63,7 +63,7 @@ function Register(props) {
         alignItems: "center",
         justifyContent: "center",
     };
-    const formDimensions = { height: "750px", paddingBottom: "50px" };
+    const formDimensions = { width: "500px", padding: "50px 0px" };
     const mainStyle = { ...authStyles.mainStyle, ...formDimensions };
     const headerStyle = authStyles.headerStyle;
 

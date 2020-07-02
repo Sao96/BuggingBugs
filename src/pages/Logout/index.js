@@ -1,26 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
-import { domain } from "routes/";
-const destroySession = () => {};
-
-function DestroySession() {
-    var headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    const endpoint = domain + "/logout";
-    fetch(endpoint, {
-        method: "POST",
-        headers: headers,
-        credentials: "include",
-        mode: "cors",
-        cache: "no-cache",
-        redirect: "follow",
-    }); //THEN get the info to build the cards
-}
+import { SpinningLoader } from "util/components/loading";
+import { postDestroySession } from "apiCalls/BuggingBugs/POST";
 
 function Logout(props) {
-    DestroySession();
-    return <Redirect push to="/" />;
+    const [processing, setProcessing] = useState(true);
+    useEffect(() => {
+        postDestroySession(setProcessing);
+    }, []);
+
+    if (!processing) {
+        return <Redirect push to="/" />;
+    }
+
+    return <SpinningLoader loading={true} />;
 }
 
 export { Logout };
