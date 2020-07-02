@@ -1,6 +1,8 @@
 import React, { createRef, useState } from "react";
 import { InputFields } from "util/components/form";
 import { DefaultButton } from "buttons";
+import { useSelector } from "react-redux";
+import { sharedFields } from "fields/sharedfields";
 
 function PictureNameSection(props) {
     const containerStyle = {
@@ -17,12 +19,9 @@ function PictureNameSection(props) {
 
     return (
         <section style={containerStyle}>
-            <img
-                style={imageStyle}
-                src="https://cdn.discordapp.com/attachments/726840292128587935/727904173999390721/689606412644515853.png"
-            />
+            <img style={imageStyle} src={props.pfp} />
             <span style={{ marginBottom: "10px" }} />
-            <div style={nameStyle}>Shadi Othman</div>
+            <div style={nameStyle}>{props.name}</div>
         </section>
     );
 }
@@ -51,8 +50,8 @@ function IdSection(props) {
     };
 
     const items = [
-        ["Email", "BuggingBugstest1@gmail.com"],
-        ["BuggingBugs ID", "5ee56576c81d5d40d08463b2"],
+        ["Email", props.email],
+        ["BuggingBugs ID", props.uid],
     ].map(([fieldName, fieldValue], idx) => {
         return (
             <div key={idx} style={{ display: "flex", flexDirection: "column" }}>
@@ -73,6 +72,9 @@ function IdSection(props) {
 }
 
 function Overview(props) {
+    const userData = useSelector((state) => {
+        return state.shared[sharedFields.USER_DATA];
+    });
     const fieldRefs = {
         password: createRef(),
         repassword: createRef(),
@@ -92,8 +94,8 @@ function Overview(props) {
                     justifyContent: "space-between",
                 }}
             >
-                <PictureNameSection />
-                <IdSection />
+                <PictureNameSection pfp={userData.pfp} name={userData.name} />
+                <IdSection email={userData.email} uid={userData.uid} />
             </section>
         </>
     );

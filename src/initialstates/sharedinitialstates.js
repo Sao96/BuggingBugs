@@ -4,6 +4,7 @@ const sharedInitialState = {
     [sharedFields.AUTH_LEVEL]: 0,
     [sharedFields.LOGGED_IN]: false,
     [sharedFields.SHOW_NAV]: false,
+    [sharedFields.USER_DATA]: {},
 };
 
 export { sharedInitialState };

@@ -15,6 +15,7 @@ import { postUserDemote } from "./postUserDemote";
 import { postUserLeave } from "./postUserLeave";
 import { postUpdateName } from "./postUpdateName";
 import { postUpdatePassword } from "./postUpdatePassword";
+import { postUpdatePfp } from "./postUpdatePfp";
 
 export {
     postLogin,
@@ -34,4 +35,5 @@ export {
     postUserLeave,
     postUpdateName,
     postUpdatePassword,
+    postUpdatePfp,
 };

@@ -8,6 +8,7 @@ function dashboardReducer(prevState = dashboardInitialState, action) {
     const newState = { ...prevState };
     switch (action.type) {
         case a.SET_PROJECTS:
+            action.projects.reverse();
             newState[f.PROJECTS] = action.projects;
             break;
         case a.SET_PROJECTS_MODIFIED:

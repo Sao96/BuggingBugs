@@ -26,6 +26,15 @@ async function initializeApp(setInitialized, store) {
         type: sA.SET_LOGGED_IN,
         loggedIn: resData.loggedIn,
     });
+    store.dispatch({
+        type: sA.SET_USER_DATA,
+        userData: {
+            uid: resData.uid,
+            name: resData.name,
+            email: resData.email,
+            pfp: resData.pfp,
+        },
+    });
     setInitialized(true);
 }
 

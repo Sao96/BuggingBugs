@@ -1,14 +1,14 @@
 import { endpoints as ep } from "apiRoutes/BuggingBugs";
 
 /**
- * @function postUpdateName
+ * @function postUpdatePfp
  *
  * @param {*} reqData: fields: pfp - a url.
  * @param {*} setRes
  * @param {*} setProcessing
  * @param {*} dispatch
  */
-async function postUpdateName(reqData, setRes, setProcessing, dispatch) {
+async function postUpdatePfp(reqData, setRes, setProcessing, dispatch) {
     setProcessing(true);
     const res = await fetch(ep.updateusername, {
         method: "POST",
@@ -30,4 +30,4 @@ async function postUpdateName(reqData, setRes, setProcessing, dispatch) {
     //add dispatch
 }
 
-export { postUpdateName };
+export { postUpdatePfp };

@@ -23,6 +23,12 @@ function sharedReducer(prevState = sharedInitialState, action) {
         case sharedActions.SET_LOGGED_IN:
             newState[sharedFields.LOGGED_IN] = action.loggedIn;
             break;
+        case sharedActions.SET_USER_DATA:
+            newState[sharedFields.USER_DATA] = {
+                ...newState[sharedFields.USER_DATA],
+                ...action.userData,
+            };
+            break;
         case sharedActions.TOGGLE_NAV:
             newState[sharedFields.SHOW_NAV] = !newState[sharedFields.SHOW_NAV];
             break;

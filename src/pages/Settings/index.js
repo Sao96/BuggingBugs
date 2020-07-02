@@ -1,20 +1,36 @@
-import React, { createRef, useState } from "react";
+import React, { useEffect, createRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { sharedActions as sA } from "actions/sharedactions";
 import { SectionLayout } from "./components";
-import { Overview, UpdateName, UpdatePassword } from "./SectionContent";
+import {
+    Overview,
+    UpdateName,
+    UpdatePfp,
+    UpdatePassword,
+} from "./SectionContent";
 
 function Settings(props) {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch({ type: sA.TOGGLE_NAV });
+        return () => {
+            dispatch({ type: sA.TOGGLE_NAV });
+        };
+    }, []);
     const containerStyle = {
         width: "100%",
         display: "flex",
         justifyContent: "center",
         color: "white",
     };
+
     const formSections = [
         ["Overview", "", <Overview />],
+        ["Update Profile Picture", "", <UpdatePfp />],
         ["Update Name", "", <UpdateName />],
         [
             "Update Password",
-            "This option is only available for users who registered directly with BuggingBugs, rathern than a service like google.",
+            "Only available for users who registered directly with BuggingBugs, rather than a service like google.",
             <UpdatePassword />,
         ],
     ].map((sectionData, idx) => {

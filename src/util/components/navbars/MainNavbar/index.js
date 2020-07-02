@@ -4,18 +4,46 @@ import { NavLink } from "react-router-dom";
 import DashboardIcon from "svg/dashboard.svg";
 import OpenTicketsIcon from "svg/opentickets.svg";
 import LogoutIcon from "svg/logout.svg";
+import SettingsIcon from "svg/settings.svg";
 import { domain } from "routes";
 import { sharedFields } from "fields/sharedfields";
 
 const SizeSVG = (Comp) => {
-    return <Comp style={{ width: "45px", height: "45px", fill: "white" }} />;
+    return (
+        <Comp
+            style={{
+                position: "relative",
+                top: "7px",
+                width: "45px",
+                height: "45px",
+                fill: "white",
+            }}
+        />
+    );
+};
+
+const SizeImg = (img) => {
+    return (
+        <img
+            style={{
+                width: "45px",
+                height: "45px",
+                border: "1px solid rgb(100,100,100)",
+                borderRadius: "100%",
+            }}
+            src={img}
+        />
+    );
 };
 function MainNavbar(props) {
     const closedNavWidth = "70px";
     const openNavWidth = "200px";
     const transitionSpeed = "0.1s";
-    const showNav = useSelector((state) => {
-        return state.shared[sharedFields.SHOW_NAV];
+    const [showNav, pfpImage] = useSelector((state) => {
+        return [
+            state.shared[sharedFields.SHOW_NAV],
+            state.shared[sharedFields.USER_DATA].pfp,
+        ];
     });
     const [navOpen, setNavStatus] = useState(false);
 
@@ -42,8 +70,11 @@ function MainNavbar(props) {
     const textStyling = {
         display: navOpen ? "inline" : "none",
         position: "relative",
-        top: "-18px",
+        top: "-10px",
         fontFamily: "Didact Gothic",
+        color: "white",
+        fontSize: "20px",
+        paddingLeft: "10px",
     };
     const liStyle = {
         cursor: "pointer",
@@ -55,22 +86,23 @@ function MainNavbar(props) {
     };
 
     const items = [
-        ["Dashboard", DashboardIcon, createRef(), "/dashboard"],
-        ["Logout", LogoutIcon, createRef(), "/logout"],
+        ["Dashboard", "svg", DashboardIcon, createRef(), "/dashboard"],
+        ["Settings", "img", SettingsIcon, createRef(), "/settings"],
+        ["Logout", "svg", LogoutIcon, createRef(), "/logout"],
     ].map((item) => {
         return (
             <div
                 style={liStyle}
                 onMouseOver={useCallback(() => {
-                    item[2].current.style.backgroundColor = "rgb(43, 69, 84)";
-                }, [item[2]])}
+                    item[3].current.style.backgroundColor = "rgb(43, 69, 84)";
+                }, [item[3]])}
                 onMouseOut={useCallback(() => {
-                    item[2].current.style.backgroundColor = "rgb(0,0,0,0)";
-                }, [item[2]])}
-                ref={item[2]}
+                    item[3].current.style.backgroundColor = "rgb(0,0,0,0)";
+                }, [item[3]])}
+                ref={item[3]}
             >
                 <NavLink
-                    to={item[3]}
+                    to={item[4]}
                     style={{ textDecoration: "none", color: "white" }}
                 >
                     <div
@@ -82,7 +114,9 @@ function MainNavbar(props) {
                             // left: "10px",
                         }}
                     >
-                        {SizeSVG(item[1])}
+                        {item[1] === "svg"
+                            ? SizeSVG(item[2])
+                            : SizeImg(pfpImage)}
                         <span style={textStyling}>{item[0]}</span>
                     </div>
                 </NavLink>

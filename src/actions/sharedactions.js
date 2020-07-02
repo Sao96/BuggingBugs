@@ -6,6 +6,7 @@ const sharedActions = {
     EMPTY_MODAL_STACK: "EMPTY_MODAL_STACK",
     SET_AUTH_LEVEL: "SET_AUTH_LEVEL",
     SET_LOGGED_IN: "SET_LOGGED_IN",
+    SET_USER_DATA: "SET_USER_DATA",
 };
 
 export { sharedActions };

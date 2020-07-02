@@ -6,8 +6,16 @@
  */
 function getSession(req, res, next) {
     req.session.uid = req.body.userData.uid;
+    req.session.email = req.body.userData.email;
+    req.session.name = req.body.userData.name;
+    req.session.pfp = req.body.userData.pfp;
     req.body.res.status = 200;
-    req.body.res.data = {};
+    req.body.res.data = {
+        uid: req.session.uid,
+        email: req.session.email,
+        name: req.session.name,
+        pfp: req.session.pfp,
+    };
     next();
 }
 
