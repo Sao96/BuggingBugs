@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { RenameProject } from "./contexts/RenameProject";
+import { ChangeGroupImage } from "./contexts/ChangeGroupImage";
 import { RemoveUser } from "./contexts/RemoveUser";
 import { PromoteUser } from "./contexts/PromoteUser";
 import { DemoteSelf } from "./contexts/DemoteSelf";
@@ -17,6 +18,7 @@ function ModalSettingsForm(props) {
     });
     const contexts = [
         ["Rename Project", <RenameProject />],
+        ["Group Image", <ChangeGroupImage />],
         ["Remove User", <RemoveUser />],
         ["Promote User", <PromoteUser />],
         ["Demote Self", <DemoteSelf />],

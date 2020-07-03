@@ -9,6 +9,7 @@ import { SpinningLoader } from "util/components/loading";
 import { ResRender } from "./components";
 import { contextStyles } from "styles";
 import { postRemoveUser } from "apiCalls/BuggingBugs/POST";
+import { ModalTitle } from "util/components/modal";
 
 function RemoveUser(props) {
     const [res, setRes] = useState([-1, ""]);
@@ -38,6 +39,7 @@ function RemoveUser(props) {
             <ResRender res={res} />
             <SpinningLoader size={100} loading={processing} />
             <header style={contextStyles.centerBlock}>
+                <ModalTitle text={"Rename Project"} />
                 <RemoveUserIcon style={contextStyles.svgStyle} />
                 <div style={contextStyles.headerTextStyle}>{headerText}</div>
             </header>

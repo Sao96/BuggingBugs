@@ -7,6 +7,7 @@ import { ResRender } from "./components";
 import { SpinningLoader } from "util/components/loading";
 import { contextStyles } from "styles";
 import { postUserLeave } from "apiCalls/BuggingBugs/POST";
+import { ModalTitle } from "util/components/modal";
 
 function LeaveGroup(props) {
     const [res, setRes] = useState([-1, ""]);
@@ -26,6 +27,7 @@ function LeaveGroup(props) {
             <ResRender res={res} pid={props.pid} />
             <SpinningLoader size={100} loading={processing} />
             <header style={contextStyles.centerBlock}>
+                <ModalTitle text={"Leave Group"} />
                 <LeaveIcon style={contextStyles.svgStyle} />
                 <div style={contextStyles.headerTextStyle}>{headerText}</div>
             </header>

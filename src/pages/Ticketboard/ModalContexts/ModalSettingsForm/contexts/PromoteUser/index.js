@@ -9,6 +9,7 @@ import { SpinningLoader } from "util/components/loading";
 import { ResRender } from "./components";
 import { contextStyles } from "styles";
 import { postUserPromotion } from "apiCalls/BuggingBugs/POST";
+import { ModalTitle } from "util/components/modal";
 
 function PromoteUser(props) {
     const [res, setRes] = useState([-1, ""]);
@@ -31,13 +32,14 @@ function PromoteUser(props) {
         );
     }, [userRef]);
 
-    const headerText = "Select the user you would like to promote to leader.";
+    const headerText = "Select the user you would like to promote.";
 
     return (
         <article style={contextStyles.containerStyle}>
             <ResRender res={res} pid={props.pid} />
             <SpinningLoader size={100} loading={processing} />
             <header style={contextStyles.centerBlock}>
+                <ModalTitle text={"Promote User"} />
                 <PromoteUserIcon style={contextStyles.svgStyle} />
                 <div style={contextStyles.headerTextStyle}>{headerText}</div>
             </header>

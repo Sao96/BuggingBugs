@@ -1,39 +1,40 @@
 import React, { useCallback, useState, createRef } from "react";
 import { useSelector } from "react-redux";
-import EditProjectIcon from "svg/editproject.svg";
+import ImageIcon from "svg/image.svg";
 import { DefaultButton } from "buttons";
 import { ticketboardFields as tbF } from "fields/ticketboardfields";
 import { SpinningLoader } from "util/components/loading";
 import { ResRender } from "./components";
 import { contextStyles } from "styles";
-import { postRename } from "apiCalls/BuggingBugs/POST";
 import { InputFields } from "util/components/form";
 import { ModalTitle } from "util/components/modal";
+import { postNewGroupImage } from "apiCalls/BuggingBugs/POST";
 
-function RenameProject(props) {
+function ChangeGroupImage(props) {
     const [res, setRes] = useState([-1, ""]);
     const [processing, setProcessing] = useState(false);
     const pid = useSelector((state) => {
         return state.ticketboard[tbF.PID];
     });
-    const newNameRef = createRef();
+    const newImageRef = createRef();
     const renameButtonHandler = useCallback(() => {
-        postRename(
-            { projName: newNameRef.current.value },
+        postNewGroupImage(
+            { img: newImageRef.current.value },
             pid,
             setRes,
             setProcessing
         );
-    }, [newNameRef, pid, setRes]);
+    }, [newImageRef, pid, setRes]);
 
-    const data = [["New Project Name", "input", newNameRef]];
+    const data = [["New Project Image URL", "input", newImageRef]];
+
     return (
         <article style={contextStyles.containerStyle}>
             <ResRender res={res} pid={props.pid} />
             <SpinningLoader size={100} loading={processing} />
             <header style={contextStyles.centerBlock}>
                 <ModalTitle text={"Rename Project"} />
-                <EditProjectIcon style={contextStyles.svgStyle} />
+                <ImageIcon style={contextStyles.svgStyle} />
             </header>
             <main style={contextStyles.centerBlock}>
                 <InputFields data={data} />
@@ -49,5 +50,4 @@ function RenameProject(props) {
         </article>
     );
 }
-
-export { RenameProject };
+export { ChangeGroupImage };

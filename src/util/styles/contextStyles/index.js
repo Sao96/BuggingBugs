@@ -12,6 +12,7 @@ const contextStyles = {
     headerTextStyle: {
         paddingLeft: "20px",
         textAlign: "center",
+        fontSize: "20px",
     },
     centerBlock: {
         display: "flex",

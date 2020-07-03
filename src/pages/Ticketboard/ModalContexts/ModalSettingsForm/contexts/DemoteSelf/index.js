@@ -7,6 +7,7 @@ import { ResRender } from "./components";
 import { SpinningLoader } from "util/components/loading";
 import { contextStyles } from "styles";
 import { postUserDemote } from "apiCalls/BuggingBugs/POST";
+import { ModalTitle } from "util/components/modal";
 
 function DemoteSelf(props) {
     const dispatch = useDispatch();
@@ -27,6 +28,7 @@ function DemoteSelf(props) {
             <ResRender res={res} />
             <SpinningLoader size={100} loading={processing} />
             <header style={contextStyles.centerBlock}>
+                <ModalTitle text={"Demote Self"} />
                 <DemoteIcon style={contextStyles.svgStyle} />
                 <div style={contextStyles.headerTextStyle}>{headerText}</div>
             </header>
