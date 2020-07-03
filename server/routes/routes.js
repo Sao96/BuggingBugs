@@ -37,7 +37,7 @@ const POSTRoutes = [
     ["/register", controller.authorizationController.verifyInfo],
     ["/register", controller.authorizationController.userExists],
     ["/register", controller.authorizationController.createUser],
-    ["/login", controller.userController.getUserInfo],
+    ["/register", controller.userController.getUserInfo],
     ["/register", controller.authorizationController.getSession],
 
     ["/createticket", controller.authorizationController.checkLoggedIn],

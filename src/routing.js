@@ -1,12 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { sharedFields as sF } from "fields/sharedfields";
-import {
-    Route,
-    BrowserRouter as Router,
-    Switch,
-    Redirect,
-} from "react-router-dom";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { MainNavbar } from "util/components/navbars/MainNavbar";
 import { Landing } from "./pages/Landing";
 import { Dashboard } from "./pages/Dashboard";
@@ -42,7 +37,6 @@ function Routing() {
                             path="/ticketboard"
                             component={TicketBoard}
                         />
-                        {/*<Route exact path="/logout" component={Logout} /> */}
                         <Route component={loggedIn ? Dashboard : Landing} />
                     </Switch>
                 </div>

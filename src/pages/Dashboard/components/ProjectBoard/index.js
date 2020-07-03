@@ -16,7 +16,7 @@ function ProjectBoard(props) {
         );
     });
 
-    const boardWidth = (cardMarginRight + cardWidth) * 4;
+    const boardWidth = (cardMarginRight + cardWidth) * 3;
     const mainStyle = {
         display: "flex",
         flexWrap: "wrap",
