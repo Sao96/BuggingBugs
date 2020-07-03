@@ -22,6 +22,7 @@ import { verifyUserExists } from "./ControllerMethods/verifyUserExists";
 import { leaveProject } from "./ControllerMethods/leaveProject";
 import { validateTicketStatusUpdate } from "./ControllerMethods/validateTicketStatusUpdate";
 import { updateTicketStatus } from "./ControllerMethods/updateTicketStatus";
+import { updateGroupImage } from "./ControllerMethods/updateGroupImage";
 
 const ticketboardController = {
     validateTicketFields: validateTicketFields,
@@ -48,6 +49,9 @@ const ticketboardController = {
     leaveProject: leaveProject,
     validateTicketStatusUpdate: validateTicketStatusUpdate,
     updateTicketStatus: updateTicketStatus,
+    updateGroupImage: updateGroupImage,
 };
+
+Object.freeze(ticketboardController);
 
 export { ticketboardController };

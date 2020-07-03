@@ -5,10 +5,10 @@ import { getUserInfo } from "./ControllerMethods/getUserInfo";
 import { updatePfp } from "./ControllerMethods/updatePfp";
 
 const userController = {
+    getUserInfo: getUserInfo,
     updateName: updateName,
     updatePfp: updatePfp,
     updatePassword: updatePassword,
-    getUserInfo: getUserInfo,
 };
 
 export { userController };

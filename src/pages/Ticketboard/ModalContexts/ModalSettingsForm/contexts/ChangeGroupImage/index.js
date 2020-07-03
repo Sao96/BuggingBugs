@@ -8,7 +8,7 @@ import { ResRender } from "./components";
 import { contextStyles } from "styles";
 import { InputFields } from "util/components/form";
 import { ModalTitle } from "util/components/modal";
-import { postNewGroupImage } from "apiCalls/BuggingBugs/POST";
+import { postUpdateGroupImage } from "apiCalls/BuggingBugs/POST";
 
 function ChangeGroupImage(props) {
     const [res, setRes] = useState([-1, ""]);
@@ -18,7 +18,7 @@ function ChangeGroupImage(props) {
     });
     const newImageRef = createRef();
     const renameButtonHandler = useCallback(() => {
-        postNewGroupImage(
+        postUpdateGroupImage(
             { img: newImageRef.current.value },
             pid,
             setRes,

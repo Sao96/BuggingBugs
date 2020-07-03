@@ -16,6 +16,7 @@ import { registerPostRoute } from "./register";
 import { updateusernamePostRoute } from "./updateusername";
 import { updatepasswordPostRoute } from "./updatepassword";
 import { updatepfpPostRoute } from "./updatepfp";
+import { updategroupimagePostRoute } from "./updategroupimage";
 
 const postRoutesMap = {
     acceptinvitePostRoute: acceptinvitePostRoute,
@@ -36,6 +37,7 @@ const postRoutesMap = {
     updateticketPostRoute: updateticketPostRoute,
     createprojectPostRoute: createprojectPostRoute,
     updateticketstatusPostRoute: updateticketstatusPostRoute,
+    updategroupimagePostRoute: updategroupimagePostRoute,
 };
 
 export { postRoutesMap };
