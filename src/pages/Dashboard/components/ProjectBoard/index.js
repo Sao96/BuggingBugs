@@ -12,6 +12,7 @@ function ProjectBoard(props) {
                 authLevel={proj.authLevel}
                 width={cardWidth}
                 marginRight={cardMarginRight}
+                img={proj.img}
             />
         );
     });

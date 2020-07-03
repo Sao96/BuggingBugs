@@ -41,7 +41,7 @@ function ProjectCard(props) {
             <Separator color={"rgb(71, 196, 255)"} />
             <div style={{ paddingBottom: "10px" }}></div>
             <img
-                src="https://www.adazing.com/wp-content/uploads/2019/02/open-book-clipart-03.png"
+                src={props.img}
                 style={{ height: "150px", width: "150px" }}
                 alt={"The group image for " + props.projectName}
             />

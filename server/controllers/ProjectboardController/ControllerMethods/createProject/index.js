@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { setError } from "~/util/setError";
+import isImageUrl from "is-image-url";
 
 const validProjectName = (projName) => {
     return projName && typeof projName === "string" && projName.length > 0;
@@ -17,16 +18,33 @@ async function createProject(req, res, next) {
         setError(
             req,
             400,
-            "Bad or Missing project name.",
+            "Bad or missing project name.",
             "Please enter a valid project name"
         );
         return next(req.body.err);
     }
+    if (
+        typeof req.body.img !== "string" ||
+        (req.body.img.length > 0 && !isImageUrl(req.body.img))
+    ) {
+        setError(
+            req,
+            400,
+            "Bad group image",
+            "Please enter a valid group image or leave it blank."
+        );
+        return next(req.body.err);
+    }
 
+    if (req.body.img === "") {
+        req.body.img =
+            "https://www.adazing.com/wp-content/uploads/2019/02/open-book-clipart-03.png";
+    }
     try {
         const Project = mongoose.model("Project");
         const newProject = new Project({
             name: req.body.projName,
+            img: req.body.img,
         });
         req.body.newProjData = await newProject.save();
         req.body.projectId = req.body.newProjData._id;
