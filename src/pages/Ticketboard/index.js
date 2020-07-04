@@ -50,7 +50,6 @@ function TicketBoard(props) {
     useEffect(() => {
         getLoadProject(pid, setRes, setTicketsLoading, dispatch);
     }, [refreshNeeded]);
-
     const currModalContext = () => {
         switch (currModalStack[currModalStack.length - 1]) {
             case 1:
@@ -62,7 +61,7 @@ function TicketBoard(props) {
             case 4:
                 return <ModalCreateInviteForm pid={pid} />;
             case 5:
-                return <ModalSettingsForm />;
+                return <ModalSettingsForm authLevel={authLevel} />;
             default:
                 return <></>;
         }

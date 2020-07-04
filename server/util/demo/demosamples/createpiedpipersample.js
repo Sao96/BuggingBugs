@@ -43,7 +43,7 @@ async function createPiedPiperSample(user) {
                 userInfo.pid = pid;
                 return userInfo;
             })
-            .concat([{ pid: pid, uid: user.uid, authlevel: 1 }])
+            .concat([{ pid: pid, uid: user.uid, authLevel: 1 }])
     );
 
     const tickets = [

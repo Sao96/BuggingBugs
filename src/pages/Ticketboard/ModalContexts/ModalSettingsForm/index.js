@@ -16,14 +16,20 @@ function ModalSettingsForm(props) {
             dispatch({ type: ticketboardActions.SET_REFRESH_NEEDED });
         };
     });
-    const contexts = [
-        ["Rename Project", <RenameProject />],
-        ["Group Image", <ChangeGroupImage />],
-        ["Remove User", <RemoveUser />],
-        ["Promote User", <PromoteUser />],
-        ["Demote Self", <DemoteSelf />],
-        ["Leave Group", <LeaveGroup />],
-    ];
+    let contexts = [];
+    switch (props.authLevel) {
+        case 0:
+            contexts = [
+                ["Rename Project", <RenameProject />],
+                ["Group Image", <ChangeGroupImage />],
+                ["Remove User", <RemoveUser />],
+                ["Promote User", <PromoteUser />],
+                ["Demote Self", <DemoteSelf />],
+                ["Leave Group", <LeaveGroup />],
+            ];
+        case 1:
+            contexts = [["Leave Group", <LeaveGroup />]];
+    }
 
     return <ContextMenu contexts={contexts} />;
 }
