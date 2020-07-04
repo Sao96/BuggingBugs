@@ -14,6 +14,9 @@ async function deleteInvite(req, res, next) {
         return next(req.body.err);
     }
 
+    if (!req.body.res.status) {
+        req.body.res.status = 200;
+    }
     next();
 }
 

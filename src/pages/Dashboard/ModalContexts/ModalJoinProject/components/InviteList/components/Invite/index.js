@@ -1,12 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useDispatch } from "react-redux";
 import { DefaultButton } from "buttons";
-import { dashboardActions } from "actions/dashboardactions.js";
-import ClipLoader from "react-spinners/ClipLoader";
-import { useSelector, useDispatch } from "react-redux";
-import { domain } from "routes";
-import { dashboardFields } from "fields/dashboardfields.js";
 import { postProcessInvite } from "apiCalls/BuggingBugs/POST";
-
+import { modalTheme1 } from "themeColors";
 function Invite(props) {
     const [processing, setProcessing] = useState(false);
     const dispatch = useDispatch();
@@ -19,7 +15,7 @@ function Invite(props) {
             props.setInvites,
             dispatch
         );
-    }, [setProcessing, dispatch]);
+    }, [props.invites, setProcessing, dispatch]);
     const declineButtonHandler = useCallback(() => {
         postProcessInvite(
             { invId: props.invId },
@@ -29,20 +25,27 @@ function Invite(props) {
             props.setInvites,
             dispatch
         );
-    }, [setProcessing, dispatch]);
-    const mainStyle = { display: "flex" };
+    }, [props.invites, setProcessing, dispatch]);
+    const containerStyle = {
+        display: "flex",
+        backgroundColor: modalTheme1,
+        padding: "20px",
+        border: "2px solid rgb(50,50,50)",
+    };
     const nameStyle = {
         fontSize: "20px",
         fontFamily: "Didact Gothic",
         color: "white",
         display: "flex",
-        justifyContent: "center",
+        overflowWrap: "break-word",
         alignItems: "center",
         width: "200px",
+        flexFlow: "row wrap",
+        wordBreak: "break-all",
     };
 
     return (
-        <main style={mainStyle}>
+        <main style={containerStyle}>
             <div style={nameStyle}>{props.name}</div>
             <div style={{ paddingRight: "50px" }}></div>
             <DefaultButton

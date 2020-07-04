@@ -3,6 +3,10 @@ import { createDemoProject } from "~/util/demo/dbDemoController/createDemoProjec
 import { addUsersToDemoProject } from "~/util/demo/dbDemoController/addUsersToDemoProject";
 import { addTicketsToDemoProject } from "~/util/demo/dbDemoController/addTicketsToDemoProject";
 
+/**
+ * @function createPiedPiperSample
+ * @param {Object} user fields - uid, name, email
+ */
 async function createPiedPiperSample(user) {
     const leaders = {
         gilfoyle: {

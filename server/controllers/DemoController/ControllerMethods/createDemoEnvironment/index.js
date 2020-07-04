@@ -1,5 +1,6 @@
 import { createDemoGlobalUser } from "~/util/demo/dbDemoController/createDemoGlobalUser";
 import { createPiedPiperSample } from "~/util/demo/demosamples/createpiedpipersample";
+import { createInviteSamples } from "~/util/demo/demosamples/createinvitesamples";
 // import {createDemoGlobalUser} from "~/util/demo/demosamples
 
 async function createDemoEnvironment(req, res, next) {
@@ -12,6 +13,7 @@ async function createDemoEnvironment(req, res, next) {
     req.body.userData.uid = req.body.userData._id;
 
     await createPiedPiperSample(req.body.userData);
+    await createInviteSamples(req.body.userData);
 
     next();
 }

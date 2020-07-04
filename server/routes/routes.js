@@ -84,6 +84,10 @@ const POSTRoutes = [
     ["/acceptinvite", controller.projectboardController.addUserToProject],
     ["/acceptinvite", controller.projectboardController.deleteInvite],
 
+    ["/declineinvite", controller.authorizationController.checkLoggedIn],
+    ["/declineinvite", controller.projectboardController.checkInviteExists],
+    ["/declineinvite", controller.projectboardController.deleteInvite],
+
     ["/renameproject", controller.authorizationController.checkLoggedIn],
     ["/renameproject", controller.tbController.validateProjectName],
     ["/renameproject", controller.tbController.checkPid],

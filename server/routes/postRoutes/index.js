@@ -18,6 +18,7 @@ import { updatepasswordPostRoute } from "./updatepassword";
 import { updatepfpPostRoute } from "./updatepfp";
 import { updategroupimagePostRoute } from "./updategroupimage";
 import { createdemoPostRoute } from "./createdemo";
+import { declineinvitePostRoute } from "./declineinvite";
 
 const postRoutesMap = {
     acceptinvitePostRoute: acceptinvitePostRoute,
@@ -39,7 +40,8 @@ const postRoutesMap = {
     createprojectPostRoute: createprojectPostRoute,
     updateticketstatusPostRoute: updateticketstatusPostRoute,
     updategroupimagePostRoute: updategroupimagePostRoute,
-    createdemoPostRoute,
+    createdemoPostRoute: createdemoPostRoute,
+    declineinvitePostRoute: declineinvitePostRoute,
 };
 
 export { postRoutesMap };

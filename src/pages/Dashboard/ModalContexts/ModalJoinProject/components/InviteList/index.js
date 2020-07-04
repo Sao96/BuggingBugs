@@ -18,13 +18,16 @@ function InviteList(props) {
         invites.length > 0 ? (
             invites.map((invite) => {
                 return (
-                    <Invite
-                        name={invite.name}
-                        invId={invite.invId}
-                        pid={invite.pid}
-                        invites={invites}
-                        setInvites={setInvites}
-                    />
+                    <>
+                        <Invite
+                            name={invite.name}
+                            invId={invite.invId}
+                            pid={invite.pid}
+                            invites={invites}
+                            setInvites={setInvites}
+                        />
+                        <span style={{ marginTop: "20px" }} />
+                    </>
                 );
             })
         ) : (
