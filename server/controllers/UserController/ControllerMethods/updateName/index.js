@@ -24,7 +24,7 @@ async function updateName(req, res, next) {
     try {
         await mongoose
             .model("GlobalUser")
-            .updateOne({ _id: req.body.userData.uid, name: name });
+            .updateOne({ _id: req.body.userData.uid }, { name: name });
     } catch (err) {
         setError(req, 500, err, "An internal error has occured.");
         return next(req.body.err);

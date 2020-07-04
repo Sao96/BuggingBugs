@@ -38,7 +38,7 @@ function TicketInfoTable(props) {
                     style={{
                         fontSize: "17px",
                         fontFamily: "Heebo",
-                        paddingLeft: "30px",
+                        padding: "15px",
                     }}
                 >
                     <span style={{ color: data[2] }}>{data[1]}</span>

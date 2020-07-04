@@ -15,7 +15,7 @@ async function updatePfp(req, res, next) {
     try {
         await mongoose
             .model("GlobalUser")
-            .updateOne({ _id: req.body.userData.uid, pfp: req.body.pfp });
+            .updateOne({ _id: req.body.userData.uid }, { pfp: req.body.pfp });
     } catch (err) {
         setError(req, 500, err, "An internal error has occured.");
         return next(req.body.err);

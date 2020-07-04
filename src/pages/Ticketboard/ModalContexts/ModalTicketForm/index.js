@@ -77,8 +77,8 @@ function ModalTicketForm(props) {
                     width: "100%",
                 }}
             >
-                <ModalTitle text={ticketInfo.headline} fontSize={"20px"} />
-                <span style={{ marginTop: "40px" }} />
+                <ModalTitle text={ticketInfo.headline} fontSize={"22px"} />
+                <span style={{ marginTop: "10px" }} />
 
                 <FromSection
                     fromPfp={ticketInfo.fromPfp}

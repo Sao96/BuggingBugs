@@ -18,6 +18,7 @@ import { postUpdatePassword } from "./postUpdatePassword";
 import { postUpdatePfp } from "./postUpdatePfp";
 import { postDestroySession } from "./postDestroySession";
 import { postUpdateGroupImage } from "./postUpdateGroupImage";
+import { postCreateDemo } from "./postCreateDemo";
 
 export {
     postLogin,
@@ -40,4 +41,5 @@ export {
     postUpdatePfp,
     postDestroySession,
     postUpdateGroupImage,
+    postCreateDemo,
 };

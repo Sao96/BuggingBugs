@@ -24,6 +24,7 @@ const endpointNames = [
     "updatepassword",
     "updatepfp",
     "updategroupimage",
+    "createdemo",
 ];
 const endpoints = {};
 endpointNames.forEach((name) => {
