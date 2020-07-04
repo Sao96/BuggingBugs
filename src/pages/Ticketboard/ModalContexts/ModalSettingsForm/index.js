@@ -27,8 +27,10 @@ function ModalSettingsForm(props) {
                 ["Demote Self", <DemoteSelf />],
                 ["Leave Group", <LeaveGroup />],
             ];
+            break;
         case 1:
             contexts = [["Leave Group", <LeaveGroup />]];
+            break;
     }
 
     return <ContextMenu contexts={contexts} />;
