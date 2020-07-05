@@ -1,3 +1,4 @@
+import path from "path";
 import express from "express";
 import {} from "module-alias/register";
 import { GETRoutes, POSTRoutes } from "./routes";
@@ -7,14 +8,25 @@ import cors from "cors";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import {} from "./models";
+import {
+    initializeQuery,
+    sendApp,
+    sendFailedApiCall,
+    sendSuccessfulApiCall,
+} from "./middleware";
 
-const port = 3000;
+const apiRegex = /^\/api\/.*$/;
+
+const port = 5100;
 dotenv.config();
 const app = express();
 mongoose.connect(process.env.DBURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
+
+app.use("/build", express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, "build")));
 app.use(
     session({
         secret: process.env.SESSIONPW,
@@ -34,19 +46,7 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use((req, res, next) => {
-    req.body.err = {};
-    req.body.res = {};
-    req.body.userData = {};
-    console.log(req.url);
-    next();
-});
-
-app.listen(port, () => {
-    console.log(`Server Active on port ${port}`);
-});
-
+app.use(initializeQuery);
 GETRoutes.forEach((item) => {
     const [path, action] = item;
     app.get("/api" + path, action);
@@ -55,26 +55,14 @@ POSTRoutes.forEach((item) => {
     const [path, action] = item;
     app.post("/api" + path, action);
 });
-app.use((req, res, next) => {
-    if (!req.body.res.status) {
-        return next(req.body.err);
-    }
-    if (!req.body.res.data) {
-        req.body.res.data = {};
-    }
-    if (!req.body.res.data.message) {
-        req.body.res.data.message = "Ok";
-    }
-    console.log(req.url, "SUCCESS", req.body.res, req.url);
-    res.status(req.body.res.status).send(JSON.stringify(req.body.res.data));
+["get", "post"].forEach((method) => {
+    app[method](apiRegex, sendSuccessfulApiCall);
 });
-app.use((err, req, res, next) => {
-    if (!(req.body.err.status && req.body.err.restext)) {
-        req.body.err.status = 500;
-        req.body.err.restext = "An internal error has occured.";
-    }
-    console.log("ERROR FOUND", err);
-    res.status(req.body.err.status).send(
-        JSON.stringify({ message: req.body.err.restext })
-    );
+app.use(sendFailedApiCall);
+//fallback in case get is unknown
+app.get("*", (req, res, next) => {
+    res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+app.listen(port, () => {
+    console.log(`Server Active on port ${port}`);
 });

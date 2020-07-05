@@ -15,8 +15,9 @@ module.exports = {
         main: ["babel-polyfill", path.join(__dirname, "src", "index.js")],
     },
     output: {
-        path: path.join(__dirname, "build"),
-        filename: "[name].js",
+        path: path.join(__dirname, "server/", "build/"),
+        publicPath: "/build/",
+        filename: "main.js",
     },
     optimization: {
         removeAvailableModules: false,

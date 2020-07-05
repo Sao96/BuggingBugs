@@ -17,8 +17,7 @@ async function createPiedPiperSample(user) {
         },
         dinesh: {
             name: "Dinesh Chugtai",
-            pfp:
-                "https://lh3.googleusercontent.com/proxy/DUmdelrR6dbVmRWkqVyJ9Lmzb_t9sMG89_iDxyqaq3MwzXfkRsfxc3MfdfiADQ60vAeaeQYSHUFFZJZOkgg8wsml4SK3FPbyW9t8mmto5A",
+            pfp: "http://siliconvalleyism.com/characters/dinesh-small.jpg",
             authLevel: 0,
         },
         richard: {
