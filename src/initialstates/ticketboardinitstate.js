@@ -25,7 +25,6 @@ const ticketboardInitialState = {
         to: "",
         priority: 0,
         due: "",
-        time: "",
         tags: "",
         environment: "",
         headline: "",

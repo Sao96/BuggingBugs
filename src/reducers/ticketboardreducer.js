@@ -65,7 +65,6 @@ function ticketboardReducer(prevState = ticketboardInitialState, action) {
                 to: "",
                 priority: 0,
                 due: "",
-                time: "",
                 tags: "",
                 environment: "",
                 headline: "",

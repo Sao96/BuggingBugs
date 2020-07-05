@@ -1,5 +1,5 @@
 import React from "react";
-import { ticketFormStyles } from "globalStyles";
+import { ticketFormStyles } from "styles";
 import { FieldSeparator } from "util/components/ticket";
 
 function TicketInputFields(props) {
