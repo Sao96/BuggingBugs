@@ -8,7 +8,7 @@ function FeatureListing(props) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        width: "300px",
+        width: "280px",
         height: "300px",
     };
     const svgStyle = {

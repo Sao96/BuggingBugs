@@ -2,16 +2,18 @@ import React from "react";
 import { LandingNavbar, TryAppButton } from "./components";
 import MainLogo from "img/mainlogo.png";
 import { mainLogoAltText } from "altTexts";
+import { useDesktop } from "util/responsive";
 
 function HookSection(props) {
+    const desktop = useDesktop();
     const headerText = "A bug tracking solution.";
     const containerStyle = {
         display: "flex",
-        flexDirection: "column",
+        // flexDirection: "column",
         width: "100%",
         paddingBottom: "40px",
-        alignItems: "center",
-        justifyContent: "center",
+        // alignItems: "center",
+        // justifyContent: "center",
         color: "black",
         fontFamily: " PT Sans, Noto Sans JP",
         background: "#43c6ac",
@@ -30,8 +32,8 @@ function HookSection(props) {
         paddingBottom: "90px",
     };
     const mainLogoImageStyle = {
-        width: "450px",
-        height: "165px",
+        width: desktop ? "450px" : "232px",
+        height: desktop ? "165px" : "85px",
         position: "relative",
         top: "40px",
         userSelect: "none",
@@ -39,14 +41,23 @@ function HookSection(props) {
 
     return (
         <section style={containerStyle}>
-            {/* <LandingNavbar /> */}
-            {/* <img
-                style={mainLogoImageStyle}
-                alt={mainLogoAltText}
-                src={MainLogo}
-            /> */}
-            <h1 style={mainHeaderStyle}>{headerText}</h1>
-            <TryAppButton />
+            <section
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    width: "100%",
+                }}
+            >
+                <LandingNavbar />
+                <img
+                    style={mainLogoImageStyle}
+                    alt={mainLogoAltText}
+                    src={MainLogo}
+                />
+                <h1 style={mainHeaderStyle}>{headerText}</h1>
+                <TryAppButton />
+            </section>
         </section>
     );
 }

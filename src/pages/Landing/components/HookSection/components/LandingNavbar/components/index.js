@@ -1,4 +1,4 @@
-import { LoginButton } from "./LoginButton";
-import { RegisterButton } from "./RegisterButton";
+import { DesktopNavbar } from "./DesktopNavbar";
+import { MobileNavbar } from "./MobileNavbar";
 
-export { LoginButton, RegisterButton };
+export { DesktopNavbar, MobileNavbar };

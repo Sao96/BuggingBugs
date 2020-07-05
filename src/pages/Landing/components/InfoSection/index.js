@@ -41,7 +41,7 @@ function InfoSection(props) {
         alignItems: "center",
         justifyContent: "center",
         color: "black",
-        width: props.useDesktop ? "1000px" : "320px",
+        width: props.useDesktop ? "1000px" : "300px",
     };
     const headerStyle = {
         fontSize: "30px",
