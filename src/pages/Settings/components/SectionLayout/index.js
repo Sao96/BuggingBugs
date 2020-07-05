@@ -1,10 +1,12 @@
 import React from "react";
 import { Separator } from "./components";
+import { useDesktop } from "util/responsive";
 
 function SectionLayout(props) {
+    const desktop = useDesktop();
     const titleStyle = { fontSize: "30px", margin: "30px 0px" };
     const informationStyle = {
-        width: "600px",
+        width: desktop ? "600px" : "300px",
         backgroundColor: "rgb(150,150,150, 0.8)",
         padding: "10px",
         border: "1px solid rgb(50,50,50)",

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TypeFilter, Ticket } from "./components";
 import { NoTicketsMessage } from "./components";
 import { ticketCardStyles as tcStyles } from "styles";
+import { mobileWidth, mediaQueryCustom, useDesktop } from "util/responsive";
 
 /**
  * @function generateTicketCards
@@ -28,6 +29,7 @@ const generateTicketCards = (tickets, authLevel, usersMap) => {
         }
         const nextTicket = (
             <Ticket
+                marginRight={tcStyles.dimensions.marginRight}
                 key={ticket._id}
                 {...ticket}
                 cardPfp={cardPfp}
@@ -80,12 +82,33 @@ function TicketDisplayer(props) {
     }
 
     const tcDimensions = tcStyles.dimensions;
-    const containerWidth = (tcDimensions.width + tcDimensions.marginRight) * 3;
+    const [shadowWidth, navbarWidth, borderWidth] = [4, 150, 1];
+    const totalTicketWidth =
+        tcDimensions.width +
+        tcDimensions.marginRight +
+        shadowWidth +
+        borderWidth;
+    const [large, medium] = [
+        totalTicketWidth * 3 + 150 + "px",
+        mobileWidth + "px",
+    ].map((width) => {
+        return mediaQueryCustom(width);
+    });
+    let containerWidth,
+        desktop = true;
+    if (large) {
+        containerWidth = totalTicketWidth * 3;
+    } else if (medium) {
+        containerWidth = totalTicketWidth * 2;
+    } else {
+        containerWidth = tcDimensions.mobileWidth;
+        desktop = false;
+    }
+
     const ticketContainerStyle = {
         display: "flex",
         flexWrap: "wrap",
-        width: "100%",
-        justifyContent: "flex-start",
+        justifyContent: desktop ? "flex-start" : "center",
         marginTop: "30px",
         width: containerWidth,
     };

@@ -23,11 +23,14 @@ function InfoSection(props) {
         ],
     ].map((listing) => {
         return (
-            <FeatureListing
-                svg={listing[0]}
-                title={listing[1]}
-                mainText={listing[2]}
-            />
+            <>
+                <FeatureListing
+                    svg={listing[0]}
+                    title={listing[1]}
+                    mainText={listing[2]}
+                />
+                <span style={{ marginBottom: "10px" }} />
+            </>
         );
     });
     const headerText =
@@ -38,7 +41,7 @@ function InfoSection(props) {
         alignItems: "center",
         justifyContent: "center",
         color: "black",
-        width: "1000px",
+        width: props.useDesktop ? "1000px" : "320px",
     };
     const headerStyle = {
         fontSize: "30px",
@@ -52,6 +55,7 @@ function InfoSection(props) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        flexDirection: props.useDesktop ? "row" : "column",
     };
     return (
         <section style={containerStyle}>

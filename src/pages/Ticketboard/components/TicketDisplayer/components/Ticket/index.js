@@ -1,4 +1,5 @@
 import React from "react";
+import { ticketCardStyles as tcStyles } from "styles";
 import { useDispatch } from "react-redux";
 import { sharedActions } from "actions/sharedactions.js";
 import { ticketboardActions } from "actions/ticketboardactions";
@@ -12,8 +13,10 @@ import {
     DueDate,
 } from "./components";
 import { priorityInformationMap } from "util/helperFunctions/ticketHelpers";
+import { useDesktop } from "util/responsive";
 
 function Ticket(props) {
+    const desktop = useDesktop();
     const dispatch = useDispatch();
     const [priorityText, bgColor, priorityColor] = priorityInformationMap(
         props.priority
@@ -39,15 +42,18 @@ function Ticket(props) {
         tid: props._id,
         status: props.status,
     };
+    const [ticketWidth, ticketHeight] = desktop
+        ? [tcStyles.dimensions.width, tcStyles.dimensions.height]
+        : [tcStyles.dimensions.mobileWidth, tcStyles.dimensions.mobileHeight];
     const containerStyle = {
-        width: "360px",
-        height: "230px",
+        width: ticketWidth + "px",
+        height: ticketHeight + "px",
         borderRadius: "10px",
         backgroundColor: bgColor,
-        border: "0.5px solid black",
+        border: "1px solid black",
         color: "white",
         marginBottom: "70px",
-        marginRight: "50px",
+        marginRight: (desktop ? tcStyles.dimensions.marginRight : 0) + "px",
         padding: "4px 0px 0px 2px",
         boxShadow: "2px 4px 4px 0px rgba(0,0,0,0.75)",
         fontFamily: "Didact Gothic, Quattrocento Sans",
@@ -64,7 +70,11 @@ function Ticket(props) {
             <Separator color={priorityColor} />
             <HeadlineText text={props.headline} />
             <StatusIcon status={props.status} priorityColor={priorityColor} />
-            <PriorityText text={priorityText} color={priorityColor} />
+            <PriorityText
+                desktop={desktop}
+                text={priorityText}
+                color={priorityColor}
+            />
             <DueDate date={props.due} />
         </article>
     );

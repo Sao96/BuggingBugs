@@ -8,9 +8,8 @@ function FeatureListing(props) {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        width: "33.3%",
-        height: "500px",
-        paddingRight: "50px",
+        width: "300px",
+        height: "300px",
     };
     const svgStyle = {
         height: "150px",

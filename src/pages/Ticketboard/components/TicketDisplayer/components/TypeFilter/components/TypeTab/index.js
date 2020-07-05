@@ -23,6 +23,8 @@ function TypeTab(props) {
     }
     const containerStyle = {
         padding: "5px 15px",
+        width: "100px",
+        height: "30px",
         border: border,
         backgroundColor: active ? "rgb(255, 118, 87)" : "rgb(200,200,200)",
         fontFamily: "Didact Gothic",

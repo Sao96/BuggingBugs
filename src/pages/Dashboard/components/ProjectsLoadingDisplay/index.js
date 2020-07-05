@@ -9,7 +9,6 @@ function ProjectsLoadingDisplay(props) {
                 color={"rgb(200,200,200)"}
                 style={{
                     position: "fixed",
-                    left: "50%",
                     top: "25%",
                     zIndex: 1,
                 }}

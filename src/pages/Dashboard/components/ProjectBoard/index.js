@@ -1,8 +1,10 @@
 import React from "react";
 import { ProjectCard } from "./components";
+import { useDesktop } from "util/responsive";
 
 function ProjectBoard(props) {
-    const [cardWidth, cardMarginRight] = [300, 30];
+    const desktop = useDesktop();
+    const [cardWidth, cardMarginRight] = [300, desktop ? 30 : 0];
     const projectCards = props.projects.map((proj, idx) => {
         return (
             <ProjectCard
@@ -17,7 +19,7 @@ function ProjectBoard(props) {
         );
     });
 
-    const boardWidth = (cardMarginRight + cardWidth) * 3;
+    const boardWidth = desktop ? (cardMarginRight + cardWidth) * 3 : cardWidth;
     const mainStyle = {
         display: "flex",
         flexWrap: "wrap",

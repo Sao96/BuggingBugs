@@ -76,7 +76,6 @@ function TicketBoard(props) {
     const loaderStyle = {
         position: "fixed",
         top: "200px",
-        left: "50%",
     };
 
     return (

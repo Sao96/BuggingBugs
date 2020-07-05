@@ -39,12 +39,12 @@ function HookSection(props) {
 
     return (
         <section style={containerStyle}>
-            <LandingNavbar />
-            <img
+            {/* <LandingNavbar /> */}
+            {/* <img
                 style={mainLogoImageStyle}
                 alt={mainLogoAltText}
                 src={MainLogo}
-            />
+            /> */}
             <h1 style={mainHeaderStyle}>{headerText}</h1>
             <TryAppButton />
         </section>

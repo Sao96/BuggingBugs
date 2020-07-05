@@ -7,7 +7,7 @@ function NoTicketsMessage(props) {
                 fontSize: "30px",
                 fontFamily: "Didact Gothic",
                 color: "rgb(230,230,230)",
-                paddingTop: "50px",
+                padding: "50px 0px",
                 display: "flex",
                 alignItems: "center",
                 width: "100%",

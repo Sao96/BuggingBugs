@@ -2,6 +2,7 @@ const textHoverColor = "rgb(187, 235, 252)";
 const landingBackgroundColor = "white";
 const mainBackgroundColor = "rgb(20, 38, 51)";
 const modalTheme1 = "rgb(68, 120, 150)";
+const navbarColor1 = "rgb(73, 99, 114)";
 const tableTheme = {
     even: "rgb(70,100,120, 0.7)",
     odd: "rgb(30,60,80)",
@@ -11,5 +12,6 @@ export {
     landingBackgroundColor,
     mainBackgroundColor,
     modalTheme1,
+    navbarColor1,
     tableTheme,
 };

@@ -18,7 +18,6 @@ function Settings(props) {
         };
     }, []);
     const containerStyle = {
-        width: "100%",
         display: "flex",
         justifyContent: "center",
         color: "white",

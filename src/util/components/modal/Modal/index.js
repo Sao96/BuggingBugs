@@ -32,8 +32,8 @@ function Modal(props) {
         marginTop: "50px",
         zIndex: "2",
         position: "relative",
-        minWidth: "400px",
-        minHeight: "250px",
+        minWidth: "max-content",
+        minHeight: "min-content",
     };
     const contentClickHandler = (e) => {
         e.stopPropagation();

@@ -3,6 +3,7 @@ import { InputFields } from "util/components/form";
 import { DefaultButton } from "buttons";
 import { useSelector } from "react-redux";
 import { sharedFields } from "fields/sharedfields";
+import { useDesktop } from "util/responsive";
 
 function PictureNameSection(props) {
     const containerStyle = {
@@ -72,6 +73,8 @@ function IdSection(props) {
 }
 
 function Overview(props) {
+    const desktop = useDesktop();
+
     const userData = useSelector((state) => {
         return state.shared[sharedFields.USER_DATA];
     });
@@ -90,6 +93,8 @@ function Overview(props) {
             <section
                 style={{
                     display: "flex",
+                    flexDirection: desktop ? "row" : "column",
+                    alignItems: "center",
                     width: "73%",
                     justifyContent: "space-between",
                 }}

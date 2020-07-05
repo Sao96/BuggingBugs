@@ -7,6 +7,7 @@ function PriorityText(props) {
         top: "80.2%",
         fontStyle: "italic",
         color: "rgb(200,200,200)",
+        display: props.desktop ? "" : "none",
     };
     const textStyle = {
         color: props.color,

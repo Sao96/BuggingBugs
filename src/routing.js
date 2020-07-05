@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { sharedFields as sF } from "fields/sharedfields";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import { MainNavbar } from "util/components/navbars/MainNavbar";
+import { navRoutes } from "navRoutes";
 import { Landing } from "./pages/Landing";
 import { Dashboard } from "./pages/Dashboard";
 import { Login } from "./pages/Login";
@@ -10,7 +11,6 @@ import { Settings } from "./pages/Settings";
 import { TicketBoard } from "./pages/Ticketboard/";
 import { Logout } from "./pages/Logout";
 import { Register } from "./pages/Register";
-import { navRoutes } from "navRoutes";
 function Routing() {
     let loggedIn = null;
     loggedIn = useSelector((state) => {
@@ -18,7 +18,7 @@ function Routing() {
     });
 
     return (
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
             <Router>
                 <MainNavbar />
                 <div style={{ width: "100%" }}>

@@ -2,10 +2,11 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { HookSection, InfoSection } from "./components";
 import { landingBackgroundColor, mainBackgroundColor } from "themeColors";
-import { sharedActions } from "actions/sharedactions.js";
 import { sharedFields } from "fields/sharedfields.js";
 import { ModalDemoInfo, ModalDemoSetup } from "./ModalContexts";
 import { Modal } from "util/components/modal";
+import { useMediaQuery } from "react-responsive";
+
 function Landing(props) {
     const currModalStack = useSelector((state) => {
         return state.shared[sharedFields.MODAL_STACK];
@@ -24,6 +25,12 @@ function Landing(props) {
                 return <ModalDemoSetup />;
         }
     };
+
+    const useDesktop = useMediaQuery({
+        query: "(min-device-width: 1001px)",
+    });
+    const maxWidth = "320px";
+
     const containerStyle = {
         backgroundColor: "white",
     };
@@ -38,8 +45,8 @@ function Landing(props) {
         <article style={containerStyle}>
             <Modal>{currModalContext()}</Modal>
             <main style={mainStyle}>
-                <HookSection />
-                <InfoSection />
+                <HookSection maxWidth={maxWidth} useDesktop={useDesktop} />
+                <InfoSection maxWidth={maxWidth} useDesktop={useDesktop} />
             </main>
         </article>
     );

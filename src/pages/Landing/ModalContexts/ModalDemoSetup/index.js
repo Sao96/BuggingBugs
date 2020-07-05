@@ -23,6 +23,7 @@ function ModalDemoSetup(props) {
 
     const containerStyle = {
         width: "500px",
+        color: "white",
         display: "flex",
         flexFlow: "column wrap",
         alignItems: "center",

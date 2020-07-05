@@ -24,7 +24,13 @@ function StatusIcon(props) {
         height: "65px",
     };
     return (
-        <span style={{ position: "absolute", left: "4.5%", top: "73%" }}>
+        <span
+            style={{
+                position: "absolute",
+                left: "4.5%",
+                top: "73%",
+            }}
+        >
             <Comp style={svgStyle} />
         </span>
     );
