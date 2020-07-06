@@ -17,7 +17,7 @@ async function createPiedPiperSample(user) {
         },
         dinesh: {
             name: "Dinesh Chugtai",
-            pfp: "http://siliconvalleyism.com/characters/dinesh-small.jpg",
+            pfp: "https://i.imgur.com/KKtXNs2.jpg",
             authLevel: 0,
         },
         richard: {

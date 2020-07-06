@@ -24,10 +24,7 @@ async function createInviteSamples(user) {
         );
     }
     for (let idx = 0; idx < pids.length; ++idx) {
-        console.log(
-            "parasite eve",
-            await inviteUserToProject(user.uid, pids[idx])
-        );
+        await inviteUserToProject(user.uid, pids[idx]);
     }
 }
 

@@ -17,7 +17,7 @@ import {
 
 const apiRegex = /^\/api\/.*$/;
 
-const port = 5100;
+const port = process.env.PORT || 5100;
 dotenv.config();
 const app = express();
 mongoose.connect(process.env.DBURL, {
