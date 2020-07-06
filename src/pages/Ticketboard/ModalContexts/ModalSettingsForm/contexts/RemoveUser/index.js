@@ -25,7 +25,7 @@ function RemoveUser(props) {
     const userRef = createRef();
     const removeUserButtonHandler = useCallback(() => {
         postRemoveUser(
-            { toUid: userRef.current.value },
+            { to: userRef.current.value },
             pid,
             setRes,
             setProcessing

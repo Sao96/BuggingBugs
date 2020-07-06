@@ -55,7 +55,7 @@ function Modal(props) {
 
     return (
         <div style={overlayStyle} onDoubleClick={outsideClickHandler}>
-            <div style={mainStyle} onClick={contentClickHandler}>
+            <div style={mainStyle} onDoubleClick={contentClickHandler}>
                 <BackArrow
                     style={backArrowSvgStyle}
                     onClick={backButtonHandler}
