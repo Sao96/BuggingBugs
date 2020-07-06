@@ -2,7 +2,6 @@ import { createDemoGlobalUser } from "~/util/demo/dbDemoController/createDemoGlo
 import { createPiedPiperSample } from "~/util/demo/demosamples/createpiedpipersample";
 import { createRipeMediaSample } from "~/util/demo/demosamples/createripemediasample";
 import { createInviteSamples } from "~/util/demo/demosamples/createinvitesamples";
-// import {createDemoGlobalUser} from "~/util/demo/demosamples
 
 async function createDemoEnvironment(req, res, next) {
     const name = req.body.firstName + " " + req.body.lastName;

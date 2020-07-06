@@ -26,6 +26,7 @@ async function verifyInfo(req, res, next) {
         );
         return next(req.body.err);
     }
+    req.body.demo = true;
 
     next();
 }

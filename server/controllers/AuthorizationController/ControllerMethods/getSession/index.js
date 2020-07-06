@@ -16,6 +16,11 @@ function getSession(req, res, next) {
         name: req.session.name,
         pfp: req.session.pfp,
     };
+    if (req.body.demo) {
+        const hour = 1000 * 60 * (60 + 1); //give an extra minute
+        req.session.cookie.expires = new Date(Date.now() + hour);
+        req.session.cookie.maxAge = hour;
+    }
     next();
 }
 
