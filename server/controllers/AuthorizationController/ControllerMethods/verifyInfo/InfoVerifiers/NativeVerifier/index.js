@@ -58,7 +58,8 @@ async function nativeVerifier(req) {
         capitalizeFirst(req.body.lastName);
     req.body.userData.email = req.body.email;
     req.body.userData.password = req.body.password;
-    req.body.userData.pfp = "";
+    req.body.userData.pfp =
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
 
     return true;
 }
