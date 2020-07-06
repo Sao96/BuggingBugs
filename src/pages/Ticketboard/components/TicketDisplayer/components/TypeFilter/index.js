@@ -6,26 +6,21 @@ function TypeFilter(props) {
     const desktop = useDesktop();
     const types = props.types.map((type, idx) => {
         const paddingNeeded = idx !== props.types.length - 1;
-        const spacing = desktop ? (
-            <div style={{ paddingRight: "10px" }} />
-        ) : (
-            <div style={{ paddingBottom: "10px" }} />
-        );
+        const spacing = desktop
+            ? { marginRight: "10px" }
+            : { margin: "10px 0px" };
 
         return (
-            <>
-                <div key={idx}>
-                    <TypeTab
-                        type={type[0]}
-                        numItems={type[1]}
-                        handler={() => {
-                            props.setState(idx);
-                        }}
-                        active={props.active === idx}
-                    />
-                </div>
-                {spacing}
-            </>
+            <div key={idx} style={spacing}>
+                <TypeTab
+                    type={type[0]}
+                    numItems={type[1]}
+                    handler={() => {
+                        props.setState(idx);
+                    }}
+                    active={props.active === idx}
+                />
+            </div>
         );
     });
 

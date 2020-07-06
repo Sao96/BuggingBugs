@@ -36,9 +36,8 @@ function DesktopNavbar(props) {
     const closedNavWidth = "70px";
     const openNavWidth = "200px";
     const transitionSpeed = "0.1s";
-    const [showNav, userName, pfpImage] = useSelector((state) => {
+    const [userName, pfpImage] = useSelector((state) => {
         return [
-            state.shared[sharedFields.SHOW_NAV],
             state.shared[sharedFields.USER_DATA].name,
             state.shared[sharedFields.USER_DATA].pfp,
         ];
@@ -52,7 +51,6 @@ function DesktopNavbar(props) {
         setNavStatus(false);
     };
     const containerStyle = {
-        display: showNav ? "" : "none",
         paddingRight: navOpen ? openNavWidth : closedNavWidth,
         transition: "padding-right " + transitionSpeed,
         zIndex: "1",
@@ -89,9 +87,10 @@ function DesktopNavbar(props) {
         ["Dashboard", "svg", DashboardIcon, createRef(), "/dashboard"],
         ["Settings", "img", pfpImage, createRef(), "/settings"],
         ["Logout", "svg", LogoutIcon, createRef(), "/logout"],
-    ].map((item) => {
+    ].map((item, idx) => {
         return (
             <div
+                key={idx}
                 style={liStyle}
                 onMouseOver={useCallback(() => {
                     item[3].current.style.backgroundColor = "rgb(43, 69, 84)";

@@ -16,6 +16,7 @@ import { ticketboardFields } from "fields/ticketboardfields";
 import { Toolbar } from "./components/Toolbar";
 import { getLoadProject } from "apiCalls/BuggingBugs/GET";
 import { SpinningLoader } from "util/components/loading";
+import { MainNavbar } from "util/components/navbars/MainNavbar";
 
 function TicketBoard(props) {
     const dispatch = useDispatch();
@@ -79,19 +80,22 @@ function TicketBoard(props) {
     };
 
     return (
-        <article style={containerStyle}>
-            <ResRender res={res} />
-            <Modal>{currModalContext()}</Modal>
-            <Toolbar />
-            <main>
-                <TicketDisplayer
-                    tickets={tickets}
-                    users={users}
-                    pid={pid}
-                    authLevel={authLevel}
-                />
-            </main>
-            <SpinningLoader style={loaderStyle} loading={ticketsLoading} />
+        <article>
+            <MainNavbar />
+            <article style={containerStyle}>
+                <ResRender res={res} />
+                <Modal>{currModalContext()}</Modal>
+                <Toolbar />
+                <main>
+                    <TicketDisplayer
+                        tickets={tickets}
+                        users={users}
+                        pid={pid}
+                        authLevel={authLevel}
+                    />
+                </main>
+                <SpinningLoader style={loaderStyle} loading={ticketsLoading} />
+            </article>
         </article>
     );
 }

@@ -1,4 +1,5 @@
 import { endpoints as ep } from "apiRoutes/BuggingBugs";
+import { sharedActions as sA } from "actions/sharedactions";
 
 /**
  * @function postCreateDemo
@@ -7,7 +8,7 @@ import { endpoints as ep } from "apiRoutes/BuggingBugs";
  * @param {*} setRes
  * @param {*} setProcessing
  */
-async function postCreateDemo(reqData, setRes, setProcessing) {
+async function postCreateDemo(reqData, setRes, setProcessing, dispatch) {
     setProcessing(true);
     const res = await fetch(ep.createdemo, {
         method: "POST",
@@ -25,6 +26,21 @@ async function postCreateDemo(reqData, setRes, setProcessing) {
     setProcessing(false);
     const resStatus = res.status,
         resData = await res.json();
+    if (resStatus === 200) {
+        dispatch({
+            type: sA.SET_LOGGED_IN,
+            loggedIn: true,
+        });
+        dispatch({
+            type: sA.SET_USER_DATA,
+            userData: {
+                uid: resData.uid,
+                name: resData.name,
+                email: resData.email,
+                pfp: resData.pfp,
+            },
+        });
+    }
     setRes([resStatus, resData]);
 }
 

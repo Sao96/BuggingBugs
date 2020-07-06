@@ -16,22 +16,6 @@ function ResRender(props) {
         case -1:
             return <></>;
         case 200:
-            dispatch({
-                type: sA.EMPTY_MODAL_STACK,
-            });
-            dispatch({
-                type: sA.SET_LOGGED_IN,
-                loggedIn: true,
-            });
-            dispatch({
-                type: sA.SET_USER_DATA,
-                userData: {
-                    uid: res[1].uid,
-                    name: res[1].name,
-                    email: res[1].email,
-                    pfp: res[1].pfp,
-                },
-            });
             return <Redirect push to={navRoutes.dashboard} />;
         default:
             const errorText =

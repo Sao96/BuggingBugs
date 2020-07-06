@@ -6,8 +6,10 @@ import { sharedFields } from "fields/sharedfields.js";
 import { ModalDemoInfo, ModalDemoSetup } from "./ModalContexts";
 import { Modal } from "util/components/modal";
 import { useMediaQuery } from "react-responsive";
+import { sharedActions as sA } from "actions/sharedactions";
 
 function Landing(props) {
+    const dispatch = useDispatch();
     const currModalStack = useSelector((state) => {
         return state.shared[sharedFields.MODAL_STACK];
     });
@@ -15,6 +17,9 @@ function Landing(props) {
         document.body.style.backgroundColor = landingBackgroundColor;
         return () => {
             document.body.style.backgroundColor = mainBackgroundColor;
+            dispatch({
+                type: sA.EMPTY_MODAL_STACK,
+            });
         };
     }, []);
     const currModalContext = () => {

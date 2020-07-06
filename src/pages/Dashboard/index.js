@@ -12,6 +12,7 @@ import {
 } from "./ModalContexts";
 import { ProjectBoard, ResRender, ProjectsLoadingDisplay } from "./components";
 import { getGetProjects } from "apiCalls/BuggingBugs/GET";
+import { MainNavbar } from "util/components/navbars/MainNavbar";
 
 function Dashboard(props) {
     const dispatch = useDispatch();
@@ -62,19 +63,22 @@ function Dashboard(props) {
         justifyContent: "center",
     };
     return (
-        <article style={containerStyle}>
-            <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
-            <ProjectsLoadingDisplay loading={projectsLoading} />
-            <ResRender res={res} />
-            <DefaultButton
-                text={"New Project"}
-                backgroundColor={"green"}
-                onClick={newProjectButtonHandler}
-            />
-            <span style={{ marginBottom: "20px" }}></span>
-            <main>
-                <ProjectBoard projects={projects} />
-            </main>
+        <article>
+            <MainNavbar />
+            <article style={containerStyle}>
+                <Modal assignedRef={modalRef}>{currModalContext()}</Modal>
+                <ProjectsLoadingDisplay loading={projectsLoading} />
+                <ResRender res={res} />
+                <DefaultButton
+                    text={"New Project"}
+                    backgroundColor={"green"}
+                    onClick={newProjectButtonHandler}
+                />
+                <span style={{ marginBottom: "20px" }}></span>
+                <main>
+                    <ProjectBoard projects={projects} />
+                </main>
+            </article>
         </article>
     );
 }

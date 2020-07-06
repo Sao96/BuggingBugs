@@ -16,9 +16,9 @@ function InviteList(props) {
     }, []);
     const InvitesDisplay =
         invites.length > 0 ? (
-            invites.map((invite) => {
+            invites.map((invite, idx) => {
                 return (
-                    <>
+                    <section key={idx}>
                         <Invite
                             name={invite.name}
                             invId={invite.invId}
@@ -27,7 +27,7 @@ function InviteList(props) {
                             setInvites={setInvites}
                         />
                         <span style={{ marginTop: "20px" }} />
-                    </>
+                    </section>
                 );
             })
         ) : (

@@ -8,6 +8,7 @@ import {
     UpdatePfp,
     UpdatePassword,
 } from "./SectionContent";
+import { MainNavbar } from "util/components/navbars/MainNavbar";
 
 function Settings(props) {
     const dispatch = useDispatch();
@@ -56,9 +57,12 @@ function Settings(props) {
     };
     mainStyle = { ...mainStyle, ...formDimensions };
     return (
-        <div style={containerStyle}>
-            <main style={mainStyle}>{formSections}</main>
-        </div>
+        <article>
+            <MainNavbar />
+            <article style={containerStyle}>
+                <main style={mainStyle}>{formSections}</main>
+            </article>
+        </article>
     );
 }
 

@@ -27,8 +27,8 @@ function Register(props) {
         ["Email", "text", fieldRefs.email],
         ["First Name", "text", fieldRefs.firstName],
         ["Last Name", "text", fieldRefs.lastName],
-        ["Password (8 or more characters)", "text", fieldRefs.password],
-        ["Enter password again", "text", fieldRefs.repassword],
+        ["Password (8 or more characters)", "password", fieldRefs.password],
+        ["Enter password again", "password", fieldRefs.repassword],
     ];
     const registerClickHandler = useCallback(() => {
         postRegister(

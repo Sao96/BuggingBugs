@@ -13,6 +13,7 @@ function NavList(props) {
     const listingDisplays = props.listings.map((listing, idx) => {
         return (
             <Listing
+                key={idx}
                 title={listing}
                 active={props.active === idx}
                 idx={idx}

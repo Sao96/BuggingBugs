@@ -38,7 +38,7 @@ function Login(props) {
             };
             postLogin(reqData, loginType, setRes, setProcessing);
         },
-        [setRes, setProcessing]
+        [setRes, setProcessing, dispatch]
     );
     if (redirect !== "") {
         return <Redirect push to={redirect} />;

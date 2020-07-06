@@ -3,7 +3,6 @@ import { ModalTitle } from "util/components/modal";
 import { DefaultButton } from "buttons";
 import { resolveRefValues } from "util/helperFunctions/refHelpers";
 import { useDispatch } from "react-redux";
-import { sharedActions as sA } from "actions/sharedactions";
 import { InputFields } from "util/components/form";
 import { ResRender } from "./components";
 import { postCreateDemo } from "apiCalls/BuggingBugs/POST";
@@ -18,8 +17,13 @@ function ModalDemoSetup(props) {
         pfp: createRef(),
     };
     const startButtonHandler = useCallback(() => {
-        postCreateDemo(resolveRefValues(fieldRefs), setRes, setProcessing);
-    }, [fieldRefs, setRes, setProcessing]);
+        postCreateDemo(
+            resolveRefValues(fieldRefs),
+            setRes,
+            setProcessing,
+            dispatch
+        );
+    }, [fieldRefs, setRes, setProcessing, dispatch]);
 
     const containerStyle = {
         width: "500px",

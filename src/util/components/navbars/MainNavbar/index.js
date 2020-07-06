@@ -1,4 +1,6 @@
 import React, { useState, useCallback, createRef } from "react";
+import { useSelector } from "react-redux";
+import { sharedFields } from "fields/sharedfields";
 import { DesktopNavbar, MobileNavbar } from "./components";
 import { useDesktop } from "util/responsive";
 

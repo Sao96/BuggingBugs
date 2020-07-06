@@ -24,9 +24,9 @@ const InputFields = (props) => {
         paddingLeft: "3px",
     };
 
-    return data.map((data) => {
+    return data.map((data, idx) => {
         return (
-            <div style={formItemStyle}>
+            <div style={formItemStyle} key={idx}>
                 <label style={labelStyle}>{data[0]}</label>
                 <input type={data[1]} ref={data[2]} style={inputStyle}></input>
             </div>

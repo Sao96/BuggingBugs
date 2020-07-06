@@ -30,7 +30,7 @@ function TicketInfoTable(props) {
     const odd = { backgroundColor: tableTheme.odd };
     const tableRows = tableData.map((data, idx) => {
         return (
-            <tr style={idx % 2 ? odd : even}>
+            <tr key={idx} style={idx % 2 ? odd : even}>
                 <td style={{ fontSize: "17px", padding: "0px 20px" }}>
                     {data[0]}
                 </td>

@@ -1,11 +1,13 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const isProduction =
+    process.argv[process.argv.indexOf("--mode") + 1] === "production";
 module.exports = {
     devServer: {
         historyApiFallback: true,
         proxy: {
             "/api": {
-                target: "http://localhost:3000",
+                target: "http://localhost:5100",
                 pathRewrite: { "^/api$": "" },
                 changeOrigin: true,
             },
@@ -16,7 +18,7 @@ module.exports = {
     },
     output: {
         path: path.join(__dirname, "server/", "build/"),
-        publicPath: "/build/",
+        publicPath: isProduction ? "/build/" : "/",
         filename: "main.js",
     },
     optimization: {

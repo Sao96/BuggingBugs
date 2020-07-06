@@ -13,9 +13,10 @@ function MobileNavbar(props) {
     const items = [
         ["Login", navRoutes.login],
         ["Register", navRoutes.register],
-    ].map((item) => {
+    ].map((item, idx) => {
         return (
             <Listing
+                key={idx}
                 padding={padding}
                 width={openWidth + "px"}
                 text={item[0]}

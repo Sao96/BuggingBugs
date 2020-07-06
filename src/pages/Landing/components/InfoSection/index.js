@@ -21,16 +21,16 @@ function InfoSection(props) {
             "Simple to use.",
             "Experience a smooth and predictable system. Managing complex problems should be as simple as possible.",
         ],
-    ].map((listing) => {
+    ].map((listing, idx) => {
         return (
-            <>
+            <section key={idx}>
                 <FeatureListing
                     svg={listing[0]}
                     title={listing[1]}
                     mainText={listing[2]}
                 />
                 <span style={{ marginBottom: "10px" }} />
-            </>
+            </section>
         );
     });
     const headerText =

@@ -35,19 +35,13 @@ function Toolbar(props) {
     }
 
     items = items.map((Item, idx) => {
-        const bottomSpace = (
-            <span style={{ paddingBottom: desktop ? "0px" : "15px" }} />
-        );
+        const bottomSpace = {
+            marginBottom: desktop || idx === items.length - 1 ? "0px" : "15px",
+        };
         return (
-            <>
-                <ToolbarItem
-                    key={idx}
-                    text={Item[0]}
-                    Svg={Item[1]}
-                    handler={Item[2]}
-                />
-                {idx !== items.length - 1 ? bottomSpace : <></>}
-            </>
+            <section key={idx} style={bottomSpace}>
+                <ToolbarItem text={Item[0]} Svg={Item[1]} handler={Item[2]} />
+            </section>
         );
     });
 

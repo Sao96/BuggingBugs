@@ -2,25 +2,26 @@ import React, { useState } from "react";
 import { navbarColor1 } from "themeColors";
 import { Listing } from "./components";
 import DrawerIcon from "svg/drawerhandler.svg";
-import { useSelector } from "react-redux";
-import { sharedFields } from "fields/sharedfields";
 import { navRoutes } from "navRoutes";
 
 function MobileNavbar(props) {
     const [open, setOpen] = useState(false);
-    const showNav = useSelector((state) => {
-        return state.shared[sharedFields.SHOW_NAV];
-    });
     const toggleNavbar = () => {
         setOpen(!open);
     };
-    const HANDLE_HEIGHT = 50;
     const items = [
         ["Dashboard", navRoutes.dashboard],
         ["Settings", navRoutes.settings],
         ["Logout", navRoutes.logout],
-    ].map((item) => {
-        return <Listing setOpen={setOpen} text={item[0]} route={item[1]} />;
+    ].map((item, idx) => {
+        return (
+            <Listing
+                key={idx}
+                setOpen={setOpen}
+                text={item[0]}
+                route={item[1]}
+            />
+        );
     });
     const containerStyle = {
         position: "sticky",
@@ -43,7 +44,7 @@ function MobileNavbar(props) {
     };
 
     return (
-        <div style={{ marginBottom: "60px", display: showNav ? "" : "none" }}>
+        <div style={{ marginBottom: "10px" }}>
             <nav style={containerStyle}>
                 <section style={toggleStyle}>
                     <DrawerIcon

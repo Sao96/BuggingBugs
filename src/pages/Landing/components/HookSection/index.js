@@ -9,11 +9,8 @@ function HookSection(props) {
     const headerText = "A bug tracking solution.";
     const containerStyle = {
         display: "flex",
-        // flexDirection: "column",
         width: "100%",
         paddingBottom: "40px",
-        // alignItems: "center",
-        // justifyContent: "center",
         color: "black",
         fontFamily: " PT Sans, Noto Sans JP",
         background: "#43c6ac",
@@ -32,8 +29,9 @@ function HookSection(props) {
         paddingBottom: "90px",
     };
     const mainLogoImageStyle = {
-        width: desktop ? "450px" : "232px",
-        height: desktop ? "165px" : "85px",
+        width: desktop ? "450px" : "320px",
+        maxWidth: "100%",
+        height: desktop ? "165px" : "118px",
         position: "relative",
         top: "40px",
         userSelect: "none",
