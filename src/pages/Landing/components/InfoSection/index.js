@@ -9,7 +9,7 @@ function InfoSection(props) {
         [
             JuggleIcon,
             "One for all.",
-            "Keep track of bugs across all projecrts from just one platform.",
+            "Keep track of bugs across all projects from just one platform.",
         ],
         [
             CycleIcon,
