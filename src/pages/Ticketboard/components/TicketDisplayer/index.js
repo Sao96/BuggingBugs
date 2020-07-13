@@ -89,7 +89,7 @@ function TicketDisplayer(props) {
         shadowWidth +
         borderWidth;
     const [large, medium] = [
-        totalTicketWidth * 3 + 150 + "px",
+        totalTicketWidth * 3 + navbarWidth + "px",
         mobileWidth + "px",
     ].map((width) => {
         return mediaQueryCustom(width);

@@ -14,7 +14,13 @@ import { Index } from "./pages/Index";
 
 function Routing() {
     return (
-        <div style={{ display: "flex", flexDirection: "column" }}>
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                marginBottom: "80px",
+            }}
+        >
             <Router>
                 <div style={{ width: "100%" }}>
                     <Switch>

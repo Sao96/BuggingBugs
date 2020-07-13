@@ -54,6 +54,7 @@ function DesktopNavbar(props) {
         paddingRight: navOpen ? openNavWidth : closedNavWidth,
         transition: "padding-right " + transitionSpeed,
         zIndex: "1",
+        position: "sticky",
     };
     const mainStyle = {
         height: "100%",
