@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TypeFilter, Ticket } from "./components";
-import { NoTicketsMessage } from "./components";
+import { TypeFilter, Ticket, NoTicketsMessage } from "./components";
 import { ticketCardStyles as tcStyles } from "styles";
 import { mobileWidth, mediaQueryCustom, useDesktop } from "util/responsive";
 
