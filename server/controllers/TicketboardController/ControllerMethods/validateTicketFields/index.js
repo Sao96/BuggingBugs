@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 
 const validDue = (due) => {
     const dateRegex = /^(((?:(?:1[6-9]|[2-9]\d)?\d{2})(-)(?:(?:(?:0?[13578]|1[02])(-)31)|(?:(?:0?[1,3-9]|1[0-2])(-)(?:29|30))))|(((?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))(-)(?:0?2(-)29))|((?:(?:(?:1[6-9]|[2-9]\d)?\d{2})(-)(?:(?:0?[1-9])|(?:1[0-2]))(-)(?:0[1-9]|1\d|2[0-8]))))$/;
-    return typeof due === "string" && dateRegex.test(due);
+    return typeof due === "string" && (due == "" || dateRegex.test(due));
 };
 const validEnvironment = (environment) => {
     return typeof environment === "string";

@@ -2,12 +2,17 @@ import React from "react";
 
 function DueDate(props) {
     const date = new Date(props.date);
-    const cardDate =
-        String(date.getMonth() + 1) +
-        "/" +
-        String(date.getDate() + 1) +
-        "/" +
-        String(date.getFullYear());
+    let cardDate;
+    if (isNaN(date)) {
+        cardDate = "N/A";
+    } else {
+        cardDate =
+            String(date.getMonth() + 1) +
+            "/" +
+            String(date.getDate() + 1) +
+            "/" +
+            String(date.getFullYear());
+    }
     return (
         <span
             style={{
