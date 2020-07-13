@@ -86,3 +86,7 @@ Just add the definition to `/util/themeColors`.
 ### Do not use hardcoded URL's
 
 Use a global definition, in case the endpoint gets changed. For example, this is done with all routes found in `/routes`. A resource generally has an object which has mappings to each resource.
+
+### Avoid using CSS files
+
+It's easier to understand the styling by just using inlines and manipulating those. In the event they are needed or used, though, webpack is loaded with a CSS compiler.
